@@ -5,14 +5,13 @@ import javax.swing.*;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
-import org.apache.solr.client.solrj.response.UpdateResponse;
 
 public class Remove {
 	JFrame frame = new JFrame("Remove");
 	public Remove() {}
 	
 	public int acceptRemove() throws SolrServerException, IOException {
-		String urlString = "http://localhost:8983/solr/bigboxstore";
+		String urlString = "http://localhost:8900/solr/solrservices";
         HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
         solr.setParser(new XMLResponseParser());
         

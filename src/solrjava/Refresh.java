@@ -6,7 +6,7 @@ import org.apache.solr.client.solrj.impl.XMLResponseParser;
 
 public class Refresh {
     public Refresh() throws SolrServerException, IOException{
-        String urlString = "http://localhost:8983/solr/bigboxstore";
+        String urlString = "http://localhost:8900/solr/solrservices";
         HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
         solr.setParser(new XMLResponseParser());
         

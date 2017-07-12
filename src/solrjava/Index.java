@@ -13,8 +13,44 @@ import org.apache.solr.common.SolrInputDocument;
 
 
 public class Index {
-    public Index() throws SolrServerException, IOException {
-    	String urlString = "http://localhost:8983/solr/bigboxstore";
+    public Index() throws SolrServerException, IOException {}
+    
+    public int acceptDocument(File f) throws SolrServerException, IOException {
+    	//Connect to server
+    	String urlString = "http://localhost:8900/solr/solrservices";
+        HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
+        
+        String name = f.getName();
+        if(name.length()<5) {
+        	return -1;
+        }
+        
+        //JSON file addition
+        if(name.substring(name.length()-5).equals(".json")) {
+        	return 2;
+        }
+        //CSV file addition
+        if(name.substring(name.length()-4).equals(".csv")) {
+        	return 2;
+        }
+        //XML file addition
+        if(name.substring(name.length()-4).equalsIgnoreCase(".xml")) {
+            solr.setParser(new XMLResponseParser());
+            InputStream is = new FileInputStream(f);
+            @SuppressWarnings("deprecation")
+    		String xml = IOUtils.toString(is);
+            
+        	DirectXmlRequest xmlreq = new DirectXmlRequest( "/update", xml); 
+        	
+        	solr.request(xmlreq);
+        }
+        
+    	solr.commit();
+    	return 1;
+    }
+    
+    public void exampleDocs() throws SolrServerException, IOException {
+    	String urlString = "http://localhost:8900/solr/solrservices";
         HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
         solr.setParser(new XMLResponseParser());
         
@@ -25,7 +61,7 @@ public class Index {
         document.addField("price", "50.0");
         solr.add(document);
         
-        //Remember to commit your changes!
+        //Commit Changes
         solr.commit();
         
         for(int i=0;i<100;++i) {
@@ -41,19 +77,5 @@ public class Index {
           //Beans
           solr.addBean( new ProductBean("888", "Apple iPhone 6s", "299.99") );
           solr.commit();
-    }
-    
-    public void acceptDocument(File f) throws SolrServerException, IOException {
-    	String urlString = "http://localhost:8983/solr/bigboxstore";
-        HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
-        solr.setParser(new XMLResponseParser());
-        
-        InputStream is = new FileInputStream(f);
-        String xml = IOUtils.toString(is);
-        
-    	DirectXmlRequest xmlreq = new DirectXmlRequest( "/update", xml); 
-    	
-    	solr.request(xmlreq);
-    	solr.commit();
     }
 }
