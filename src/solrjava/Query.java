@@ -25,6 +25,7 @@ public class Query {
         
         //Adding fields to the query
         query.setQuery(q);
+        query.set("rows", GUI.ROWS);
         /*query.set("wt", s.get(0));
         if(s.get(1).trim()!="") {
         	query.set("ls", s.get(1));
