@@ -1,42 +1,49 @@
 package solrjava;
-import org.apache.solr.client.solrj.beans.Field;
 
 public class ProductBean {
-	String id;
-    String name;
-    String price;
-	public ProductBean(String i, String n, String p) {
-		id=i;
-		name=n;
-		price=p;
+	String id = null;
+    String[] fields;
+    String[] values;
+    
+	public ProductBean(String f, String v) {
+		//System.out.println(fields.toString());
+		f=f.substring(1, f.length()-2);
+		fields = f.split(", ");
+		
+		v=v.substring(1, v.length()-2);
+		values = v.split(", ");
+		
+		for(int i=0; i<fields.length; i++) {
+			if(fields[i].equals("id")) {
+				id = values[i];
+				i=fields.length+1;
+			}
+		}
+		/*for(int i=0; i<fields.size(); i++) {
+			if(fields.equals("id")) {
+				this.id = values.toString().toString();
+			}
+			else {
+				System.out.println(fields[i].toString());
+				this.fields.add(fields[i].toString());
+				this.values.add(values[i].toString());
+			}
+		}*/
 	}
- 
-    @Field("id")
-    protected void setId(String id) {
-        this.id = id;
-    }
- 
-    @Field("name")
-    protected void setName(String name) {
-        this.name = name;
-    }
- 
-    @Field("price")
-    protected void setPrice(String price) {
-        this.price = price;
-    }
 
 	public String getId() {
 		return id;
 	}
-
-	public String getName() {
-		return name;
+	
+	public String getValue(int n) {
+		return this.values[n];
 	}
-
-	public String getPrice() {
-		return price;
+	
+	public String getField(int n) {
+		return this.fields[n];
 	}
- 
-    // getters and constructor omitted for space
+	
+	public int numFields() {
+		return fields.length;
+	}
 }

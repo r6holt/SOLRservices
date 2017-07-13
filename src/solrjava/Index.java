@@ -73,9 +73,5 @@ public class Index {
             if(i%100==0) solr.commit();  // periodically flush
           }
           solr.commit(); 
-          
-          //Beans
-          solr.addBean( new ProductBean("888", "Apple iPhone 6s", "299.99") );
-          solr.commit();
     }
 }

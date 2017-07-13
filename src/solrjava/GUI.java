@@ -11,13 +11,15 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.common.SolrDocumentList;
 
 
 public class GUI {
+	
+	public static int ROWS = 10;
 	//frame
 	private JFrame frame = new JFrame("SOLR Search Services");
-	private JPanel center = new JPanel(new FlowLayout());
+	private JPanel west = new JPanel(new FlowLayout());
+	private JPanel east = new JPanel(new FlowLayout());
 	
 	//search
 	private JPanel north = new JPanel(new FlowLayout());
@@ -29,11 +31,12 @@ public class GUI {
 	private JButton examples = new JButton("Examples");
 	
 	//display area
-	private JPanel displayPan = new JPanel(new FlowLayout());
-	private JTextArea display = new JTextArea(10, 30);
-	private JScrollPane scroll;
+	private JPanel displayPan = new JPanel();
+	private JScrollPane scroll = new JScrollPane(displayPan);
+	//private JTextArea display = new JTextArea(10, 30);
+	//private JScrollPane scroll;
 	
-	//options
+	/*//options
 	private JPanel options = new JPanel(new GridLayout(12,1));
 	private JPanel advanced = new JPanel(new GridLayout(12,1));
 	private JTextField wt = new JTextField("xml", 10);
@@ -44,10 +47,11 @@ public class GUI {
 	private JTextField defType = new JTextField("lucene", 10);
 	private JTextField fq = new JTextField(20);
 	private JTextField facet = new JTextField(20);
-	private JTextField rH = new JTextField(20);
+	private JTextField rH = new JTextField(20);*/
 	
 	//info
 	private JTextArea info = new JTextArea(12, 30);
+	private JScrollPane infoscroll = new JScrollPane(info);
 	
 	
 	//constructor for GUI
@@ -56,7 +60,7 @@ public class GUI {
 		
 		setup();
 		management();
-		options();
+		//options();
 		addButtons();
 		initSearch();
 		Server s = new Server();
@@ -73,24 +77,23 @@ public class GUI {
 	//setup for the GUI frame
 	public void setup() {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.setSize(1000, 1000);
+		frame.setSize(800, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
+		//frame.setResizable(false);
 		frame.setVisible(true);
 	}
 	
 	public void addButtons() {		
-		//setup for display and info
-		display.setEnabled(false);
-		display.setFont(display.getFont().deriveFont(24f));
+		displayPan.setLayout(new BoxLayout(displayPan, BoxLayout.Y_AXIS));
+		//displayPan.setPreferredSize(new Dimension(600,200));
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setPreferredSize(new Dimension(400, 600));
+		scroll.setMinimumSize(new Dimension(400, 600));
 		info.setEnabled(false);
 		info.setSelectionColor(Color.black);
-		info.setText("Start by Searching!");
-		
-		//setup for display scroll
-		scroll = new JScrollPane(display);
-	    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	    displayPan.add(scroll);
+		info.setText("\tStart by adding Documents!");
+		info.append("\n       Use the example documents or add your own!\n");
 	    
 	    //add components to the frame
 	    north.add(examples);
@@ -99,15 +102,13 @@ public class GUI {
 		north.add(refresh);
 		north.add(searchbar);
 		north.add(search);
-		center.add(options);
-		center.add(advanced);
-		center.add(info);
+		west.add(infoscroll);
+		east.add(scroll);
+		frame.add(west, BorderLayout.WEST);
 		frame.add(north, BorderLayout.NORTH);
-		frame.add(center, BorderLayout.CENTER);
-		frame.add(displayPan, BorderLayout.SOUTH);
+		frame.add(east, BorderLayout.EAST);
 		
 		//fit frame to component size and reveal
-		frame.pack();
 		frame.setVisible(true);
 	}
 	
@@ -117,31 +118,22 @@ public class GUI {
 					@Override
 					public void actionPerformed(ActionEvent e)  {
 						Query query = new Query();
-						SolrDocumentList results = null;
+						ArrayList<ProductBean> results = null;
 						
 						try {
-							results = query.acceptQuery(searchbar.getText(), configSettings());
+							results = query.acceptQuery(searchbar.getText());
 						} catch (SolrServerException | IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						if(results.getNumFound()==-1) {
-							info.append("\nFaulty Query Parameters...Search Failed");
-						}
-						else if(results==null || results.getNumFound()==0) {
-							display.setText("\tNo results");
+						if(results==null) {
+							//display.setText("\tNo results");
 							info.append("\n...Search successful");
 						}
 						else {
-							String docs = results.toString();
+							displayResults(results);
 							
-							//formatting results
-							docs = docs.replaceAll("SolrDoc", "\nSolrDoc");
-							docs = docs.replaceAll(", ", "\n\t  ");
-							docs = docs.replaceAll("}", "\n");
 							
-							//display results
-							display.setText(docs);
 							info.append("\n...Search successful");
 						}
 						updateDisplay();
@@ -243,45 +235,27 @@ public class GUI {
 				});
 	}
 	
-	//setup of options and advanced panels
-	public void options() {
-		options.add(new JLabel("wt: "));
-		options.add(wt);
-		options.add(new JLabel("ls: "));
-		options.add(ls);
-		options.add(new JLabel("start: "));
-		options.add(start);
-		options.add(new JLabel("rows: "));
-		options.add(rows);
-		options.add(new JLabel("defType: "));
-		options.add(defType);
-		options.add(new JLabel("sort: "));
-		options.add(sort);
-		
-		advanced.add(new JLabel("function query: "));
-		advanced.add(fq);
-		advanced.add(new JLabel("faceting: "));
-		advanced.add(facet);
-		advanced.add(new JLabel("request handler: "));
-		advanced.add(rH);
-		
-	}
-	
 	//updates frame for new content
 	public void updateDisplay() {
 		frame.setVisible(true);
-		frame.pack();
 	}
 	
-	public ArrayList<String> configSettings() {
-		ArrayList<String> settings = new ArrayList<String>();
-		
-		settings.add(wt.getText());
-		settings.add(ls.getText());
-		settings.add(start.getText());
-		settings.add(rows.getText());
-		settings.add(sort.getText());
-		settings.add(defType.getText());
-		return settings;
+	public void displayResults(ArrayList<ProductBean> results) {
+		displayPan.removeAll();
+		for(ProductBean bean: results) {
+			JButton b = new JButton("ID: "+bean.getId());
+			String format= "";
+			for(int i=0; i<bean.numFields(); i++) {
+				format = format.concat(bean.getField(i)+": "+bean.getValue(i)+"\n");
+			}
+			//System.out.println(format);
+			JPanel holder = new JPanel();
+			holder.setBorder(BorderFactory.createLineBorder(Color.black));
+			JTextArea p = new JTextArea();
+			p.setText(format);
+			holder.add(b);
+			holder.add(p);
+			displayPan.add(holder);
+		}
 	}
 }

@@ -20,7 +20,7 @@ public class Remove {
                 "Remove",
                 JOptionPane.PLAIN_MESSAGE);
         
-        if(index==null || index=="") {
+        if(index==null || index.trim().equals("")) {
         	return 0;
         }
         else if(solr.getById(index)==null) {

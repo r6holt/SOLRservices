@@ -7,12 +7,13 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
 public class Query {
     public Query() {}
     
-    public SolrDocumentList acceptQuery(String q, ArrayList<String> s) throws SolrServerException, IOException{
+    public ArrayList<ProductBean> acceptQuery(String q) throws SolrServerException, IOException{
     	String urlString = "http://localhost:8900/solr/solrservices";
         HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
         solr.setParser(new XMLResponseParser());
@@ -24,7 +25,7 @@ public class Query {
         
         //Adding fields to the query
         query.setQuery(q);
-        query.set("wt", s.get(0));
+        /*query.set("wt", s.get(0));
         if(s.get(1).trim()!="") {
         	query.set("ls", s.get(1));
         }
@@ -33,20 +34,32 @@ public class Query {
         if(s.get(4).trim()!="") {
         	query.set("sort", s.get(4));
         }
-        query.set("defType", s.get(5));
+        query.set("defType", s.get(5));*/
         
         //Getting results
+        ArrayList<ProductBean> beans = new ArrayList<ProductBean>();
         try {
         	QueryResponse resp = solr.query(query);
         	SolrDocumentList list =resp.getResults();
-        	return list;
+        	
+        	for(int i=0; (i<GUI.ROWS && i<list.getNumFound()); i++) {
+        		beans.add(createBean(list.get(i)));
+        	}
+        	
+        	return beans;
         }
         catch (Exception e) {
-        	SolrDocumentList bad = new SolrDocumentList();
-        	bad.setNumFound(-1);
-        	return bad;
+        	System.out.println("ERROR");
+        	return beans;
         }
         
         
+    }
+    
+    public ProductBean createBean(SolrDocument sd) {
+    	ProductBean b = new ProductBean(sd.getFieldNames().toString(), sd.values().toString());
+    	
+    	return b;
+    	
     }
 }

@@ -3,17 +3,18 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="SOLRJ"/>
-	<classpathentry kind="lib" path="SOLRJ/commons-io-2.5.jar"/>
-	<classpathentry kind="lib" path="SOLRJ/commons-math3-3.4.1.jar"/>
-	<classpathentry kind="lib" path="SOLRJ/jcl-over-slf4j-1.7.7.jar"/>
-	<classpathentry kind="lib" path="SOLRJ/solr-solrj-6.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/SOLRJ/httpclient-4.4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/SOLRJ/httpcore-4.4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/SOLRJ/httpmime-4.4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/SOLRJ/noggit-0.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/SOLRJ/stax2-api-3.1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/SOLRJ/woodstox-core-asl-4.4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/SOLRJ/zookeeper-3.4.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/SOLRJ/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/bcmail-jdk15-1.45.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/commons-io-2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/commons-math3-3.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/httpclient-4.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/httpcore-4.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/httpmime-4.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/jcl-over-slf4j-1.7.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/noggit-0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/solr-solrj-6.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/stax2-api-3.1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/woodstox-core-asl-4.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/zookeeper-3.4.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
