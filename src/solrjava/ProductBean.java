@@ -6,7 +6,6 @@ public class ProductBean {
     String[] values;
     
 	public ProductBean(String f, String v) {
-		//System.out.println(fields.toString());
 		f=f.substring(1, f.length()-2);
 		fields = f.split(", ");
 		
@@ -19,16 +18,6 @@ public class ProductBean {
 				i=fields.length+1;
 			}
 		}
-		/*for(int i=0; i<fields.size(); i++) {
-			if(fields.equals("id")) {
-				this.id = values.toString().toString();
-			}
-			else {
-				System.out.println(fields[i].toString());
-				this.fields.add(fields[i].toString());
-				this.values.add(values[i].toString());
-			}
-		}*/
 	}
 
 	public String getId() {
