@@ -7,20 +7,26 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.CommonParams;
-import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 
 public class FieldTracker {
 	
 	private ArrayList<String> fields = new ArrayList<String>();
+	
 	private boolean price = false;
-	private boolean category = false;
 	private int minPrice;
 	private int maxPrice;
 	private boolean priceQuery;
+	
+	private String category;
+	
+	private String sortfield;
+	private String sort;
+
 	private HttpSolrClient solr;
 
 	//init FieldTracker to keep track of fields and sorting
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public FieldTracker() throws SolrServerException, IOException {
 		String urlString = "http://localhost:8900/solr/solrservices";
         solr = new HttpSolrClient.Builder(urlString).build();
@@ -35,12 +41,6 @@ public class FieldTracker {
 	        if(field.get("name").toString().equals("price")) {
 	        	price=true;
 	        }
-	        if(field.get("name").toString().equals("cat")) {
-	        	category=true;
-	        }
-	        if(field.get("name").toString().equals("category")) {
-	        	category=true;
-	        }
 	        
 	    }
 
@@ -48,6 +48,7 @@ public class FieldTracker {
 	
 	
 	//updates fields on the core
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void update() throws SolrServerException, IOException {
 		SolrQuery query = new SolrQuery();
 		
@@ -59,14 +60,7 @@ public class FieldTracker {
 	        fields.add(field.get("name").toString());
 	        if(field.get("name").toString().equals("price")) {
 	        	price=true;
-	        }
-	        if(field.get("name").toString().equals("cat")) {
-	        	category=true;
-	        }
-	        if(field.get("name").toString().equals("category")) {
-	        	category=true;
-	        }
-	        
+	        }	        
 	    }
 	}
 	
@@ -77,10 +71,6 @@ public class FieldTracker {
 	public boolean getPrice() {
 		return price;
 	}
-
-	public boolean getCategory() {
-		return category;
-	}
 	
 	public int getMinPrice() {
 		return minPrice;
@@ -89,6 +79,7 @@ public class FieldTracker {
 	public void setMinPrice(int minPrice) {
 		this.minPrice = minPrice;
 	}
+
 
 	public int getMaxPrice() {
 		return maxPrice;
@@ -114,5 +105,28 @@ public class FieldTracker {
 		return priceQuery;
 	}
 	
+	public String getSortfield() {
+		return sortfield;
+	}
+
+	public void setSortfield(String sortfield) {
+		this.sortfield = sortfield;
+	}
+
+	public String isSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+	
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 	
 }

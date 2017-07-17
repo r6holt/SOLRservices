@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -30,9 +31,14 @@ public class Query {
         query.setQuery(q);
         query.set("rows", ROWS);
         query.set("start", START);
+        query.set("sort", ft.getSortfield()+" "+ft.isSort());
         
         if(ft!=null && ft.getPriceQuery()) {
-        	query.setQuery(q+" -price:[* TO "+ft.getMinPrice()+"] -price:["+ft.getMaxPrice()+" TO *]");
+        	query.set("fq", "-price:[* TO "+ft.getMinPrice()+"] -price:["+ft.getMaxPrice()+" TO *]");
+        }
+        
+        if(ft.getCategory()!="null") {
+        	query.setQuery(ft.getCategory()+":"+q);
         }
         
         //Getting results
@@ -49,8 +55,12 @@ public class Query {
         	
         	return beans;
         }
+        catch (RemoteSolrException e1) {
+        	return beans;
+        }
         catch (Exception e) {
         	System.out.println("ERROR");
+        	e.printStackTrace();
         	return beans;
         }
         

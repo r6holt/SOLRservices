@@ -60,6 +60,8 @@ public class Index {
         SolrInputDocument document = new SolrInputDocument();
         document.addField("id", "fruit-1");
         document.addField("name", "cherry");
+        //document.addField("TEST", 18);
+        document.addField("price", 86);
         solr.add(document);
         
         //Commit Changes
@@ -73,6 +75,7 @@ public class Index {
             doc.addField("name", "The Legend of the Hobbit part " + i);
             doc.addField("NYAA", "fresh like always");
             doc.addField("price", r.nextInt(400));
+            //doc.addField("TEST", 152);
             solr.add(doc);
             if(i%100==0) solr.commit();  // periodically flush
           }

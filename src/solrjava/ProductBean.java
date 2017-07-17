@@ -20,6 +20,22 @@ public class ProductBean {
 		}
 	}
 
+	public String[] getFields() {
+		return fields;
+	}
+
+	public void setFields(String[] fields) {
+		this.fields = fields;
+	}
+
+	public String[] getValues() {
+		return values;
+	}
+
+	public void setValues(String[] values) {
+		this.values = values;
+	}
+
 	public String getId() {
 		return id;
 	}

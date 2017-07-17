@@ -2,11 +2,13 @@ package solrjava;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -20,6 +22,7 @@ public class GUI {
 	// Documents
 	private ArrayList<ProductBean> results;
 	FieldTracker ft = new FieldTracker();
+	private boolean newDoc = false;
 
 	// frame
 	private JFrame frame = new JFrame("SOLR Search Services");
@@ -28,12 +31,13 @@ public class GUI {
 
 	// search
 	private JPanel north = new JPanel(new FlowLayout());
-	private JTextField searchbar = new JTextField(20);
+	private JTextField searchbar = new JTextField(15);
 	private JButton search = new JButton("Search");
 	private JButton addDoc = new JButton("Upload File");
 	private JButton deleteDoc = new JButton("Remove By ID");
-	private JButton refresh = new JButton("Refresh");
+	private JButton refresh = new JButton("Empty");
 	private JButton examples = new JButton("Examples");
+	private JComboBox<String> querycat = new JComboBox<String>();
 
 	// display area
 	private JPanel displayPan = new JPanel();
@@ -52,6 +56,7 @@ public class GUI {
 	private JTextField maxPrice = new JTextField(5);
 	private JComboBox<String> fieldoptions = new JComboBox<String>();
 	private JPanel fieldsort = new JPanel(new FlowLayout()); 
+	private JComboBox<String> ascdesc = new JComboBox<String>();
 	
 
 	// info
@@ -64,11 +69,12 @@ public class GUI {
 		
 		//init GUI functions
 		setup();
+		setImage();
 		management();
 		options();
+		sorting();
 		addComponents();
 		initSearch();
-		sorting();
 		
 		//Enter now works with search button
 		frame.getRootPane().setDefaultButton(search);
@@ -88,41 +94,66 @@ public class GUI {
 	// setup for the GUI frame
 	public void setup() {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.setSize(750, 750);
+		frame.setSize(810, 750);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
 		frame.setVisible(true);
 	}
+	
+	public void setImage() {
+		BufferedImage logo = null;
+		try {
+			logo = ImageIO.read(new File("solr.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JLabel img = new JLabel(new ImageIcon(logo));
+		//img.setBorder(BorderFactory.createLineBorder(Color.gray));
+		img.setPreferredSize(new Dimension(300, 300));
+		img.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		west.add(img);
+	}
 
 	public void addComponents() {
+		Font font1 = new Font("SansSerif", Font.PLAIN, 22);
+		Font font2 = new Font("SansSerif", Font.ITALIC, 18);
 		// setup components
 		displayPan.setLayout(new BoxLayout(displayPan, BoxLayout.Y_AXIS));
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scroll.setPreferredSize(new Dimension(500, 600));
-		scroll.setMinimumSize(new Dimension(500, 600));
+		scroll.setPreferredSize(new Dimension(503, 600));
+		scroll.setMinimumSize(new Dimension(503, 600));
 		info.setEnabled(false);
-		info.setSelectionColor(Color.black);
+		info.setBackground(Color.lightGray);
 		info.setText("\tStart by adding Documents!");
 		info.append("\n       Use the example documents or add your own!\n");
+		searchbar.setFont(font1);
+		querycat.setFont(font2);
+		search.setFont(new Font("SansSerif", Font.BOLD, 17));
 		sort.setLayout(new BoxLayout(sort, BoxLayout.Y_AXIS));
 		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
 		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
-		//options.setBorder(BorderFactory.createLineBorder(Color.black));
+		examples.setPreferredSize(new Dimension(80,20));
+		addDoc.setPreferredSize(new Dimension(80,20));
+		refresh.setPreferredSize(new Dimension(80,20));
+		sort.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		// add components to the frame
 		pages.add(displayFound);
 		pages.add(prevPage);
 		pages.add(numRows);
 		pages.add(nextPage);
-		sort.add(new JLabel("----Sort--------"));
 		north.add(examples);
 		north.add(addDoc);
-		north.add(deleteDoc);
+		//north.add(deleteDoc);
 		north.add(refresh);
+		north.add(new JLabel("      "));
+		north.add(querycat);
 		north.add(searchbar);
 		north.add(search);
-		west.add(infoscroll);
+		west.add(new JLabel("                      ------------------Sort------------------             "));
 		west.add(sort);
 		east.add(new JLabel("--------Search Results---------------"));
 		east.add(scroll);
@@ -143,18 +174,6 @@ public class GUI {
 				configSettings();
 				START=0;
 				
-				//see if user attempted a price filter correctly
-				try {
-					ft.setMaxPrice(Integer.parseInt(maxPrice.getText()));
-					ft.setMinPrice(Integer.parseInt(minPrice.getText()));
-					ft.setPriceQuery(true);
-				}
-				catch (Exception ex) {
-					//incorrect price filter
-					maxPrice.setText("");
-					minPrice.setText("");
-					ft.setPriceQuery(false);
-				}
 				//Search for query specified
 				Query query = new Query(ft);
 				try {
@@ -199,6 +218,7 @@ public class GUI {
 					try {
 						adder = new Index();
 						status = adder.acceptDocument(f);
+						newDoc=true;
 					} catch (SolrServerException | IOException e1) {
 						e1.printStackTrace();
 					}
@@ -353,6 +373,14 @@ public class GUI {
 				}
 			}
 		});
+		
+		querycat.setMaximumSize(new Dimension(60, 30));
+		querycat.setForeground(Color.black);
+		querycat.setBackground(Color.white);
+		querycat.addItem("All:");
+		for(int i=0; i<ft.numFields(); i++) {
+			querycat.addItem(ft.getField(i));
+		}
 	}
 	
 	//set up for sort panel on left hand side
@@ -367,11 +395,33 @@ public class GUI {
 		
 		//refreshes the sort panel
 		sort.removeAll();
-		sort.add(new JLabel("------Sort------------------"));
-		if(ft.getCategory()==true) {
-			//TODO WILL ADD CATEGORY FILTERING
-		}
 
+		Font f1 = new Font("Serif", Font.ITALIC, 16);
+		//refresh and setup field sorting
+		fieldsort.removeAll();
+		fieldoptions.removeAllItems();
+		ascdesc.removeAllItems();
+		fieldoptions.setBackground(Color.white);
+		fieldoptions.addItem("id");
+		for(int i=0; i<ft.numFields()/2; i++) {
+			if(i!=6) {
+				fieldoptions.addItem(ft.getField(i));
+			}
+		}
+		//fieldoptions.setAlignmentX(Component.LEFT_ALIGNMENT);
+		ascdesc.addItem("asc");
+		ascdesc.addItem("desc");
+		fieldsort.add(new JLabel("Sort by: "));
+		fieldsort.add(fieldoptions);
+		fieldsort.add(ascdesc);
+		fieldsort.setAlignmentX(Component.LEFT_ALIGNMENT);
+		fieldsort.setPreferredSize(new Dimension(100,100));
+		JLabel lsort = new JLabel("   FIELD____");
+		lsort.setFont(f1);
+		sort.add(lsort);
+		sort.add(fieldsort);
+		//fieldsort.setBorder(BorderFactory.createLineBorder(Color.gray));
+				
 		//set up for price querying
 		if(ft.getPrice()==true) {
 			price.removeAll();
@@ -379,20 +429,13 @@ public class GUI {
 			price.add(minPrice);
 			price.add(new JLabel("Max:"));
 			price.add(maxPrice);
-			sort.add(new JLabel("      "));
-			sort.add(new JLabel("PRICE"));
+			JLabel lprice = new JLabel("   PRICE____");
+			lprice.setFont(f1);
+			sort.add(lprice);
 			sort.add(price);
-			price.setBorder(BorderFactory.createLineBorder(Color.black));
+			//price.setBorder(BorderFactory.createLineBorder(Color.gray));
 		}
-		
-		//refresh and setup field sorting
-		fieldsort.removeAll();
-		for(int i=0; i<ft.numFields(); i++) {
-			fieldoptions.addItem(ft.getField(i));
-		}
-		fieldsort.add(new JLabel("Sort by Field: "));
-		fieldsort.add(fieldoptions);
-		sort.add(fieldsort);
+		price.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 	}
 
@@ -404,6 +447,29 @@ public class GUI {
 	// configures query parameters
 	public void configSettings() {
 		ROWS = Integer.parseInt(numRows.getSelectedItem().toString());
+		
+		//see if user attempted a price filter correctly
+		try {
+			ft.setMaxPrice(Integer.parseInt(maxPrice.getText()));
+			ft.setMinPrice(Integer.parseInt(minPrice.getText()));
+			ft.setPriceQuery(true);
+		}
+		catch (Exception ex) {
+			//incorrect price filter
+			maxPrice.setText("");
+			minPrice.setText("");
+			ft.setPriceQuery(false);
+		}
+		
+		ft.setSortfield(fieldoptions.getSelectedItem().toString());
+		ft.setSort(ascdesc.getSelectedItem().toString());
+		
+		if(querycat.getSelectedIndex()!=0) {
+			ft.setCategory(querycat.getSelectedItem().toString());
+		}
+		else {
+			ft.setCategory("null");
+		}
 	}
 
 	//displays results on the results panel
@@ -433,6 +499,13 @@ public class GUI {
 					message.add(dwld);
 					message.setLocationRelativeTo(null);
 					message.setVisible(true);
+					
+					dwld.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							new Download(bean.getFields(), bean.getValues(), bean.getId());
+						}
+					});
 				}
 			});
 
@@ -457,7 +530,10 @@ public class GUI {
 		}
 		
 		//refreshes sort panel
-		sorting();
+		if(newDoc) {
+			sorting();
+		}
+		newDoc=false;
 		
 	}
 }
