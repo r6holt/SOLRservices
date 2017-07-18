@@ -14,14 +14,22 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+
+import net.miginfocom.swing.MigLayout;
 
 public class GUI {
 	private static int START = 0;
 	private  static int ROWS = 10;
 	
-	// Documents
+	// Object Storage
 	private ArrayList<ProductBean> results;
-	FieldTracker ft = new FieldTracker();
+	private FieldTracker ft;
+	private Remove remove = new Remove();
+	private Refresh removeAll = new Refresh();
+	private Query query = new Query(ft);
+	private Index index = new Index();
+	private Download download = new Download();
 	private boolean newDoc = false;
 
 	// frame
@@ -66,18 +74,7 @@ public class GUI {
 	// constructor for GUI
 	public GUI() throws SolrServerException, IOException {
 		int status;
-		
-		//init GUI functions
 		setup();
-		setImage();
-		management();
-		options();
-		sorting();
-		addComponents();
-		initSearch();
-		
-		//Enter now works with search button
-		frame.getRootPane().setDefaultButton(search);
 		
 		//Checks to see if SOLR server is running
 		Server s = new Server();
@@ -86,15 +83,29 @@ public class GUI {
 			JOptionPane.showMessageDialog(new JFrame("Unable to Reach Server"),
 					"Unable to reach port 8900 with SOLR core \"solrservices\"\n"
 							+ "at this time. Please follow the directions outlined\n in"
-							+ "the README.txt file in the root directory.");
+							+ " the README.txt file in the root directory.");
 			frame.dispose();
+		}
+		else {
+			ft = new FieldTracker();
+			
+			//init GUI functions
+			setImage();
+			management();
+			options();
+			sorting();
+			addComponents();
+			initSearch();
+			
+			//Enter now works with search button
+			frame.getRootPane().setDefaultButton(search);
 		}
 	}
 
 	// setup for the GUI frame
 	public void setup() {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.setSize(810, 750);
+		frame.setSize(950, 750);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
@@ -121,10 +132,10 @@ public class GUI {
 		Font font1 = new Font("SansSerif", Font.PLAIN, 22);
 		Font font2 = new Font("SansSerif", Font.ITALIC, 18);
 		// setup components
-		displayPan.setLayout(new BoxLayout(displayPan, BoxLayout.Y_AXIS));
+		displayPan.setLayout(new MigLayout());
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scroll.setPreferredSize(new Dimension(503, 600));
-		scroll.setMinimumSize(new Dimension(503, 600));
+		scroll.setPreferredSize(new Dimension(643, 600));
+		scroll.setMinimumSize(new Dimension(643, 600));
 		info.setEnabled(false);
 		info.setBackground(Color.lightGray);
 		info.setText("\tStart by adding Documents!");
@@ -149,10 +160,11 @@ public class GUI {
 		north.add(addDoc);
 		//north.add(deleteDoc);
 		north.add(refresh);
-		north.add(new JLabel("      "));
+		north.add(new JLabel("                            "));
 		north.add(querycat);
 		north.add(searchbar);
 		north.add(search);
+		north.add(new JLabel("                "));
 		west.add(new JLabel("                      ------------------Sort------------------             "));
 		west.add(sort);
 		east.add(new JLabel("--------Search Results---------------"));
@@ -175,7 +187,7 @@ public class GUI {
 				START=0;
 				
 				//Search for query specified
-				Query query = new Query(ft);
+				query.updateFT(ft);
 				try {
 					results = query.acceptQuery(searchbar.getText(), START, ROWS);
 				} 
@@ -212,12 +224,10 @@ public class GUI {
 				File f = fc.getSelectedFile();
 				
 				//index selected file if it is correct file type
-				Index adder;
 				if (f == null) {}
 				else {
 					try {
-						adder = new Index();
-						status = adder.acceptDocument(f);
+						status = index.acceptDocument(f);
 						newDoc=true;
 					} catch (SolrServerException | IOException e1) {
 						e1.printStackTrace();
@@ -243,9 +253,8 @@ public class GUI {
 				int status = 0;
 				
 				//creates remover object to remove by ID
-				Remove remover = new Remove();
 				try {
-					status = remover.acceptRemove();
+					status = remove.acceptRemove();
 				} catch (SolrServerException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -268,7 +277,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				//creates refresh object to delete all docs and clear beans
 				try {
-					new Refresh();
+					removeAll.deleteAll();
 					if(results!=null) {
 						results.clear();
 					}
@@ -286,8 +295,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					//adds auto-generated docs to index
-					Index ex = new Index();
-					ex.exampleDocs();
+					index.exampleDocs();
 					
 					//set info bar
 					info.append("\nExample documents added...Index Successful");
@@ -318,7 +326,7 @@ public class GUI {
 				if(Query.FOUND>(START+ROWS)) {
 					START+=ROWS;
 					
-					Query query = new Query(ft);
+					query.updateFT(ft);
 					configSettings();
 
 					try {
@@ -342,7 +350,7 @@ public class GUI {
 				if((START-ROWS)>=0) {
 					START-=ROWS;
 					
-					Query query = new Query(ft);
+					query.updateFT(ft);
 					configSettings();
 
 					try {
@@ -358,7 +366,7 @@ public class GUI {
 				else {
 					START=0;
 					
-					Query query = new Query(ft);
+					query.updateFT(ft);
 					configSettings();
 
 					try {
@@ -404,11 +412,10 @@ public class GUI {
 		fieldoptions.setBackground(Color.white);
 		fieldoptions.addItem("id");
 		for(int i=0; i<ft.numFields()/2; i++) {
-			if(i!=6) {
+			if(!ft.getField(i).equals("id")) {
 				fieldoptions.addItem(ft.getField(i));
 			}
 		}
-		//fieldoptions.setAlignmentX(Component.LEFT_ALIGNMENT);
 		ascdesc.addItem("asc");
 		ascdesc.addItem("desc");
 		fieldsort.add(new JLabel("Sort by: "));
@@ -503,7 +510,15 @@ public class GUI {
 					dwld.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							new Download(bean.getFields(), bean.getValues(), bean.getId());
+							final JFileChooser fc = new JFileChooser();
+							fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+							fc.setAcceptAllFileFilterUsed(false);
+							fc.showOpenDialog(fc);
+							File f = fc.getSelectedFile();
+							
+							if(f!=null) {
+								download.acceptDownload(bean.getFields(), bean.getValues(), bean.getId(), f);
+							}
 						}
 					});
 				}
@@ -512,17 +527,19 @@ public class GUI {
 			//formats textfield text
 			String format = "";
 			for (int i = 0; i < bean.numFields(); i++) {
-				format = format.concat(bean.getField(i) + ": " + bean.getValue(i) + "\n");
+				format = format.concat(bean.getField(i) + ": \t" + bean.getValue(i) + "\n");
 			}
 
+			Font f1 = new Font("Serif", Font.PLAIN, 20);
 			//adds button and textfield to the results panel
 			JPanel holder = new JPanel();
 			holder.setBorder(BorderFactory.createLineBorder(Color.black));
 			JTextArea p = new JTextArea();
 			p.setText(format);
+			p.setFont(f1);
 			holder.add(b);
 			holder.add(p);
-			displayPan.add(holder);
+			displayPan.add(holder, "span");
 			
 			//refreshes documents found and what page user is on
 			displayFound.setText("Found "+Query.FOUND+" documents...("+

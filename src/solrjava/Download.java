@@ -17,8 +17,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class Download {
+	
+	public Download() {}
 
-	public Download(String[] fields, String[]values, String id) {
+	public void acceptDownload(String[] fields, String[]values, String id, File f) {
 
 	  try {
 
@@ -43,7 +45,8 @@ public class Download {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(document);
-		StreamResult result = new StreamResult(new File(id+".xml"));
+		System.out.println(f.toString());
+		StreamResult result = new StreamResult(new File(f.toString()+"\\"+id+".xml"));
 
 		transformer.transform(source, result);
 

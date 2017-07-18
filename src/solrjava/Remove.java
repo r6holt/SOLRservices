@@ -7,7 +7,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 
 public class Remove {
-	JFrame frame = new JFrame("Remove");
+	private JFrame frame = new JFrame("Remove");
 	public Remove() {}
 	
 	public int acceptRemove() throws SolrServerException, IOException {

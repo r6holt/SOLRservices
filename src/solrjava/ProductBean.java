@@ -1,9 +1,9 @@
 package solrjava;
 
 public class ProductBean {
-	String id = null;
-    String[] fields;
-    String[] values;
+	private String id = null;
+    private String[] fields;
+    private String[] values;
     
 	public ProductBean(String f, String v) {
 		f=f.substring(1, f.length()-2);

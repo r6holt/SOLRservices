@@ -16,5 +16,10 @@
 	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/stax2-api-3.1.4.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/woodstox-core-asl-4.4.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/jars/zookeeper-3.4.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/workspace/SOLRservices/MiG/ideutil.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/workspace/SOLRservices/MiG/miglayout15-swing.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/workspace/SOLRservices/MiG/miglayout15-swt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/workspace/SOLRservices/MiG/miglayout-swing.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/workspace/SOLRservices/MiG/miglayout-swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

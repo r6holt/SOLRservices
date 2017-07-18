@@ -7,6 +7,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
+import org.apache.solr.client.solrj.request.schema.SchemaRequest.SchemaName;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -28,7 +29,7 @@ public class Query {
         SolrQuery query = new SolrQuery();
         
         //Adding fields to the query
-        query.setQuery(q);
+        query.setQuery("*"+q+"*");
         query.set("rows", ROWS);
         query.set("start", START);
         query.set("sort", ft.getSortfield()+" "+ft.isSort());
@@ -38,7 +39,15 @@ public class Query {
         }
         
         if(ft.getCategory()!="null") {
-        	query.setQuery(ft.getCategory()+":"+q);
+        	if(q.trim().equals("")) {
+        		
+        	}
+        	else if(ft.getCategory().equals("price")) {
+        		query.setQuery("price:["+q+" TO "+q+"]");
+        	}
+        	else {
+        		query.setQuery(ft.getCategory()+":*"+q+"*");
+        	}
         }
         
         //Getting results
@@ -72,5 +81,9 @@ public class Query {
     	
     	return b;
     	
+    }
+    
+    public void updateFT(FieldTracker f) {
+    	this.ft=f;
     }
 }

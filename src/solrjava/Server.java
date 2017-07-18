@@ -1,12 +1,9 @@
 package solrjava;
 
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 
-import java.io.IOException;
-
 public class Server {
-	public Server() throws SolrServerException, IOException {}
+	public Server() {}
 	
 	public int tryPort () {
 		try {
