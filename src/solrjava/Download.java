@@ -1,6 +1,7 @@
 package solrjava;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,7 +21,7 @@ public class Download {
 	
 	public Download() {}
 
-	public void acceptDownload(String[] fields, String[]values, String id, File f) {
+	public void acceptDownload(ArrayList<String> fields, ArrayList<String> values, String id, File f) {
 
 	  try {
 
@@ -37,8 +38,8 @@ public class Download {
 		rootElement.appendChild(doc);
 		
 		// set attributes
-		for(int i=0; i<fields.length; i++) {
-			doc.setAttribute(fields[i], values[i]);
+		for(int i=0; i<fields.size(); i++) {
+			doc.setAttribute(fields.get(i), values.get(i));
 		}
 		
 		// write the content into xml file

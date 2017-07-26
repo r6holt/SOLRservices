@@ -14,9 +14,6 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.request.DirectXmlRequest;
-import org.apache.solr.client.solrj.request.schema.SchemaRequest;
-import org.apache.solr.client.solrj.request.schema.SchemaRequest.SchemaName;
-import org.apache.solr.client.solrj.response.schema.SchemaResponse;
 import org.apache.solr.common.SolrInputDocument;
 
 
@@ -55,26 +52,7 @@ public class Index {
         		solr.request(xmlreq);
             }
             catch(RemoteSolrException rse) {
-            	String field = rse.toString().split("\'")[1];
-            	System.out.println(field);
-            	
-            	String[] datatypes = {"text", "numbers", "date", "coordinates"};
-            	String[] actual = {"string", "float", "date", "location"};
-            	Object response = JOptionPane.showInputDialog(new JFrame("Field Error"), "The field \'"+field+"\' has not been seen"
-            			+ "before. To add it to the index, what data type should be used?", "Customized Dialog",
-            			JOptionPane.PLAIN_MESSAGE, null, datatypes, datatypes[0]);
-            	
-            	if(response==null) {
-            		
-            	}
-            	else if(response.toString().equals("text")) {
-            		new SchemaEditor(field, actual[0]);
-            		acceptDocument(f);
-            	}
-            	else {
-            		new SchemaEditor(field, actual[1]);
-            		acceptDocument(f);
-            	}
+            	rse.printStackTrace();
             }
         }
         
@@ -89,53 +67,29 @@ public class Index {
         solr.setParser(new XMLResponseParser());
         
         
-	        //Adding Documents
-	        SolrInputDocument document = new SolrInputDocument();
-	        document.addField("id", "fruit-1");
-	        document.addField("name", "cherry");
-	        //document.addField("TEST", 18);
-	        document.addField("price", 86);
-	        solr.add(document);
-	        
-	        //Commit Changes
-	        solr.commit();
-	        
-	        for(int i=0;i<1000; i++) {
-	            SolrInputDocument doc = new SolrInputDocument();
-	            doc.addField("cat", "book");
-	            doc.addField("id", "book-" + i);
-	            doc.addField("blah", "total leg-1."+i);
-	            doc.addField("name", "The Legend of the Hobbit part " + i);
-	            doc.addField("NYAA", "fresh like always");
-	            doc.addField("price", r.nextInt(400));
-	            //doc.addField("TEST", 152);
-	            solr.add(doc);
-	            if(i%100==0) solr.commit();  // periodically flush
-	          }
-	          solr.commit();
+        //Adding Documents
+        SolrInputDocument document = new SolrInputDocument();
+        document.addField("id", "fruit-1");
+        document.addField("name", "cherry");
+        //document.addField("TEST", 18);
+        document.addField("price", 86);
+        solr.add(document);
         
-        /*catch(RemoteSolrException rse) {
-        	String field = rse.toString().split("\'")[1];
-        	System.out.println(field);
-        	
-        	String[] datatypes = {"text", "numbers", "date", "coordinates"};
-        	String[] actual = {"string", "float", "date", "location"};
-        	Object response = JOptionPane.showInputDialog(new JFrame("Field Error"), "The field \'"+field+"\' has not been seen"
-        			+ "before. To add it to the index, what data type should be used?", "Customized Dialog",
-        			JOptionPane.PLAIN_MESSAGE, null, datatypes, datatypes[0]);
-        	
-        	if(response==null) {
-        		
-        	}
-        	else if(response.toString().equals("text")) {
-        		new SchemaEditor(field, actual[0]);
-        		exampleDocs();
-        	}
-        	else {
-        		new SchemaEditor(field, actual[1]);
-        		exampleDocs();
-        	}
-        	
-        }*/
+        //Commit Changes
+        solr.commit();
+        
+        for(int i=0;i<1000; i++) {
+            SolrInputDocument doc = new SolrInputDocument();
+            doc.addField("cat", "book");
+            doc.addField("id", "book-" + i);
+            doc.addField("blah", "total leg-1."+i);
+            doc.addField("name", "The Legend of the Hobbit part " + i);
+            doc.addField("NYAA", "fresh like always");
+            doc.addField("price", r.nextInt(400));
+            //doc.addField("TEST", 152);
+            solr.add(doc);
+            if(i%100==0) solr.commit();  // periodically flush
+          }
+          solr.commit();
     }
 }

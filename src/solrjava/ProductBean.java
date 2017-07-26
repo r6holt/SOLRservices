@@ -1,38 +1,42 @@
 package solrjava;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class ProductBean {
 	private String id = null;
-    private String[] fields;
-    private String[] values;
+    private ArrayList<String> fields = new ArrayList<String>();
+    private ArrayList<String> values = new ArrayList<String>();
     
-	public ProductBean(String f, String v) {
-		f=f.substring(1, f.length()-2);
-		fields = f.split(", ");
+	@SuppressWarnings("rawtypes")
+	public ProductBean(Iterator f, Iterator v) {
 		
-		v=v.substring(1, v.length()-2);
-		values = v.split(", ");
-		
-		for(int i=0; i<fields.length; i++) {
-			if(fields[i].equals("id")) {
-				id = values[i];
-				i=fields.length+1;
+		while(f.hasNext()) {
+			String f1 = (String) f.next();
+			String v1 = v.next().toString();
+			
+			if(f1.equals("id")) {
+				id = v1;
 			}
+			
+			fields.add(f1);
+			values.add(v1);
 		}
 	}
 
-	public String[] getFields() {
+	public ArrayList<String> getFields() {
 		return fields;
 	}
 
-	public void setFields(String[] fields) {
+	public void setFields(ArrayList<String> fields) {
 		this.fields = fields;
 	}
 
-	public String[] getValues() {
+	public ArrayList<String> getValues() {
 		return values;
 	}
 
-	public void setValues(String[] values) {
+	public void setValues(ArrayList<String> values) {
 		this.values = values;
 	}
 
@@ -41,14 +45,14 @@ public class ProductBean {
 	}
 	
 	public String getValue(int n) {
-		return this.values[n];
+		return values.get(n);
 	}
 	
 	public String getField(int n) {
-		return this.fields[n];
+		return fields.get(n);
 	}
 	
 	public int numFields() {
-		return fields.length;
+		return fields.size();
 	}
 }

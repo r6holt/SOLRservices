@@ -7,7 +7,6 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 
 public class Remove {
-	private JFrame frame = new JFrame("Remove");
 	public Remove() {}
 	
 	public int acceptRemove() throws SolrServerException, IOException {
@@ -16,7 +15,7 @@ public class Remove {
         solr.setParser(new XMLResponseParser());
         
         String index = (String)JOptionPane.showInputDialog(
-                frame, "Select the ID you would like to remove:",
+                new JFrame("Remove"), "Select the ID you would like to remove:",
                 "Remove",
                 JOptionPane.PLAIN_MESSAGE);
         

@@ -19,8 +19,11 @@ public class FieldTracker {
 	private boolean priceQuery;
 	
 	private String category;
+	private String facetchoice = "";
+	private String pricechoice = "";
 	
 	private String sortfield;
+
 	private String sort;
 
 	private HttpSolrClient solr;
@@ -128,5 +131,22 @@ public class FieldTracker {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	
+	public String getFacetchoice() {
+		return facetchoice;
+	}
+
+	public void setFacetchoice(String facetchoice) {
+		this.facetchoice = facetchoice;
+	}
+
+	public String getPricechoice() {
+		return pricechoice;
+	}
+
+	public void setPricechoice(String pricechoice) {
+		this.pricechoice = pricechoice;
+	}
+	
 	
 }

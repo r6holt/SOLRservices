@@ -2,10 +2,13 @@ package solrjava;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 import javax.imageio.ImageIO;
@@ -14,7 +17,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.FacetField;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -33,14 +36,14 @@ public class GUI {
 	private boolean newDoc = false;
 
 	// frame
-	private JFrame frame = new JFrame("SOLR Search Services");
+	JFrame frame = new JFrame("SOLR Search Services");
 	private JPanel west = new JPanel();
 	private JPanel east = new JPanel();
 
 	// search
 	private JPanel north = new JPanel(new FlowLayout());
-	private JTextField searchbar = new JTextField(15);
-	private JButton search = new JButton("Search");
+	private JTextField searchbar = new JTextField(30);
+	private JButton search = new JButton("    Search    ");
 	private JButton addDoc = new JButton("Upload File");
 	private JButton deleteDoc = new JButton("Remove By ID");
 	private JButton refresh = new JButton("Empty");
@@ -57,22 +60,28 @@ public class GUI {
 	private JLabel displayFound = new JLabel("Found ____ documents...       ");
 
 	// options
-	//private JPanel options = new JPanel(new FlowLayout());
 	private JPanel sort = new JPanel();
+	private JPanel refine = new JPanel(new MigLayout());
 	private JPanel price = new JPanel(new FlowLayout());
 	private JTextField minPrice = new JTextField(5);
 	private JTextField maxPrice = new JTextField(5);
 	private JComboBox<String> fieldoptions = new JComboBox<String>();
 	private JPanel fieldsort = new JPanel(new FlowLayout()); 
 	private JComboBox<String> ascdesc = new JComboBox<String>();
+	private JPanel facetfield = new JPanel(new MigLayout());
+	private JPanel facetprice = new JPanel(new MigLayout());
 	
-
-	// info
-	private JTextArea info = new JTextArea(12, 20);
-	private JScrollPane infoscroll = new JScrollPane(info);
+	// fonts
+	private Font headers = new Font("Serif", Font.ITALIC, 22);
+	private Font labels = new Font("Serif", Font.ITALIC, 18);
+	
+	
+	
 
 	// constructor for GUI
 	public GUI() throws SolrServerException, IOException {
+		System.setProperty("java.awt.headless", "true");
+		
 		int status;
 		setup();
 		
@@ -86,70 +95,86 @@ public class GUI {
 							+ " the README.txt file in the root directory.");
 			frame.dispose();
 		}
-		else {
-			ft = new FieldTracker();
-			
-			//init GUI functions
-			setImage();
-			management();
-			options();
-			sorting();
-			addComponents();
-			initSearch();
-			
-			//Enter now works with search button
-			frame.getRootPane().setDefaultButton(search);
-		}
+		
+		ft = new FieldTracker();
+		
+		//init GUI functions
+		setImage();
+		management();
+		options();
+		sorting();
+		addComponents();
+		initSearch();
+		//refine();
+		
+		//Enter now works with search button
+		frame.getRootPane().setDefaultButton(search);
+		frame.setVisible(true);
+		
 	}
 
 	// setup for the GUI frame
 	public void setup() {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.setSize(950, 750);
+		frame.setSize(1780, 1150);
+		//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		//frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
 		frame.setVisible(true);
+		frame.addComponentListener(new ComponentListener() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				//scroll.setPreferredSize(new Dimension((int)frame.getSize().getWidth()-315, (int)frame.getSize().getHeight()-150));
+				//scroll.setMinimumSize(new Dimension((int)frame.getSize().getWidth()-315, (int)frame.getSize().getHeight()-150));
+				//System.out.println(scroll.getSize());
+				
+			}
+			@Override
+			public void componentHidden(ComponentEvent e) {}
+			@Override
+			public void componentMoved(ComponentEvent e) {}
+			@Override
+			public void componentShown(ComponentEvent e) {}
+		});
 	}
 	
 	public void setImage() {
+		
 		BufferedImage logo = null;
 		try {
-			logo = ImageIO.read(new File("solr.png"));
+			logo = ImageIO.read(new File("images"+File.separator+"solr.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		JLabel img = new JLabel(new ImageIcon(logo));
 		//img.setBorder(BorderFactory.createLineBorder(Color.gray));
-		img.setPreferredSize(new Dimension(300, 300));
+		img.setPreferredSize(new Dimension(320, 200));
 		img.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
 		
 		west.add(img);
 	}
 
 	public void addComponents() {
-		Font font1 = new Font("SansSerif", Font.PLAIN, 22);
-		Font font2 = new Font("SansSerif", Font.ITALIC, 18);
+		Font font1 = new Font("SansSerif", Font.PLAIN, 26);
+		Font font2 = new Font("SansSerif", Font.ITALIC, 22);
+		
 		// setup components
 		displayPan.setLayout(new MigLayout());
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scroll.setPreferredSize(new Dimension(643, 600));
-		scroll.setMinimumSize(new Dimension(643, 600));
-		info.setEnabled(false);
-		info.setBackground(Color.lightGray);
-		info.setText("\tStart by adding Documents!");
-		info.append("\n       Use the example documents or add your own!\n");
+		scroll.setPreferredSize(new Dimension(1450, 950));
+		scroll.setMinimumSize(new Dimension(1450, 950));
 		searchbar.setFont(font1);
 		querycat.setFont(font2);
-		search.setFont(new Font("SansSerif", Font.BOLD, 17));
+		search.setFont(new Font("Serif", Font.BOLD, 20));
 		sort.setLayout(new BoxLayout(sort, BoxLayout.Y_AXIS));
 		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
 		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
-		examples.setPreferredSize(new Dimension(80,20));
-		addDoc.setPreferredSize(new Dimension(80,20));
-		refresh.setPreferredSize(new Dimension(80,20));
 		sort.setBorder(BorderFactory.createLineBorder(Color.black));
+		refine.setBorder(BorderFactory.createLineBorder(Color.black));
+		displayFound.setFont(new Font("SansSerif", Font.PLAIN, 18));
 
 		// add components to the frame
 		pages.add(displayFound);
@@ -160,14 +185,22 @@ public class GUI {
 		north.add(addDoc);
 		//north.add(deleteDoc);
 		north.add(refresh);
-		north.add(new JLabel("                            "));
+		north.add(new JLabel("                                                                                  "));
 		north.add(querycat);
 		north.add(searchbar);
-		north.add(search);
-		north.add(new JLabel("                "));
-		west.add(new JLabel("                      ------------------Sort------------------             "));
+		north.add(search); 
+		north.add(new JLabel("                                                                                   "));
+		JLabel header1 = new JLabel("               --------Sort--------");
+		header1.setFont(headers);
+		west.add(header1);
 		west.add(sort);
-		east.add(new JLabel("--------Search Results---------------"));
+		JLabel lrefine = new JLabel("              ------Refine------");
+		lrefine.setFont(headers);
+		west.add(lrefine, "span");
+		west.add(refine);
+		JLabel header2 = new JLabel("--------Search Results---------------");
+		header2.setFont(headers);
+		east.add(header2);
 		east.add(scroll);
 		east.add(pages);
 		frame.add(west, BorderLayout.WEST);
@@ -194,16 +227,8 @@ public class GUI {
 				catch (SolrServerException | IOException e1) {
 					e1.printStackTrace();
 				}
-				
-				//set info bar
-				if (results == null) {
-					info.append("\n...Search successful");
-				} else {
-					displayResults();
-
-					info.append("\n...Search successful");
-				}
 				//update search results
+				displayResults();
 				updateDisplay();
 			}
 		});
@@ -232,15 +257,6 @@ public class GUI {
 					} catch (SolrServerException | IOException e1) {
 						e1.printStackTrace();
 					}
-					
-					//set info bar
-					if (status <= 0) {
-						info.append("\nDocument failed to upload...Index unchanged");
-					} else if (status == 2) {
-						info.append("\nFile type not yet supported by application...Index unchanged");
-					} else {
-						info.append("\n...Index successful");
-					}
 				}
 
 			}
@@ -256,17 +272,7 @@ public class GUI {
 				try {
 					status = remove.acceptRemove();
 				} catch (SolrServerException | IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-
-				//set info bar
-				if (status == -1) {
-					info.append("\nInvaid ID...Removal Failed");
-				} else if (status == 1) {
-					info.append("\n...Removal Succesful");
-				} else {
-					info.append("\n...No removal occured");
 				}
 			}
 		});
@@ -294,11 +300,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					//adds auto-generated docs to index
+
 					index.exampleDocs();
-					
-					//set info bar
-					info.append("\nExample documents added...Index Successful");
 				
 				} catch (SolrServerException | IOException e1) {
 					e1.printStackTrace();
@@ -317,13 +320,14 @@ public class GUI {
 		numRows.addItem(a);
 		numRows.addItem(b);
 		numRows.addItem(c);
+		numRows.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		
 		//goes to next page of results
 		nextPage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//only continues if there are more results to show
-				if(Query.FOUND>(START+ROWS)) {
+				if(query.getFOUND()>(START+ROWS)) {
 					START+=ROWS;
 					
 					query.updateFT(ft);
@@ -332,7 +336,6 @@ public class GUI {
 					try {
 						results = query.acceptQuery(searchbar.getText(), START, ROWS);
 					} catch (SolrServerException | IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
@@ -341,6 +344,7 @@ public class GUI {
 				}
 			}
 		});
+		nextPage.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		
 		//goes to previous page of results
 		prevPage.addActionListener(new ActionListener() {
@@ -356,7 +360,6 @@ public class GUI {
 					try {
 						results = query.acceptQuery(searchbar.getText(), START, ROWS);
 					} catch (SolrServerException | IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
@@ -372,7 +375,6 @@ public class GUI {
 					try {
 						results = query.acceptQuery(searchbar.getText(), START, ROWS);
 					} catch (SolrServerException | IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
@@ -381,6 +383,10 @@ public class GUI {
 				}
 			}
 		});
+		prevPage.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		
+		prevPage.setEnabled(false);
+		nextPage.setEnabled(false);
 		
 		querycat.setMaximumSize(new Dimension(60, 30));
 		querycat.setForeground(Color.black);
@@ -396,15 +402,13 @@ public class GUI {
 		//updates fields
 		try {
 			ft.update();
-		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		//refreshes the sort panel
 		sort.removeAll();
 
-		Font f1 = new Font("Serif", Font.ITALIC, 16);
 		//refresh and setup field sorting
 		fieldsort.removeAll();
 		fieldoptions.removeAllItems();
@@ -424,28 +428,115 @@ public class GUI {
 		fieldsort.setAlignmentX(Component.LEFT_ALIGNMENT);
 		fieldsort.setPreferredSize(new Dimension(100,100));
 		JLabel lsort = new JLabel("   FIELD____");
-		lsort.setFont(f1);
+		lsort.setFont(labels);
 		sort.add(lsort);
-		sort.add(fieldsort);
-		//fieldsort.setBorder(BorderFactory.createLineBorder(Color.gray));
-				
-		//set up for price querying
-		if(ft.getPrice()==true) {
-			price.removeAll();
-			price.add(new JLabel("Min:"));
-			price.add(minPrice);
-			price.add(new JLabel("Max:"));
-			price.add(maxPrice);
-			JLabel lprice = new JLabel("   PRICE____");
-			lprice.setFont(f1);
-			sort.add(lprice);
-			sort.add(price);
-			//price.setBorder(BorderFactory.createLineBorder(Color.gray));
-		}
-		price.setAlignmentX(Component.LEFT_ALIGNMENT);
+		sort.add(fieldsort);		
 		
 	}
 
+	
+	public void refine() {		
+		//faceting
+		List<FacetField> facets = query.getFacet();
+		refine.removeAll();
+		facetfield.removeAll();
+		facetprice.removeAll();
+		
+		// clear
+		JButton clearfacet = new JButton("CLEAR");
+		clearfacet.setFont(new Font("Serif", Font.ITALIC, 16));
+		clearfacet.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ft.setPricechoice("");
+				ft.setFacetchoice("");
+				minPrice.setText("");
+				maxPrice.setText("");
+				query.updateFT(ft);
+				search.doClick();
+			}
+		});
+		refine.add(new JLabel("      "), "cell 1 0");
+		refine.add(clearfacet, "cell 2 0");
+		
+		JLabel lfacet = new JLabel("CATEGORIES___");
+		lfacet.setFont(labels);
+		refine.add(lfacet, "cell 0 0");
+		if(facets!=null) {
+			FacetField facet = facets.get(0);
+			for(int i=0; i<facet.getValues().size() && i<5; i++) {
+				if(facet.getValues().get(i).getCount()!=0) {
+					JButton button = new JButton(facet.getValues().get(i).getName()+" ("+facet.getValues().get(i).getCount()+")");
+					button.setBorderPainted(false);
+					button.setFont(new Font("SansSerif", Font.ITALIC, 18));
+					button.setForeground(Color.blue);
+					button.setOpaque(false);
+					button.setContentAreaFilled(false);
+					
+					button.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							String choice = button.getText();
+							choice = choice.split(" ")[0];
+							ft.setFacetchoice(choice);
+							query.updateFT(ft);
+							search.doClick();
+						}
+					});
+					
+					facetfield.add(button, "span");
+				}
+			}
+			refine.add(facetfield, "cell 0 1");
+		}
+		
+		//spacing
+		refine.add(new JLabel(), "cell 0 2");
+		
+		//set up for price querying
+		if(ft.getPrice()==true) {
+			price.removeAll();
+			price.add(new JLabel("      $"));
+			minPrice.setFont(labels);
+			price.add(minPrice);
+			price.add(new JLabel("  to     $"));
+			maxPrice.setFont(labels);
+			price.add(maxPrice);
+			JLabel lprice = new JLabel("   PRICE____");
+			lprice.setFont(labels);
+			refine.add(lprice, "cell 0 3");
+			refine.add(price, "cell 0 4 3 1");
+		
+			if(facets!=null) {
+				FacetField facet = facets.get(1);
+				for(int i=0; i<facet.getValues().size() && i<5; i++) {
+					if(facet.getValues().get(i).getCount()!=0) {
+						JButton button = new JButton("$"+facet.getValues().get(i).getName()+" ("+facet.getValues().get(i).getCount()+")");
+						button.setBorderPainted(false);
+						button.setFont(new Font("SansSerif", Font.ITALIC, 18));
+						button.setForeground(Color.blue);
+						button.setOpaque(false);
+						button.setContentAreaFilled(false);
+						
+						button.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								String choice = button.getText();
+								choice = choice.split(" ")[0];
+								ft.setPricechoice(choice);
+								query.updateFT(ft);
+								search.doClick();
+							}
+						});
+						
+						facetprice.add(button, "span");
+					}
+				}
+				refine.add(facetprice, "cell 0 5");
+			}
+		}
+	}
+	
 	// updates frame for new content
 	public void updateDisplay() {
 		frame.setVisible(true);
@@ -457,15 +548,32 @@ public class GUI {
 		
 		//see if user attempted a price filter correctly
 		try {
-			ft.setMaxPrice(Integer.parseInt(maxPrice.getText()));
-			ft.setMinPrice(Integer.parseInt(minPrice.getText()));
-			ft.setPriceQuery(true);
+			if(!maxPrice.getText().trim().equals("")) {
+				ft.setMaxPrice(Integer.parseInt(maxPrice.getText()));
+				ft.setPriceQuery(true);
+			}
+			else {
+				ft.setMaxPrice(-1);
+			}
 		}
 		catch (Exception ex) {
 			//incorrect price filter
 			maxPrice.setText("");
-			minPrice.setText("");
 			ft.setPriceQuery(false);
+		}
+		
+		try {
+			if(!minPrice.getText().trim().equals("")) {
+				ft.setPriceQuery(true);
+				ft.setMinPrice(Integer.parseInt(minPrice.getText()));
+			}
+			else {
+				ft.setMinPrice(-1);
+			}
+		}
+		catch( Exception ex) {
+			//incorrect price filter
+			minPrice.setText("");
 		}
 		
 		ft.setSortfield(fieldoptions.getSelectedItem().toString());
@@ -486,64 +594,68 @@ public class GUI {
 		
 		//adds a button and text field for each result found
 		for (ProductBean bean: results) {
-			JButton b = new JButton("ID: " + bean.getId());
+			JButton b = new JButton("Download");
+			b.setBorderPainted(false);
 			b.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					String f = "";
-					JFrame message = new JFrame("Document ID: " + bean.getId());
-					message.setSize(400, 300);
-					message.setLayout(new GridLayout(bean.numFields() + 2, 1));
-					message.add(new JLabel("______Document Information_____\n"));
-
-					for (int i = 0; i < bean.numFields(); i++) {
-						f = bean.getField(i) + ": " + bean.getValue(i) + "\n";
-						message.add(new JLabel(f));
-					}
-
-					//TODO DOWNLOADING CAPABILITIES
-					JButton dwld = new JButton("Download Now");
-					message.add(dwld);
-					message.setLocationRelativeTo(null);
-					message.setVisible(true);
 					
-					dwld.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							final JFileChooser fc = new JFileChooser();
-							fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-							fc.setAcceptAllFileFilterUsed(false);
-							fc.showOpenDialog(fc);
-							File f = fc.getSelectedFile();
-							
-							if(f!=null) {
-								download.acceptDownload(bean.getFields(), bean.getValues(), bean.getId(), f);
-							}
-						}
-					});
+					final JFileChooser fc = new JFileChooser();
+					fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					fc.setAcceptAllFileFilterUsed(false);
+					fc.showOpenDialog(fc);
+					File f = fc.getSelectedFile();
+					
+					if(f!=null) {
+						download.acceptDownload(bean.getFields(), bean.getValues(), bean.getId(), f);
+					}
 				}
 			});
 
-			//formats textfield text
-			String format = "";
-			for (int i = 0; i < bean.numFields(); i++) {
-				format = format.concat(bean.getField(i) + ": \t" + bean.getValue(i) + "\n");
-			}
-
-			Font f1 = new Font("Serif", Font.PLAIN, 20);
+			Font f1 = new Font("Serif", Font.ITALIC, 22);
+			Font f2 = new Font("Serif", Font.PLAIN, 20);
+			
 			//adds button and textfield to the results panel
 			JPanel holder = new JPanel();
 			holder.setBorder(BorderFactory.createLineBorder(Color.black));
-			JTextArea p = new JTextArea();
-			p.setText(format);
-			p.setFont(f1);
+			
+			JTextArea p1 = new JTextArea();
+			JTextArea p2 = new JTextArea();
+			p1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+			
+			for(int i=0; i<bean.numFields(); i++) {
+				p1.append(" :"+bean.getField(i)+"\n");
+				p2.append("  "+bean.getValue(i)+"\n");
+			}
+			
+			p1.setFont(f1);
+			p1.setEditable(false);
+			p2.setFont(f2);
+			p2.setEditable(false);
 			holder.add(b);
-			holder.add(p);
+			holder.add(p1);
+			holder.add(p2);
 			displayPan.add(holder, "span");
 			
+			//disables page buttons
+			if(START==0) {
+				prevPage.setEnabled(false);
+			}
+			else {
+				prevPage.setEnabled(true);
+				nextPage.setEnabled(false);
+			}
+			if((START+ROWS)<query.getFOUND()) {
+				nextPage.setEnabled(true);
+			}
+			else {
+				nextPage.setEnabled(false);
+			}
+			
 			//refreshes documents found and what page user is on
-			displayFound.setText("Found "+Query.FOUND+" documents...("+
+			displayFound.setText("Found "+query.getFOUND()+" documents...("+
 			START+" - "+(START+results.size())+")       ");
+			scroll.setLocation(1000,  1000);
 		}
 		
 		//refreshes sort panel
@@ -551,6 +663,7 @@ public class GUI {
 			sorting();
 		}
 		newDoc=false;
+		refine();
 		
 	}
 }
