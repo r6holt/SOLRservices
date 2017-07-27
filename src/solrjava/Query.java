@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -11,6 +12,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.response.RangeFacet;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
@@ -19,6 +21,7 @@ public class Query {
 	private FieldTracker ft;
 	private int searches = 0;
 	private List<FacetField> facet;
+	private Map<String, Integer> range;
 	
     public Query(FieldTracker ft) {
     	this.ft=ft;
@@ -32,29 +35,30 @@ public class Query {
         //Starting up a query
         SolrQuery query = new SolrQuery();
         
+        String fq = "";
         //Adding fields to the query
         query.setQuery("*"+q+"*");
         query.set("rows", ROWS);
         query.set("start", START);
         query.set("sort", ft.getSortfield()+" "+ft.isSort());
-        query.set("hl", "on");
         query.setFacet(true);
-        query.set("facet.field", "cat", "price");
+        query.set("facet.field", "cat");
+        query.set("facet.query", "price:[0 TO 9.99]", "price:[10 TO 24.99]", "price:[25 TO 49.99]", "price:[50 TO 99.99]", "price:[100 TO 199.99]", "price:[200 TO 499.99]", "price:[500 TO *]");
         
         //spatial
-        query.set("pt", "");
-        query.set("sfield", "");
-        query.set("d", "");
+        //query.set("pt", "");
+        //query.set("sfield", "");
+        //query.set("d", "");
         
         if(ft!=null && ft.getPriceQuery()) {
         	if(ft.getMinPrice()==-1) {
-        		query.set("fq", "-price:["+ft.getMaxPrice()+" TO *]");
+        		fq+="-price:["+ft.getMaxPrice()+" TO *] ";
         	}
         	else if(ft.getMaxPrice()==-1) {
-        		query.set("fq", "-price:[* TO "+ft.getMinPrice()+"]");
+        		fq+= "-price:[* TO "+ft.getMinPrice()+"] ";
         	}
         	else {
-        		query.set("fq", "-price:[* TO "+ft.getMinPrice()+"] -price:["+ft.getMaxPrice()+" TO *]");
+        		fq+="-price:[* TO "+ft.getMinPrice()+"] -price:["+ft.getMaxPrice()+" TO *] ";
         	}
         }
         
@@ -70,18 +74,68 @@ public class Query {
         	}
         }
         
-        if(!ft.getFacetchoice().equals("")) {
-        	query.set("fq", "cat:"+ft.getFacetchoice());
-        }
+        // facet filtering by price and category
         if(!ft.getPricechoice().equals("")) {
-        	query.set("fq", "price:"+ft.getPricechoice());
+        	String[] subsets = ft.getPricechoice().split(" ");
+        	String tot = "";
+        	
+        	for(String s: subsets) {        		
+	        	if(s.equals("0")) {
+	        		tot+="price:[0 TO 9.99] ";
+	        	}
+	        	else if(s.equals("10")) {
+	        		tot+= "price:[10 TO 24.99] ";
+	        	}
+	        	else if(s.equals("25")) {
+	        		tot+= "price:[25 TO 49.99] ";
+	        	}
+	        	else if(s.equals("50")) {
+	        		tot+= "price:[50 TO 99.99] ";
+	        	}
+	        	else if(s.equals("100")) {
+	        		tot+= "price:[100 TO 199.99] ";
+	        	}
+	        	else if(s.equals("200")) {
+	        		tot+= "price:[200 TO 499.99] ";
+	        	}
+	        	else if(s.equals("500")) {
+	        		tot+= "price:[500 TO *] ";
+	        	}
+        	}
+        	fq+=tot;
         }
+        
+        if(!ft.getFacetchoice().equals("")) {
+        	String[] subsets = ft.getFacetchoice().split(", ");
+        	
+        	if(subsets.length==1) {
+        		query.set("fq", fq, "cat:"+subsets[0]);
+        	}
+        	else if(subsets.length==2) {
+        		query.set("fq", fq, "cat:"+subsets[0], "cat: "+subsets[1]);
+        	}
+        	else if(subsets.length==3) {
+        		query.set("fq", fq, "cat:"+subsets[0], "cat: "+subsets[1],
+        				"cat: "+subsets[2]);
+        	}
+        	else if(subsets.length==4) {
+        		query.set("fq", fq, "cat:"+subsets[0], "cat: "+subsets[1],
+        				"cat: "+subsets[2], "cat: "+subsets[3]);
+        	}
+        	System.out.println(subsets.length);
+        }
+        else {
+        	System.out.println(fq);
+            query.set("fq", fq);
+        }
+        
         
         //Getting results
         ArrayList<ProductBean> beans = new ArrayList<ProductBean>();
         try {
         	QueryResponse resp = solr.query(query);
         	facet = resp.getFacetFields();
+        	range = resp.getFacetQuery();
         	SolrDocumentList list =resp.getResults();
         	FOUND = list.getNumFound();
         	searches+=1;
@@ -111,6 +165,10 @@ public class Query {
 
 	public long getFOUND() {
 		return FOUND;
+	}
+
+	public Map<String, Integer> getRange() {
+		return range;
 	}
 
 	public ProductBean createBean(SolrDocument sd) {

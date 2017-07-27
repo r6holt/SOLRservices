@@ -4,11 +4,16 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.awt.event.ActionEvent;
 
 import javax.imageio.ImageIO;
@@ -27,13 +32,15 @@ public class GUI {
 	
 	// Object Storage
 	private ArrayList<ProductBean> results;
+	private String pricerange = "";
+	private String selectedCats = "";
 	private FieldTracker ft;
 	private Remove remove = new Remove();
 	private Refresh removeAll = new Refresh();
 	private Query query = new Query(ft);
 	private Index index = new Index();
 	private Download download = new Download();
-	private boolean newDoc = false;
+	private boolean newDoc = true;
 
 	// frame
 	JFrame frame = new JFrame("SOLR Search Services");
@@ -42,8 +49,8 @@ public class GUI {
 
 	// search
 	private JPanel north = new JPanel(new FlowLayout());
-	private JTextField searchbar = new JTextField(30);
-	private JButton search = new JButton("    Search    ");
+	private JTextField searchbar = new JTextField(45);
+	private JButton search = new JButton("      Search      ");
 	private JButton addDoc = new JButton("Upload File");
 	private JButton deleteDoc = new JButton("Remove By ID");
 	private JButton refresh = new JButton("Empty");
@@ -70,6 +77,15 @@ public class GUI {
 	private JComboBox<String> ascdesc = new JComboBox<String>();
 	private JPanel facetfield = new JPanel(new MigLayout());
 	private JPanel facetprice = new JPanel(new MigLayout());
+	
+	// price range box checks
+	private boolean _0 = false;
+	private boolean _10 = false;
+	private boolean _25 = false;
+	private boolean _50 = false;
+	private boolean _100 = false;
+	private boolean _200 = false;
+	private boolean _500 = false;
 	
 	// fonts
 	private Font headers = new Font("Serif", Font.ITALIC, 22);
@@ -116,7 +132,7 @@ public class GUI {
 	// setup for the GUI frame
 	public void setup() {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.setSize(1780, 1150);
+		frame.setSize(1790, 1150);
 		//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		//frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		frame.setLocationRelativeTo(null);
@@ -166,6 +182,8 @@ public class GUI {
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroll.setPreferredSize(new Dimension(1450, 950));
 		scroll.setMinimumSize(new Dimension(1450, 950));
+		scroll.getVerticalScrollBar().setPreferredSize(new Dimension(32, 0));
+		scroll.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 20));
 		searchbar.setFont(font1);
 		querycat.setFont(font2);
 		search.setFont(new Font("Serif", Font.BOLD, 20));
@@ -185,11 +203,11 @@ public class GUI {
 		north.add(addDoc);
 		//north.add(deleteDoc);
 		north.add(refresh);
-		north.add(new JLabel("                                                                                  "));
+		north.add(new JLabel("                              "));
 		north.add(querycat);
 		north.add(searchbar);
 		north.add(search); 
-		north.add(new JLabel("                                                                                   "));
+		north.add(new JLabel("                    "));
 		JLabel header1 = new JLabel("               --------Sort--------");
 		header1.setFont(headers);
 		west.add(header1);
@@ -438,9 +456,11 @@ public class GUI {
 	public void refine() {		
 		//faceting
 		List<FacetField> facets = query.getFacet();
+		JPanel holder = new JPanel(new FlowLayout());
 		refine.removeAll();
 		facetfield.removeAll();
 		facetprice.removeAll();
+		holder.removeAll();
 		
 		// clear
 		JButton clearfacet = new JButton("CLEAR");
@@ -452,16 +472,30 @@ public class GUI {
 				ft.setFacetchoice("");
 				minPrice.setText("");
 				maxPrice.setText("");
+				ft.setPriceQuery(false);
+				selectedCats = "";
+				pricerange = "";
+				_0=false;
+				_10=false;
+				_25=false;
+				_50=false;
+				_100=false;
+				_200=false;
+				_500=false;
+				
 				query.updateFT(ft);
 				search.doClick();
 			}
 		});
-		refine.add(new JLabel("      "), "cell 1 0");
-		refine.add(clearfacet, "cell 2 0");
 		
 		JLabel lfacet = new JLabel("CATEGORIES___");
 		lfacet.setFont(labels);
-		refine.add(lfacet, "cell 0 0");
+		holder.add(lfacet);
+		holder.add(new JLabel("                       "));
+		holder.add(clearfacet);
+		refine.add(holder, "span");
+		
+		
 		if(facets!=null) {
 			FacetField facet = facets.get(0);
 			for(int i=0; i<facet.getValues().size() && i<5; i++) {
@@ -473,12 +507,22 @@ public class GUI {
 					button.setOpaque(false);
 					button.setContentAreaFilled(false);
 					
+					if(selectedCats.contains(button.getText().split(" ")[0])) {
+						button.setForeground(Color.BLACK);
+						button.setEnabled(false);
+					}
+					
 					button.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							String choice = button.getText();
-							choice = choice.split(" ")[0];
-							ft.setFacetchoice(choice);
+							choice = choice.split(" \\(")[0];
+							if(choice.contains(" ")) {
+								choice = "\""+choice+"\"~0";
+							}
+							
+							selectedCats += choice+", ";
+							ft.setFacetchoice(selectedCats);
 							query.updateFT(ft);
 							search.doClick();
 						}
@@ -487,11 +531,11 @@ public class GUI {
 					facetfield.add(button, "span");
 				}
 			}
-			refine.add(facetfield, "cell 0 1");
+			refine.add(facetfield, "span");
 		}
 		
 		//spacing
-		refine.add(new JLabel(), "cell 0 2");
+		refine.add(new JLabel(), "span");
 		
 		//set up for price querying
 		if(ft.getPrice()==true) {
@@ -504,42 +548,111 @@ public class GUI {
 			price.add(maxPrice);
 			JLabel lprice = new JLabel("   PRICE____");
 			lprice.setFont(labels);
-			refine.add(lprice, "cell 0 3");
-			refine.add(price, "cell 0 4 3 1");
+			refine.add(lprice, "span");
+			refine.add(price, "span");
+			
+			Map<String, Integer> range = query.getRange();
 		
-			if(facets!=null) {
-				FacetField facet = facets.get(1);
-				for(int i=0; i<facet.getValues().size() && i<5; i++) {
-					if(facet.getValues().get(i).getCount()!=0) {
-						JButton button = new JButton("$"+facet.getValues().get(i).getName()+" ("+facet.getValues().get(i).getCount()+")");
-						button.setBorderPainted(false);
+			if(range!=null) {
+				Iterator<Entry<String, Integer>> subset = range.entrySet().iterator();
+				for(int i=0; i<range.size(); i++) {
+					String format = subset.next().toString().split("\\[")[1];
+					String num = format.split("]")[1].substring(1);
+					format = format.split("]")[0];
+					format = format.replaceAll("TO \\*", "and up");
+					//if(!num.equals("0")) {
+						JCheckBox box = new JCheckBox();
+						JLabel button = new JLabel(format+"   ("+num+")");//+facet.next().getEnd());//facet.getValues().get(i).getName()+" ("+facet.getValues().get(i).getCount()+")");
 						button.setFont(new Font("SansSerif", Font.ITALIC, 18));
-						button.setForeground(Color.blue);
-						button.setOpaque(false);
-						button.setContentAreaFilled(false);
+						button.setForeground(Color.black);
+						box.setSelected(isSelected(i));
 						
-						button.addActionListener(new ActionListener() {
+						box.addItemListener(new ItemListener() {
 							@Override
-							public void actionPerformed(ActionEvent e) {
-								String choice = button.getText();
-								choice = choice.split(" ")[0];
-								ft.setPricechoice(choice);
-								query.updateFT(ft);
-								search.doClick();
+							public void itemStateChanged(ItemEvent e) {
+								if(e.getStateChange()==ItemEvent.SELECTED) {
+									String choice = button.getText().split(" ")[0];
+									pricerange += choice+" ";
+									checkBox(choice);
+									
+									ft.setPricechoice(pricerange);
+									query.updateFT(ft);
+									search.doClick();
+								}
+								else if(e.getStateChange()==ItemEvent.DESELECTED) {
+									String choice = button.getText().split(" ")[0];
+									pricerange = pricerange.replaceAll(choice+" ", "");
+									checkBox(choice);
+									
+									ft.setPricechoice(pricerange);
+									query.updateFT(ft);
+									search.doClick();
+								}
 							}
 						});
 						
-						facetprice.add(button, "span");
-					}
+						facetprice.add(box);
+						facetprice.add(button, "wrap");
+					//}
 				}
-				refine.add(facetprice, "cell 0 5");
+				refine.add(facetprice, "span");
 			}
 		}
+		updateDisplay();
 	}
 	
 	// updates frame for new content
 	public void updateDisplay() {
 		frame.setVisible(true);
+	}
+	
+	public void checkBox(String s) {
+		if(s.equals("0")) {
+			_0 = !_0;
+		}
+		else if(s.equals("10")) {
+			_10 = !_10;
+		}
+		else if(s.equals("25")) {
+			_25 = !_25;
+		}
+		else if(s.equals("50")) {
+			_50 = !_50;
+		}
+		else if(s.equals("100")) {
+			_100 = !_100;
+		}
+		else if(s.equals("200")) {
+			_200 = !_200;
+		}
+		else if(s.equals("500")) {
+			_500 = !_500;
+		}
+	}
+	
+	public boolean isSelected(int i) {
+		if(i==0) {
+			return _0;
+		}
+		else if(i==1) {
+			return _10;
+		}
+		else if(i==2) {
+			return _25;
+		}
+		else if(i==3) {
+			return _50;
+		}
+		else if(i==4) {
+			return _100;
+		}
+		else if(i==5) {
+			return _200;
+		}
+		else if(i==6) {
+			return _500;
+		}
+		return false;
 	}
 
 	// configures query parameters
@@ -662,8 +775,8 @@ public class GUI {
 		if(newDoc) {
 			sorting();
 		}
-		newDoc=false;
 		refine();
+		newDoc=false;
 		
 	}
 }
