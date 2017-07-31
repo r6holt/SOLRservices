@@ -6,17 +6,17 @@ import java.util.Iterator;
 public class ProductBean {
 	private String id = null;
     private ArrayList<String> fields = new ArrayList<String>();
-    private ArrayList<String> values = new ArrayList<String>();
+    private ArrayList<Object> values = new ArrayList<Object>();
     
 	@SuppressWarnings("rawtypes")
 	public ProductBean(Iterator f, Iterator v) {
 		
 		while(f.hasNext()) {
 			String f1 = (String) f.next();
-			String v1 = v.next().toString();
+			Object v1 = v.next();
 			
 			if(f1.equals("id")) {
-				id = v1;
+				id = v1.toString();
 			}
 			
 			fields.add(f1);
@@ -32,11 +32,11 @@ public class ProductBean {
 		this.fields = fields;
 	}
 
-	public ArrayList<String> getValues() {
+	public ArrayList<Object> getValues() {
 		return values;
 	}
 
-	public void setValues(ArrayList<String> values) {
+	public void setValues(ArrayList<Object> values) {
 		this.values = values;
 	}
 
@@ -44,7 +44,7 @@ public class ProductBean {
 		return id;
 	}
 	
-	public String getValue(int n) {
+	public Object getValue(int n) {
 		return values.get(n);
 	}
 	

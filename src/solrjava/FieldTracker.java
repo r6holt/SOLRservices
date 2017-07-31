@@ -23,8 +23,10 @@ public class FieldTracker {
 	private String pricechoice = "";
 	
 	private String sortfield;
-
 	private String sort;
+	
+	private double lat;
+	private double lon;
 
 	private HttpSolrClient solr;
 
@@ -146,6 +148,22 @@ public class FieldTracker {
 
 	public void setPricechoice(String pricechoice) {
 		this.pricechoice = pricechoice;
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public double getLon() {
+		return lon;
+	}
+
+	public void setLon(double lon) {
+		this.lon = lon;
 	}
 	
 	

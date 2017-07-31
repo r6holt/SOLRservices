@@ -21,7 +21,7 @@ public class Download {
 	
 	public Download() {}
 
-	public void acceptDownload(ArrayList<String> fields, ArrayList<String> values, String id, File f) {
+	public void acceptDownload(ArrayList<String> fields, ArrayList<Object> values, String id, File f) {
 
 	  try {
 
@@ -39,14 +39,68 @@ public class Download {
 		
 		// set attributes
 		for(int i=0; i<fields.size(); i++) {
-			doc.setAttribute(fields.get(i), values.get(i));
+			Element field = document.createElement("field");
+			
+			if(fields.get(i).equals("_version_")) {}
+			else if(values.get(i).getClass()==java.util.Date.class) {
+				String[] items = values.get(i).toString().split(" ");
+				String date = "";
+				
+				date+=items[5]+"-";
+				String monthString = "0";
+				String month= items[1];
+				
+				switch (month) {
+		           case "Jan":  monthString += "1";
+	                        break;
+		           case "Feb":  monthString += "2";
+		                    break;
+		           case "Mar":  monthString += "3'";
+		                    break;
+		           case "Apr":  monthString += "4";
+		                    break;
+		           case "May":  monthString += "5";
+		                    break;
+		           case "Jun":  monthString += "6";
+		                    break;
+		           case "Jul":  monthString += "7";
+		                    break;
+	               case "Aug":  monthString += "8";
+	                        break;
+	               case "Sep":  monthString += "9";
+	                        break;
+	               case "Oct": monthString = "10";
+	                        break;
+	               case "Nov": monthString = "11";
+	                        break;
+	               case "Dec": monthString = "12";
+	                        break;
+	               default: monthString = "Invalid month";
+	                        break;
+				}
+				
+				date+=monthString+"-";
+				date+=items[2]+"T";
+				
+				String[] time = items[3].split(":");
+				date+= ((Integer.parseInt(time[0])+8)%24)+":";
+				date+=time[1]+":"+time[2]+"Z";
+				
+				field.setAttribute("name", fields.get(i));
+				field.setTextContent(date);
+			}
+			else {
+				field.setAttribute("name", fields.get(i));
+				field.setTextContent(values.get(i)+"");
+			}
+			
+			doc.appendChild(field);
 		}
 		
 		// write the content into xml file
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(document);
-		System.out.println(f.toString());
 		StreamResult result = new StreamResult(new File(f.toString()+"\\"+id+".xml"));
 
 		transformer.transform(source, result);

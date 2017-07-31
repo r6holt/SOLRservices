@@ -27,6 +27,7 @@ import org.apache.solr.client.solrj.response.FacetField;
 import net.miginfocom.swing.MigLayout;
 
 public class GUI {
+	// query vars
 	private static int START = 0;
 	private  static int ROWS = 10;
 	
@@ -41,6 +42,7 @@ public class GUI {
 	private Index index = new Index();
 	private Download download = new Download();
 	private boolean newDoc = true;
+	private boolean reset = true;
 
 	// frame
 	JFrame frame = new JFrame("SOLR Search Services");
@@ -64,17 +66,20 @@ public class GUI {
 	private JButton nextPage = new JButton("Next");
 	private JButton prevPage = new JButton("Prev");
 	private JComboBox<Integer> numRows = new JComboBox<Integer>();
-	private JLabel displayFound = new JLabel("Found ____ documents...       ");
+	private JLabel displayFound = new JLabel("Found ____ document(s)...       ");
 
-	// options
+	// sort
 	private JPanel sort = new JPanel();
+	private JPanel fieldsort = new JPanel(new FlowLayout()); 
+	private JComboBox<String> ascdesc = new JComboBox<String>();
+	private JPanel locate = new JPanel(new MigLayout());
+	
+	// refine
 	private JPanel refine = new JPanel(new MigLayout());
 	private JPanel price = new JPanel(new FlowLayout());
 	private JTextField minPrice = new JTextField(5);
 	private JTextField maxPrice = new JTextField(5);
 	private JComboBox<String> fieldoptions = new JComboBox<String>();
-	private JPanel fieldsort = new JPanel(new FlowLayout()); 
-	private JComboBox<String> ascdesc = new JComboBox<String>();
 	private JPanel facetfield = new JPanel(new MigLayout());
 	private JPanel facetprice = new JPanel(new MigLayout());
 	
@@ -187,7 +192,7 @@ public class GUI {
 		searchbar.setFont(font1);
 		querycat.setFont(font2);
 		search.setFont(new Font("Serif", Font.BOLD, 20));
-		sort.setLayout(new BoxLayout(sort, BoxLayout.Y_AXIS));
+		sort.setLayout(new MigLayout());
 		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
 		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
 		sort.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -235,7 +240,9 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				configSettings();
-				START=0;
+				if(reset) {
+					START=0;
+				}
 				
 				//Search for query specified
 				query.updateFT(ft);
@@ -248,6 +255,7 @@ public class GUI {
 				//update search results
 				displayResults();
 				updateDisplay();
+				reset=true;
 			}
 		});
 	}
@@ -257,7 +265,6 @@ public class GUI {
 		addDoc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int status = 0;
 				
 				//displays file explorer for user
 				final JFileChooser fc = new JFileChooser();
@@ -270,7 +277,7 @@ public class GUI {
 				if (f == null) {}
 				else {
 					try {
-						status = index.acceptDocument(f);
+						index.acceptDocument(f);
 						newDoc=true;
 					} catch (SolrServerException | IOException e1) {
 						e1.printStackTrace();
@@ -284,11 +291,10 @@ public class GUI {
 		deleteDoc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int status = 0;
 				
 				//creates remover object to remove by ID
 				try {
-					status = remove.acceptRemove();
+					remove.acceptRemove();
 				} catch (SolrServerException | IOException e1) {
 					e1.printStackTrace();
 				}
@@ -320,6 +326,7 @@ public class GUI {
 				try {
 
 					index.exampleDocs();
+					newDoc=true;
 				
 				} catch (SolrServerException | IOException e1) {
 					e1.printStackTrace();
@@ -340,6 +347,14 @@ public class GUI {
 		numRows.addItem(c);
 		numRows.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		
+		//refresh page results
+		numRows.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				search.doClick();
+			}
+		});
+		
 		//goes to next page of results
 		nextPage.addActionListener(new ActionListener() {
 			@Override
@@ -347,18 +362,8 @@ public class GUI {
 				//only continues if there are more results to show
 				if(query.getFOUND()>(START+ROWS)) {
 					START+=ROWS;
-					
-					query.updateFT(ft);
-					configSettings();
-
-					try {
-						results = query.acceptQuery(searchbar.getText(), START, ROWS);
-					} catch (SolrServerException | IOException e1) {
-						e1.printStackTrace();
-					}
-					
-					displayResults();
-					updateDisplay();
+					reset=false;
+					search.doClick();
 				}
 			}
 		});
@@ -371,33 +376,11 @@ public class GUI {
 				//only continues if there are previous results to show
 				if((START-ROWS)>=0) {
 					START-=ROWS;
-					
-					query.updateFT(ft);
-					configSettings();
-
-					try {
-						results = query.acceptQuery(searchbar.getText(), START, ROWS);
-					} catch (SolrServerException | IOException e1) {
-						e1.printStackTrace();
-					}
-					
-					displayResults();
-					updateDisplay();
+					reset=false;
+					search.doClick();
 				}
 				else {
-					START=0;
-					
-					query.updateFT(ft);
-					configSettings();
-
-					try {
-						results = query.acceptQuery(searchbar.getText(), START, ROWS);
-					} catch (SolrServerException | IOException e1) {
-						e1.printStackTrace();
-					}
-					
-					displayResults();
-					updateDisplay();
+					search.doClick();
 				}
 			}
 		});
@@ -426,29 +409,84 @@ public class GUI {
 		
 		//refreshes the sort panel
 		sort.removeAll();
-
-		//refresh and setup field sorting
 		fieldsort.removeAll();
 		fieldoptions.removeAllItems();
 		ascdesc.removeAllItems();
 		fieldoptions.setBackground(Color.white);
+		fieldoptions.setFont(labels);
+
 		fieldoptions.addItem("id");
-		for(int i=0; i<ft.numFields()/2; i++) {
-			if(!ft.getField(i).equals("id")) {
-				fieldoptions.addItem(ft.getField(i));
+		fieldoptions.addItem("location");
+		fieldoptions.addItem("_version_");
+		
+		fieldoptions.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<?> box = (JComboBox<?>) e.getSource();
+				Object selected = box.getSelectedItem();
+				
+				if(selected==null) {
+					System.out.println("null");
+				}
+				else if(selected.toString().equals("location")) {
+					sortLocation();
+				}
+				else {
+					locate.removeAll();
+					updateDisplay();
+				}
 			}
-		}
+		});
+		
 		ascdesc.addItem("asc");
 		ascdesc.addItem("desc");
-		fieldsort.add(new JLabel("Sort by: "));
+		ascdesc.setFont(labels);
+		JLabel soby = new JLabel("Sort by: ");
+		soby.setFont(labels);
+		fieldsort.add(soby);
 		fieldsort.add(fieldoptions);
 		fieldsort.add(ascdesc);
 		fieldsort.setAlignmentX(Component.LEFT_ALIGNMENT);
-		fieldsort.setPreferredSize(new Dimension(100,100));
+		//fieldsort.setPreferredSize(new Dimension(100,100));
 		JLabel lsort = new JLabel("   FIELD____");
 		lsort.setFont(labels);
-		sort.add(lsort);
-		sort.add(fieldsort);		
+		sort.add(lsort, "span");
+		sort.add(fieldsort, "span");
+		sort.add(locate, "span");
+		
+	}
+	
+	public void sortLocation() {
+		locate.removeAll();
+		
+		JLabel l = new JLabel("        Latitude:");
+		l.setFont(labels);
+		locate.add(l);
+		
+		JTextField lat = new JTextField(5);
+		lat.setFont(labels);
+		lat.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ft.setLat(Double.parseDouble(lat.getText()));
+			}
+		});
+		locate.add(lat, "wrap");
+		
+		JLabel l2 = new JLabel("        Longitude:");
+		l2.setFont(labels);
+		locate.add(l2);
+		
+		JTextField lon = new JTextField(5);
+		lon.setFont(labels);
+		lon.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ft.setLon(Double.parseDouble(lon.getText()));
+			}
+		});
+		locate.add(lon, "wrap");
+		updateDisplay();
 		
 	}
 
@@ -749,27 +787,27 @@ public class GUI {
 			holder.add(p1);
 			holder.add(p2);
 			displayPan.add(holder, "span");
-			
-			//disables page buttons
-			if(START==0) {
-				prevPage.setEnabled(false);
-			}
-			else {
-				prevPage.setEnabled(true);
-				nextPage.setEnabled(false);
-			}
-			if((START+ROWS)<query.getFOUND()) {
-				nextPage.setEnabled(true);
-			}
-			else {
-				nextPage.setEnabled(false);
-			}
-			
-			//refreshes documents found and what page user is on
-			displayFound.setText("Found "+query.getFOUND()+" documents...("+
-			START+" - "+(START+results.size())+")       ");
-			scroll.setLocation(1000,  1000);
 		}
+		
+		//disables page buttons
+		if(START==0) {
+			prevPage.setEnabled(false);
+		}
+		else {
+			prevPage.setEnabled(true);
+			nextPage.setEnabled(false);
+		}
+		if((START+ROWS)<query.getFOUND()) {
+			nextPage.setEnabled(true);
+		}
+		else {
+			nextPage.setEnabled(false);
+		}
+		
+		//refreshes documents found and what page user is on
+		displayFound.setText("Found "+query.getFOUND()+" document(s)...("+
+		START+" - "+(START+results.size())+")       ");
+		scroll.setLocation(1000,  1000);
 		
 		//refreshes sort panel
 		if(newDoc) {

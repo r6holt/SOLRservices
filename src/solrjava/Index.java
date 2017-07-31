@@ -13,6 +13,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
+import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.apache.solr.client.solrj.request.DirectXmlRequest;
 import org.apache.solr.common.SolrInputDocument;
 
@@ -32,11 +33,15 @@ public class Index {
         
         //JSON file addition
         if(name.substring(name.length()-5).equals(".json")) {
-        	return 2;
+        	ContentStreamUpdateRequest csureq = new ContentStreamUpdateRequest("/update/json");
+        	csureq.addFile(f, name);
+        	solr.request(csureq);
         }
         //CSV file addition
         if(name.substring(name.length()-4).equals(".csv")) {
-        	return 2;
+        	ContentStreamUpdateRequest csureq = new ContentStreamUpdateRequest("/update/csv");
+        	csureq.addFile(f, name);
+        	solr.request(csureq);
         }
         //XML file addition
         if(name.substring(name.length()-4).equalsIgnoreCase(".xml")) {
@@ -57,6 +62,8 @@ public class Index {
         }
         
     	solr.commit();
+    	JOptionPane.showMessageDialog(new JFrame(), "Document Added!");
+    	
     	return 1;
     }
     
@@ -68,28 +75,35 @@ public class Index {
         
         
         //Adding Documents
-        SolrInputDocument document = new SolrInputDocument();
-        document.addField("id", "fruit-1");
-        document.addField("name", "cherry");
+        //SolrInputDocument document = new SolrInputDocument();
+        //document.addField("id", "fruit-1");
+        //document.addField("name", "cherry");
         //document.addField("TEST", 18);
-        document.addField("price", 86);
-        solr.add(document);
+        //document.addField("price", 86);
+        //solr.add(document);
         
         //Commit Changes
         solr.commit();
         
-        for(int i=0;i<1000; i++) {
+        for(int i=0;i<100000; i++) {
             SolrInputDocument doc = new SolrInputDocument();
-            doc.addField("cat", "book");
-            doc.addField("id", "book-" + i);
+            doc.addField("cat", "cards");
+            doc.addField("id", "pack-" + i);
             doc.addField("blah", "total leg-1."+i);
-            doc.addField("name", "The Legend of the Hobbit part " + i);
-            doc.addField("NYAA", "fresh like always");
-            doc.addField("price", r.nextInt(400));
-            //doc.addField("TEST", 152);
+            doc.addField("name", "card " + i);
+            doc.addField("NYAA", "extra text to slow down the sort");
+            doc.addField("price", r.nextInt(1000));
+            doc.addField("TEST", 152);
             solr.add(doc);
-            if(i%100==0) solr.commit();  // periodically flush
+            if(i%100==0) {
+            	solr.commit();// periodically flush
+            }
+            if(i%1000==0) {
+            	System.out.println(System.currentTimeMillis());
+            }
           }
-          solr.commit();
+        
+        JOptionPane.showMessageDialog(new JFrame(), "Examples Added!");
+        solr.commit();
     }
 }
