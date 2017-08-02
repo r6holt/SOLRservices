@@ -55,4 +55,9 @@ public class ProductBean {
 	public int numFields() {
 		return fields.size();
 	}
+	
+	public void addField(String n, String v) {
+		fields.add(n);
+		values.add(v);
+	}
 }

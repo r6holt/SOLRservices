@@ -1,0 +1,38 @@
+<dataConfig>
+  <dataSource type="FileDataSource" />
+  <document>
+    <entity
+      name="document"
+      processor="FileListEntityProcessor"
+      baseDir="${solr.install.dir}/example/exampledocs"
+      fileName=".*.xml$"
+      recursive="false"
+      rootEntity="false"
+      dataSource="null">
+      <entity
+	name="field"
+        processor="XPathEntityProcessor"
+        url="${document.fileAbsolutePath}"
+        useSolrAddSchema="true"
+        stream="true">
+      </entity>
+    </entity>
+
+    <entity
+      name="document2"
+      processor="FileListEntityProcessor"
+      baseDir="${solr.install.dir}/example/exampledocs2"
+      fileName=".*.xml$"
+      recursive="false"
+      rootEntity="false"
+      dataSource="null">
+      <entity
+	name="field"
+        processor="XPathEntityProcessor"
+        url="${document.fileAbsolutePath}"
+        useSolrAddSchema="true"
+        stream="true">
+      </entity>
+    </entity>
+  </document>
+</dataConfig>

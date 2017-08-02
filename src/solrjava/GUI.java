@@ -9,15 +9,21 @@ import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TimeZone;
 import java.awt.event.ActionEvent;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -27,7 +33,6 @@ import org.apache.solr.client.solrj.response.FacetField;
 import net.miginfocom.swing.MigLayout;
 
 public class GUI {
-	// query vars
 	private static int START = 0;
 	private  static int ROWS = 10;
 	
@@ -36,10 +41,11 @@ public class GUI {
 	private String pricerange = "";
 	private String selectedCats = "";
 	private FieldTracker ft;
+	private SchemaEditor schemaEditor = new SchemaEditor();
 	private Remove remove = new Remove();
 	private Refresh removeAll = new Refresh();
 	private Query query = new Query(ft);
-	private Index index = new Index();
+	private Index index = new Index(schemaEditor);
 	private Download download = new Download();
 	private boolean newDoc = true;
 	private boolean reset = true;
@@ -58,6 +64,12 @@ public class GUI {
 	private JButton refresh = new JButton("Empty");
 	private JButton examples = new JButton("Examples");
 	private JComboBox<String> querycat = new JComboBox<String>();
+	
+	// schema management
+	private JPanel menu = new JPanel(new FlowLayout());
+	private JTextField nfield = new JTextField(12);
+	private JButton addition = new JButton("Add Field");
+	
 
 	// display area
 	private JPanel displayPan = new JPanel();
@@ -67,12 +79,16 @@ public class GUI {
 	private JButton prevPage = new JButton("Prev");
 	private JComboBox<Integer> numRows = new JComboBox<Integer>();
 	private JLabel displayFound = new JLabel("Found ____ document(s)...       ");
+	private JPanel docpanel = new JPanel(new MigLayout());
+	private JProgressBar progress = new JProgressBar();
 
 	// sort
 	private JPanel sort = new JPanel();
 	private JPanel fieldsort = new JPanel(new FlowLayout()); 
 	private JComboBox<String> ascdesc = new JComboBox<String>();
 	private JPanel locate = new JPanel(new MigLayout());
+	JTextField lat = new JTextField(5);
+	JTextField lon = new JTextField(5);
 	
 	// refine
 	private JPanel refine = new JPanel(new MigLayout());
@@ -82,6 +98,7 @@ public class GUI {
 	private JComboBox<String> fieldoptions = new JComboBox<String>();
 	private JPanel facetfield = new JPanel(new MigLayout());
 	private JPanel facetprice = new JPanel(new MigLayout());
+	private JButton clearfacet = new JButton("CLEAR");
 	
 	// price range box checks
 	private boolean _0 = false;
@@ -100,7 +117,7 @@ public class GUI {
 	
 
 	// constructor for GUI
-	public GUI() throws SolrServerException, IOException {
+	public GUI() throws SolrServerException, IOException, InterruptedException {
 		System.setProperty("java.awt.headless", "true");
 		
 		int status;
@@ -122,7 +139,9 @@ public class GUI {
 		//init GUI functions
 		setImage();
 		management();
+		menubar();
 		options();
+		updateFields();
 		sorting();
 		addComponents();
 		initSearch();
@@ -132,33 +151,19 @@ public class GUI {
 		frame.getRootPane().setDefaultButton(search);
 		frame.setVisible(true);
 		
+		Thread.sleep(500);
+		search.doClick();
+		
 	}
 
 	// setup for the GUI frame
 	public void setup() {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.setSize(1790, 1150);
-		//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		//frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		frame.setSize(1790, 1190);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
 		frame.setVisible(true);
-		frame.addComponentListener(new ComponentListener() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				//scroll.setPreferredSize(new Dimension((int)frame.getSize().getWidth()-315, (int)frame.getSize().getHeight()-150));
-				//scroll.setMinimumSize(new Dimension((int)frame.getSize().getWidth()-315, (int)frame.getSize().getHeight()-150));
-				//System.out.println(scroll.getSize());
-				
-			}
-			@Override
-			public void componentHidden(ComponentEvent e) {}
-			@Override
-			public void componentMoved(ComponentEvent e) {}
-			@Override
-			public void componentShown(ComponentEvent e) {}
-		});
 	}
 	
 	public void setImage() {
@@ -198,15 +203,22 @@ public class GUI {
 		sort.setBorder(BorderFactory.createLineBorder(Color.black));
 		refine.setBorder(BorderFactory.createLineBorder(Color.black));
 		displayFound.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		JLabel header2 = new JLabel("--------Search Results---------------");
+		header2.setFont(headers);
+		progress.setPreferredSize(new Dimension(150, 15));
+		progress.setForeground(Color.green);
+		progress.setBackground(Color.white);
 
-		// add components to the frame
-		pages.add(displayFound);
+		// add components to the frame 
+		pages.add(progress);
+		pages.add(new JLabel("                                   "));
+		pages.add(displayFound); 
 		pages.add(prevPage);
 		pages.add(numRows);
 		pages.add(nextPage);
+		pages.add(new JLabel("                                                                                                                                          "));
 		north.add(examples);
 		north.add(addDoc);
-		//north.add(deleteDoc);
 		north.add(refresh);
 		north.add(new JLabel("                              "));
 		north.add(querycat);
@@ -221,9 +233,8 @@ public class GUI {
 		lrefine.setFont(headers);
 		west.add(lrefine, "span");
 		west.add(refine);
-		JLabel header2 = new JLabel("--------Search Results---------------");
-		header2.setFont(headers);
 		east.add(header2);
+		east.add(menu);
 		east.add(scroll);
 		east.add(pages);
 		frame.add(west, BorderLayout.WEST);
@@ -265,10 +276,11 @@ public class GUI {
 		addDoc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				progress.setValue(50);
 				
 				//displays file explorer for user
 				final JFileChooser fc = new JFileChooser();
-				FileFilter filter = new FileNameExtensionFilter("SOLR compatible", "xml", "csv", "json");
+				FileFilter filter = new FileNameExtensionFilter("SOLR compatible", "xml", "csv", "json", "pdf");
 				fc.setFileFilter(filter);
 				fc.showOpenDialog(fc);
 				File f = fc.getSelectedFile();
@@ -283,6 +295,7 @@ public class GUI {
 						e1.printStackTrace();
 					}
 				}
+				progress.setValue(100);
 
 			}
 		});
@@ -305,6 +318,7 @@ public class GUI {
 		refresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				progress.setValue(50);
 				//creates refresh object to delete all docs and clear beans
 				try {
 					removeAll.deleteAll();
@@ -316,6 +330,7 @@ public class GUI {
 				} catch (SolrServerException | IOException e1) {
 					e1.printStackTrace();
 				}
+				progress.setValue(100);
 			}
 		});
 
@@ -323,6 +338,7 @@ public class GUI {
 		examples.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				progress.setValue(50);
 				try {
 
 					index.exampleDocs();
@@ -331,8 +347,151 @@ public class GUI {
 				} catch (SolrServerException | IOException e1) {
 					e1.printStackTrace();
 				}
+				progress.setValue(100);
 			}
 		});
+	}
+	
+	//initializes schema maintenance menu bar
+	public void menubar() {	
+		menu.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		String[] options = {"string", "float", "date", "location", "boolean"};
+		JComboBox<String> dataType = new JComboBox<String>();
+		dataType.setFont(labels);
+		JCheckBox cb = new JCheckBox();
+		JTextField fill = new JTextField(10);
+		JButton removeField = new JButton("Delete Field");
+		JLabel ask2 = new JLabel("         Value:");
+		JLabel filler = new JLabel("                                 ");
+		JLabel filler2 = new JLabel("                                           ");
+		JLabel filler3 = new JLabel("                                           ");
+		JLabel fillerd = new JLabel("    Today's Date                           ");
+		
+		ask2.setFont(labels);
+		fill.setFont(labels);
+		nfield.setFont(labels);
+		addition.setFont(labels);
+		removeField.setFont(labels);
+		fill.setVisible(false);
+		ask2.setVisible(false);
+		filler.setVisible(false);
+		filler3.setVisible(false);
+		fillerd.setVisible(false);
+		
+		for(String s:options) dataType.addItem(s);
+		
+		JLabel ask = new JLabel("add field to search results");
+		ask.setFont(labels);
+		menu.add(filler);
+		menu.add(dataType);
+		menu.add(nfield);
+		menu.add(addition);
+		menu.add(cb);
+		menu.add(ask);
+		menu.add(ask2);
+		menu.add(fill);
+		menu.add(fillerd);
+		menu.add(filler2);
+		menu.add(new JLabel("                                         "));
+		menu.add(removeField);
+		menu.add(filler3);
+		
+		
+		addition.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!nfield.getText().trim().equals("")) {
+					try {
+						schemaEditor.addField(nfield.getText(), dataType.getSelectedItem().toString());
+						ft.update();
+						results = query.acceptQuery(searchbar.getText(), 0, (int)query.getFOUND());
+					} catch (SolrServerException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					if(cb.isSelected() && results!=null) {
+						if(dataType.getSelectedItem().equals("date")) {
+							String[] parts = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime().toString().split(" ");
+							for(ProductBean b: results) {
+								b.addField(nfield.getText(), getDate(parts));
+							}
+						}
+						else {
+							for(ProductBean b: results) {
+								b.addField(nfield.getText(), fill.getText().trim());
+							}
+						}
+						
+						try {
+							index.reload(results, "");
+						} catch (SolrServerException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						search.doClick();
+					}
+				}
+				
+				
+				fill.setText("");
+				nfield.setText("");
+				cb.setSelected(false);
+			}
+		});
+		
+		removeField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				progress.setValue(15);
+				String delete = null;
+				try {
+					delete = schemaEditor.deleteField(ft);
+					ft.update();
+					searchbar.setText("");
+					ft.setCategory("null");
+					clearfacet.doClick();
+					
+					results = query.acceptQuery("", 0, (int)query.getFOUND());
+				} catch (SolrServerException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				if(results!=null && delete!=null) {
+					try {
+						index.reload(results, delete);
+					} catch (SolrServerException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					search.doClick();
+				}
+			}
+		});
+		
+		cb.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(dataType.getSelectedItem().equals("date")) {
+					fillerd.setVisible(!fillerd.isVisible());
+					filler.setVisible(!filler.isVisible());
+					filler2.setVisible(!filler2.isVisible());
+					filler3.setVisible(!filler3.isVisible());
+				}
+				else {
+					fill.setVisible(!fill.isVisible());
+					ask2.setVisible(!ask2.isVisible());
+					filler.setVisible(!filler.isVisible());
+					filler2.setVisible(!filler2.isVisible());
+					filler3.setVisible(!filler3.isVisible());
+				}
+				dataType.setEnabled(!dataType.isEnabled());
+			}
+		});
+		
 	}
 
 	//initializes options bar under the search results
@@ -392,10 +551,6 @@ public class GUI {
 		querycat.setMaximumSize(new Dimension(60, 30));
 		querycat.setForeground(Color.black);
 		querycat.setBackground(Color.white);
-		querycat.addItem("All:");
-		for(int i=0; i<ft.numFields(); i++) {
-			querycat.addItem(ft.getField(i));
-		}
 	}
 	
 	//set up for sort panel on left hand side
@@ -425,9 +580,7 @@ public class GUI {
 				JComboBox<?> box = (JComboBox<?>) e.getSource();
 				Object selected = box.getSelectedItem();
 				
-				if(selected==null) {
-					System.out.println("null");
-				}
+				if(selected==null) {}
 				else if(selected.toString().equals("location")) {
 					sortLocation();
 				}
@@ -463,7 +616,6 @@ public class GUI {
 		l.setFont(labels);
 		locate.add(l);
 		
-		JTextField lat = new JTextField(5);
 		lat.setFont(labels);
 		lat.addActionListener(new ActionListener() {
 			@Override
@@ -477,7 +629,6 @@ public class GUI {
 		l2.setFont(labels);
 		locate.add(l2);
 		
-		JTextField lon = new JTextField(5);
 		lon.setFont(labels);
 		lon.addActionListener(new ActionListener() {
 			@Override
@@ -501,7 +652,6 @@ public class GUI {
 		holder.removeAll();
 		
 		// clear
-		JButton clearfacet = new JButton("CLEAR");
 		clearfacet.setFont(new Font("Serif", Font.ITALIC, 16));
 		clearfacet.addActionListener(new ActionListener() {
 			@Override
@@ -534,7 +684,7 @@ public class GUI {
 		refine.add(holder, "span");
 		
 		
-		if(facets!=null) {
+		if(facets!=null && facets.size()!=0) {
 			FacetField facet = facets.get(0);
 			for(int i=0; i<facet.getValues().size() && i<5; i++) {
 				if(facet.getValues().get(i).getCount()!=0) {
@@ -639,6 +789,15 @@ public class GUI {
 		updateDisplay();
 	}
 	
+	public void updateFields() {
+		//fields update
+		querycat.removeAllItems();
+		querycat.addItem("All:");
+		for(int i=0; i<ft.numFields(); i++) {
+			querycat.addItem(ft.getField(i));
+		}
+	}
+	
 	// updates frame for new content
 	public void updateDisplay() {
 		frame.setVisible(true);
@@ -692,6 +851,52 @@ public class GUI {
 		}
 		return false;
 	}
+	
+	public String getDate(String[] items) {
+		String date = "";
+		
+		date+=items[5]+"-";
+		String monthString = "0";
+		String month= items[1];
+		
+		switch (month) {
+           case "Jan":  monthString += "1";
+                    break;
+           case "Feb":  monthString += "2";
+                    break;
+           case "Mar":  monthString += "3'";
+                    break;
+           case "Apr":  monthString += "4";
+                    break;
+           case "May":  monthString += "5";
+                    break;
+           case "Jun":  monthString += "6";
+                    break;
+           case "Jul":  monthString += "7";
+                    break;
+           case "Aug":  monthString += "8";
+                    break;
+           case "Sep":  monthString += "9";
+                    break;
+           case "Oct": monthString = "10";
+                    break;
+           case "Nov": monthString = "11";
+                    break;
+           case "Dec": monthString = "12";
+                    break;
+           default: monthString = "Invalid month";
+                    break;
+		}
+		
+		date+=monthString+"-";
+		date+=items[2]+"T";
+		
+		String[] time = items[3].split(":");
+		date+= ((Integer.parseInt(time[0])))+":";
+		date+=time[1]+":"+time[2]+"Z";
+		
+		return date;
+	}
 
 	// configures query parameters
 	public void configSettings() {
@@ -736,6 +941,21 @@ public class GUI {
 		else {
 			ft.setCategory("null");
 		}
+		
+		try {
+			ft.setLat(Double.parseDouble(lat.getText()));
+		}
+		catch(Exception e) {
+			ft.setLat(0);
+			lat.setText("0");
+		}
+		try {
+			ft.setLon(Double.parseDouble(lon.getText()));
+		}
+		catch(Exception e) {
+			ft.setLon(0);
+			lon.setText("0");
+		}
 	}
 
 	//displays results on the results panel
@@ -774,9 +994,17 @@ public class GUI {
 			JTextArea p2 = new JTextArea();
 			p1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 			
+			int j=0;
 			for(int i=0; i<bean.numFields(); i++) {
 				p1.append(" :"+bean.getField(i)+"\n");
-				p2.append("  "+bean.getValue(i)+"\n");
+				
+				String val = "";
+				for(j=100; j<(bean.getValue(i).toString().replaceAll("\n", "").length()-1); j+=100) {
+					val+=bean.getValue(i).toString().replaceAll("\n", "").substring(j-100, j)+"\n";
+					p1.append("\n");
+				}
+				val+=bean.getValue(i).toString().replaceAll("\n", "").substring(j-100); //bean.getValue(i).toString().replaceAll("\n", "").length());
+				p2.append("  "+val+"\n");//bean.getValue(i).toString().replaceAll("\n", "")+"\n");
 			}
 			
 			p1.setFont(f1);
@@ -807,14 +1035,25 @@ public class GUI {
 		//refreshes documents found and what page user is on
 		displayFound.setText("Found "+query.getFOUND()+" document(s)...("+
 		START+" - "+(START+results.size())+")       ");
-		scroll.setLocation(1000,  1000);
 		
 		//refreshes sort panel
 		if(newDoc) {
 			sorting();
 		}
 		refine();
+		updateFields();
 		newDoc=false;
+
+		// start scroll at top of results after each search
+		SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                scroll.getVerticalScrollBar().setValue(0);
+
+            }
+        });
+		
+		progress.setValue(100);
 		
 	}
 }

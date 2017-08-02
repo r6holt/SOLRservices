@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.solr.client.solrj.SolrServerException;
 
 public class runApp {
-	public static void main(String []args) throws SolrServerException, IOException {
+	public static void main(String []args) throws SolrServerException, IOException, InterruptedException {
 		/*Index index = new Index();
 		try {
 			index.exampleDocs();
@@ -14,7 +14,7 @@ public class runApp {
 		}
 		System.out.println("Complete...");
 		System.out.println(System.currentTimeMillis());*/
-		new GUI();
 		
+		new GUI();
 	}
 }

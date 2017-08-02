@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<project>
+  <!-- SOLR_HOME must be set as an environment variable -->
+  <property name="solr.home" value="/mnt/c/Users/ryan.holt/Documents/solr-6.6.0/server/solr"/>
+  <condition property="solr.set">
+    <isset property="solr.home"/>
+  </condition>
+  <fail unless="solr.set">Please set SOLR_HOME in your environment. export
+    SOLR_HOME=~/src/apache/solr/ </fail>
+  <import file="${solr.home}/build.xml"/>
+  <property name="solr.build" value="${build}/solr"/>
+  <property name="solr.src" value="${solr.home}/src"/>
+  <target name="mysolr.compile">
+    <!-- The runtime classpath -->
+    <path id="compile.classpath.solr">
+      <path refid="ant.classpath"/>
+      <fileset dir="${lib}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${solr.home}/lib">
+        <include name="*.jar"/>
+      </fileset>
+      <pathelement location="${solr.build}/common"/>
+    </path>
+    <echo>dest: ${solr.build}/common</echo>
+    <echo>src: ${solr.src}/java</echo>
+    <solr-javac destdir="${solr.build}/common"
+      classpathref="compile.classpath.solr">
+      <src path="${solr.src}/java"/>
+      <include name="org/apache/solr/common/**"/>
+    </solr-javac>
+    <solr-javac destdir="${solr.build}/core"
+      classpathref="compile.classpath.solr">
+      <src path="${solr.src}/java"/>
+      <src path="${solr.src}/webapp/src"/>
+      <exclude name="org/apache/solr/common/**"/>
+    </solr-javac>
+  </target>
+  <target name="mysolr.dist-jar" depends="mysolr.compile, solr.make-manifest">
+    <mkdir dir="${dist}" />
+    <solr-jar
+         destfile="${dist}/${fullnamever}-solr.jar"
+         basedir="${solr.build}/core" />
+    <!-- package the common classes together -->
+    <solr-jar
+         destfile="${dist}/${fullnamever}-solr-common.jar"
+         basedir="${solr.build}/common" />
+  </target>
+  <target name="mysolr.dist-war" depends="mysolr.dist-jar">
+    <war destfile="${dist}/solr.war"
+         webxml="${solr.src}/webapp/WEB-INF/web.xml"
+         filesetmanifest="skip"
+         manifest="${build}/META-INF/MANIFEST.MF">
+       <lib dir="${solr.home}/lib">
+         <exclude name="servlet-api*.jar" />
+         <exclude name="easymock.jar" />
+       </lib>
+       <lib dir="${dist}">
+         <include name="${fullnamever}-solr.jar" />
+         <include name="${fullnamever}-solr-common.jar" />
+       </lib>
+       <fileset dir="${solr.src}/webapp/resources" />
+    </war>
+  </target>
+  <target name="mysolr.dist" depends="mysolr.dist-war">
+    <property name="solr.app" value="${dist}/solrappp"/>
+    <property name="sorl.example" value="${solr.home}/example"/>
+    <mkdir dir="${solr.app}"/>
+    <mkdir dir="${solr.app}/logs"/>
+    <copy todir="${solr.app}">
+      <fileset dir="${boja.solr}" includes="**,*"/>
+    </copy>
+    <copy todir="${solr.app}/etc">
+      <fileset dir="${sorl.example}/etc" includes="**,*"/>
+    </copy>
+    <copy todir="${solr.app}/lib">
+      <fileset dir="${sorl.example}/lib" includes="**,*"/>
+    </copy>
+    <copy todir="${solr.app}/solr/bin">
+      <fileset dir="${solr.src}/scripts">
+        <exclude name="scripts.conf"/>
+      </fileset>
+    </copy>
+    <chmod dir="${solr.app}/solr/bin" perm="755" includes="**"/>
+    <copy file="${dist}/solr.war" tofile="${solr.app}/webapps/solr.war"/>
+    <copy todir="${solr.app}/solr/conf" overwrite="false">
+      <fileset dir="${sorl.example}/solr/conf" includes="**,*"/>
+    </copy>
+    <chmod dir="${solr.app}/solr/conf" perm="755" includes="schema.xml,solrconfig.xml"/>
+    <copy file="${sorl.example}/start.jar" tofile="${solr.app}/start.jar"/>
+    <echo>Solr successfully builded.</echo>
+    <echo>You can excute the following command to start the server:Solr successfully builded.</echo>
+    <echo>cd ${solr.app};java -jar start.jar</echo>
+  </target>
+</project>

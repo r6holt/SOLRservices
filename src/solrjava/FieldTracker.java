@@ -14,6 +14,7 @@ public class FieldTracker {
 	private ArrayList<String> fields = new ArrayList<String>();
 	
 	private boolean price = false;
+	private boolean cat = false;
 	private int minPrice;
 	private int maxPrice;
 	private boolean priceQuery;
@@ -46,6 +47,9 @@ public class FieldTracker {
 	        if(field.get("name").toString().equals("price")) {
 	        	price=true;
 	        }
+	        if(field.get("name").toString().contains("cat")) {
+	        	cat=true;
+	        }
 	        
 	    }
 
@@ -56,6 +60,7 @@ public class FieldTracker {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void update() throws SolrServerException, IOException {
 		SolrQuery query = new SolrQuery();
+		fields.clear();
 		
 	    query.add(CommonParams.QT, "/schema/fields");
 	    QueryResponse response = solr.query(query);
@@ -65,7 +70,10 @@ public class FieldTracker {
 	        fields.add(field.get("name").toString());
 	        if(field.get("name").toString().equals("price")) {
 	        	price=true;
-	        }	        
+	        }
+	        if(field.get("name").toString().contains("cat")) {
+	        	cat=true;
+	        }
 	    }
 	}
 	
@@ -164,6 +172,11 @@ public class FieldTracker {
 
 	public void setLon(double lon) {
 		this.lon = lon;
+	}
+
+
+	public boolean isCat() {
+		return cat;
 	}
 	
 	

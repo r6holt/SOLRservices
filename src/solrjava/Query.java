@@ -50,8 +50,12 @@ public class Query {
         
         //set price and category facets
         query.setFacet(true);
-        query.set("facet.field", "cat");
-        query.set("facet.query", "price:[0 TO 9.99]", "price:[10 TO 24.99]", "price:[25 TO 49.99]", "price:[50 TO 99.99]", "price:[100 TO 199.99]", "price:[200 TO 499.99]", "price:[500 TO *]");
+        if(ft.isCat()) {
+        	query.set("facet.field", "cat");
+        }
+        if(ft.getPrice()) {
+        	query.set("facet.query", "price:[0 TO 9.99]", "price:[10 TO 24.99]", "price:[25 TO 49.99]", "price:[50 TO 99.99]", "price:[100 TO 199.99]", "price:[200 TO 499.99]", "price:[500 TO *]");
+        }
         
         // spatial
         if(ft.getSortfield().equals("location")) {
@@ -142,6 +146,9 @@ public class Query {
         else {
             query.set("fq", fq);
         }
+        
+        System.out.println(fq);
+        System.out.println(q);
         
         //Getting results
         ArrayList<ProductBean> beans = new ArrayList<ProductBean>();
