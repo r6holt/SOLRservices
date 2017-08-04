@@ -45,14 +45,18 @@ public class Query {
         // Rows and starting row
         query.set("rows", ROWS);
         query.set("start", START);
-        //query.set("sort", ft.getSortfield()+" "+ft.isSort());
+        query.set("sort", ft.getSortfield()+" "+ft.isSort());
         
         
         //set price and category facets
         query.setFacet(true);
-        if(ft.isCat()) {
-        	query.set("facet.field", "cat");
+        ArrayList<String> facets = new ArrayList<String>();
+        for(int i=0; i<ft.numFields(); i++) {
+        	if(ft.getDatatypes().contains("string") && !ft.getField(i).equals("_version_") && !ft.getField(i).equals("id")) {
+        		facets.add(ft.getField(i));
+        	}
         }
+        query.set("facet.field", facets.toArray(new String[facets.size()]));
         if(ft.getPrice()) {
         	query.set("facet.query", "price:[0 TO 9.99]", "price:[10 TO 24.99]", "price:[25 TO 49.99]", "price:[50 TO 99.99]", "price:[100 TO 199.99]", "price:[200 TO 499.99]", "price:[500 TO *]");
         }
@@ -124,11 +128,21 @@ public class Query {
         	fq+=tot;
         }
         
+        facets.clear();
         // controls selection of faceted fields
-        if(!ft.getFacetchoice().equals("")) {
-        	String[] subsets = ft.getFacetchoice().split(", ");
+        if(ft.getFacetchoice()!=null) {//ft.getFacetchoice()[0].equals("facet")) {
+        	for(int h=0; h<ft.getFacetchoice().length; h++) {
+        		if(ft.getFacetchoice()[h]!=null) {
+		        	String[] subsets = ft.getFacetchoice()[h].split(", ");//[0].split(", ");
+		        	for(int i=0; i<subsets.length; i++) {
+		        		facets.add(ft.getChoices().get(h)+":"+subsets[i]);
+		        	}
+        		}
+        	}
+        	System.out.println(facets);
+        	query.set("fq", facets.toArray(new String[facets.size()]));
         	
-        	if(subsets.length==1) {
+        	/*if(subsets.length==1) {
         		query.set("fq", fq, "cat:"+subsets[0]);
         	}
         	else if(subsets.length==2) {
@@ -141,14 +155,12 @@ public class Query {
         	else if(subsets.length==4) {
         		query.set("fq", fq, "cat:"+subsets[0], "cat: "+subsets[1],
         				"cat: "+subsets[2], "cat: "+subsets[3]);
-        	}
+        	}*/
         }
         else {
             query.set("fq", fq);
         }
         
-        System.out.println(fq);
-        System.out.println(q);
         
         //Getting results
         ArrayList<ProductBean> beans = new ArrayList<ProductBean>();
@@ -159,11 +171,12 @@ public class Query {
         	SolrDocumentList list =resp.getResults();
         	FOUND = list.getNumFound();
         	searches+=1;
+        	//System.out.println(facet);
+        	//ft.setFacetchoice(new String[facet.size()]);
         	
         	for(int i=0; (i<list.size() && i<list.getNumFound()); i++) {
         		beans.add(createBean(list.get(i)));
         	}
-        	
         	
         	return beans;
         }

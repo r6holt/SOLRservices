@@ -1,6 +1,6 @@
-2017-08-02 23:55:58.092 INFO  (main) [   ] o.e.j.s.Server jetty-9.3.14.v20161028
-2017-08-02 23:56:00.230 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter  ___      _       Welcome to Apache Solr™ version 6.6.0
-2017-08-02 23:56:00.230 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter / __| ___| |_ _   Starting in standalone mode on port 8900
-2017-08-02 23:56:00.230 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter \__ \/ _ \ | '_|  Install dir: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0
-2017-08-02 23:56:00.270 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter |___/\___/_|_|    Start time: 2017-08-02T23:56:00.230Z
-2017-08-02 23:56:00.270 INFO  (main) [   ] o.a.s.s.StartupLoggingUtils Property solr.log.muteconsole given. Muting ConsoleAppender named CONSOLE
+2017-08-03 22:55:15.992 INFO  (main) [   ] o.e.j.s.Server jetty-9.3.14.v20161028
+2017-08-03 22:55:16.858 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter  ___      _       Welcome to Apache Solr™ version 6.6.0
+2017-08-03 22:55:16.858 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter / __| ___| |_ _   Starting in standalone mode on port 8900
+2017-08-03 22:55:16.858 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter \__ \/ _ \ | '_|  Install dir: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0
+2017-08-03 22:55:16.874 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter |___/\___/_|_|    Start time: 2017-08-03T22:55:16.858Z
+2017-08-03 22:55:16.874 INFO  (main) [   ] o.a.s.s.StartupLoggingUtils Property solr.log.muteconsole given. Muting ConsoleAppender named CONSOLE

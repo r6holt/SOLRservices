@@ -12,6 +12,10 @@ import org.apache.solr.common.util.SimpleOrderedMap;
 public class FieldTracker {
 	
 	private ArrayList<String> fields = new ArrayList<String>();
+	private ArrayList<String> datatypes = new ArrayList<String>();
+	
+	private String pickstring = null;
+	private String picknum = null;
 	
 	private boolean price = false;
 	private boolean cat = false;
@@ -20,7 +24,8 @@ public class FieldTracker {
 	private boolean priceQuery;
 	
 	private String category;
-	private String facetchoice = "";
+	private String[] facetchoice;
+	private ArrayList<String> choices = new ArrayList<String>();
 	private String pricechoice = "";
 	
 	private String sortfield;
@@ -44,6 +49,7 @@ public class FieldTracker {
 	    
 	    for (SimpleOrderedMap field : f) {
 	        fields.add(field.get("name").toString());
+	        datatypes.add(field.get("type").toString());
 	        if(field.get("name").toString().equals("price")) {
 	        	price=true;
 	        }
@@ -68,6 +74,7 @@ public class FieldTracker {
 	    
 	    for (SimpleOrderedMap field : f) {
 	        fields.add(field.get("name").toString());
+	        datatypes.add(field.get("type").toString());
 	        if(field.get("name").toString().equals("price")) {
 	        	price=true;
 	        }
@@ -142,12 +149,16 @@ public class FieldTracker {
 		this.category = category;
 	}
 	
-	public String getFacetchoice() {
+	public String[] getFacetchoice() {
 		return facetchoice;
 	}
 
-	public void setFacetchoice(String facetchoice) {
-		this.facetchoice = facetchoice;
+	public void setFacetchoice(int i, String s) {
+		this.facetchoice[i] = s;
+	}
+	
+	public void setFacetchoice(String[] f) {
+		facetchoice=f;
 	}
 
 	public String getPricechoice() {
@@ -177,6 +188,46 @@ public class FieldTracker {
 
 	public boolean isCat() {
 		return cat;
+	}
+
+
+	public String getPickstring() {
+		return pickstring;
+	}
+
+
+	public void setPickstring(String pickstring) {
+		this.pickstring = pickstring;
+	}
+
+
+	public String getPicknum() {
+		return picknum;
+	}
+
+
+	public void setPicknum(String picknum) {
+		this.picknum = picknum;
+	}
+
+
+	public ArrayList<String> getDatatypes() {
+		return datatypes;
+	}
+
+
+	public void setDatatypes(ArrayList<String> datatypes) {
+		this.datatypes = datatypes;
+	}
+
+
+	public ArrayList<String> getChoices() {
+		return choices;
+	}
+
+
+	public void setChoices(String s) {
+		this.choices.add(s);
 	}
 	
 	

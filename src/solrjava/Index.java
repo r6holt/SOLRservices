@@ -78,15 +78,28 @@ public class Index {
         }
         catch(RemoteSolrException rse) {
         	rse.printStackTrace();
-        	String fieldname = rse.getMessage().split("\"")[1];
-        	if(fieldname.equals("price")) {
-        		schema.addField(fieldname, "double");
+        	try {
+	        	String fieldname = rse.getMessage().split("\"")[1];
+	        	if(fieldname.equals("price")) {
+	        		schema.addField(fieldname, "double");
+	        	}
+	        	else if(fieldname.equals("store")) {
+	        		schema.addField(fieldname, "location");
+	        	}
+	        	else {
+	        		System.out.println("CREATING RANDOM FIELD");
+	        		String[] options = {"string", "float", "location", "date", "boolean"};
+	        		Object data = JOptionPane.showInputDialog(new JFrame(), "Select data type for new field \""+fieldname+"\":", "Creating Field", JOptionPane.OK_CANCEL_OPTION, null, options, options[0]);
+	        		
+	        		schema.addField(fieldname, data.toString());
+	        	}
+	        	acceptDocument(f);
+	        	status=0;
         	}
-        	else {
-        		schema.addField(fieldname, "string");
+        	catch(Exception e) {
+        		JOptionPane.showMessageDialog(new JFrame(), "Failed to create new field...\n\n___Document not loaded___");
+        		return -1;
         	}
-        	acceptDocument(f);
-        	status=0;
         }
         
         try {
@@ -119,7 +132,7 @@ public class Index {
         //solr.commit();
         
         try {
-	        for(int i=0;i<10000; i++) {
+	        for(int i=0;i<1000; i++) {
 	            SolrInputDocument doc = new SolrInputDocument();
 	            doc.addField("cat", "cards");
 	            doc.addField("id", "pack-" + i);
@@ -180,6 +193,7 @@ public class Index {
 	    	
 	    	solr.commit();
     	} catch (RemoteSolrException e) {
+    		e.printStackTrace();
     		JOptionPane.showMessageDialog(new JFrame(), "Incorrect data type for new field!\nFailed to add field...");
     	}
     	
