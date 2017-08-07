@@ -437,24 +437,23 @@
   <fieldType name="tints" class="solr.TrieIntField" positionIncrementGap="0" docValues="true" multiValued="true" precisionStep="8"/>
   <fieldType name="tlong" class="solr.TrieLongField" positionIncrementGap="0" docValues="true" precisionStep="8"/>
   <fieldType name="tlongs" class="solr.TrieLongField" positionIncrementGap="0" docValues="true" multiValued="true" precisionStep="8"/>
-  <field name="NYAA" type="strings"/>
+  <field name="NYAA" type="string" multiValued="true" indexed="true" stored="true"/>
   <field name="_root_" type="string" docValues="false" indexed="true" stored="false"/>
   <field name="_text_" type="text_general" multiValued="true" indexed="true" stored="false"/>
   <field name="_version_" type="long" indexed="false" stored="false"/>
-  <field name="blah" type="strings"/>
+  <field name="blah" type="string" multiValued="true" indexed="true" stored="true"/>
   <field name="cat" type="strings"/>
   <field name="features" type="strings"/>
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
   <field name="inStock" type="booleans"/>
-  <field name="includes" type="strings"/>
-  <field name="location" type="location" indexed="true" stored="true"/>
+  <field name="includes" type="string" multiValued="true" indexed="true" stored="true"/>
   <field name="manu" type="strings"/>
   <field name="name" type="strings"/>
+  <field name="payloads" type="strings"/>
   <field name="popularity" type="tlongs"/>
   <field name="price" type="tdoubles"/>
-  <field name="store" type="strings"/>
-  <field name="token" type="string" multiValued="true" indexed="true" stored="true"/>
-  <field name="weight" type="tdoubles"/>
+  <field name="store" type="location" indexed="true" stored="true"/>
+  <field name="weight" type="float" indexed="true" stored="true"/>
   <dynamicField name="*_txt_en_split_tight" type="text_en_splitting_tight" indexed="true" stored="true"/>
   <dynamicField name="*_descendent_path" type="descendent_path" indexed="true" stored="true"/>
   <dynamicField name="*_ancestor_path" type="ancestor_path" indexed="true" stored="true"/>

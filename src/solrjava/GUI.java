@@ -2,31 +2,22 @@ package solrjava;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.awt.event.ActionEvent;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -36,13 +27,16 @@ import org.apache.solr.client.solrj.response.FacetField;
 import net.miginfocom.swing.MigLayout;
 
 public class GUI {
+	public static final String urlString = "http://40.85.156.209:8900/solr/solrservices";
 	private static int START = 0;
 	private  static int ROWS = 10;
 	
 	// Object Storage
 	private ArrayList<ProductBean> results;
+	private JPanel imgholder = new JPanel(new FlowLayout());
 	private String pricerange = "";
 	private String selectedCats = "";
+	private long lastOccurance = 0;
 	private FieldTracker ft;
 	private SchemaEditor schemaEditor = new SchemaEditor();
 	private Remove remove = new Remove();
@@ -69,7 +63,7 @@ public class GUI {
 	private JComboBox<String> querycat = new JComboBox<String>();
 	
 	// schema management
-	private JPanel menu = new JPanel(new FlowLayout());
+	private JPanel menu = new JPanel(new MigLayout());
 	private JTextField nfield = new JTextField(12);
 	private JButton addition = new JButton("Add Field");
 	
@@ -82,7 +76,6 @@ public class GUI {
 	private JButton prevPage = new JButton("Prev");
 	private JComboBox<Integer> numRows = new JComboBox<Integer>();
 	private JLabel displayFound = new JLabel("Found ____ document(s)...       ");
-	private JPanel docpanel = new JPanel(new MigLayout());
 	private JProgressBar progress = new JProgressBar();
 
 	// sort
@@ -90,8 +83,9 @@ public class GUI {
 	private JPanel fieldsort = new JPanel(new FlowLayout()); 
 	private JComboBox<String> ascdesc = new JComboBox<String>();
 	private JPanel locate = new JPanel(new MigLayout());
-	JTextField lat = new JTextField(5);
-	JTextField lon = new JTextField(5);
+	JComboBox<String> locatefields = new JComboBox<String>();
+	private JTextField lat = new JTextField(5);
+	private JTextField lon = new JTextField(5);
 	
 	// refine
 	private JPanel refine = new JPanel(new MigLayout());
@@ -103,6 +97,7 @@ public class GUI {
 	private JPanel facetfield = new JPanel();
 	private JPanel facetprice = new JPanel(new MigLayout());
 	private JButton clearfacet = new JButton("CLEAR");
+	private JScrollPane refinescroll = new JScrollPane(refine);
 	
 	// price range box checks
 	private boolean _0 = false;
@@ -116,7 +111,7 @@ public class GUI {
 	// fonts
 	private Font headers = new Font("Serif", Font.ITALIC, 22);
 	private Font labels = new Font("Serif", Font.ITALIC, 18);
-	
+
 	
 	
 
@@ -162,28 +157,29 @@ public class GUI {
 	// setup for the GUI frame
 	public void setup() {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frame.setMaximumSize(new Dimension(1790, 1190));
-		frame.setExtendedState(frame.MAXIMIZED_BOTH);
+		frame.setPreferredSize(new Dimension(2000, 1300));
+		frame.setMinimumSize(new Dimension(2000, 1300));
+		//frame.setExtendedState(frame.MAXIMIZED_BOTH);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
+		frame.setResizable(false);
 		frame.setVisible(true);
 	}
 	
 	public void setImage() {
-		
 		BufferedImage logo = null;
+		BufferedImage image = null;
 		try {
-			logo = ImageIO.read(new File("images"+File.separator+"solr.png"));
+			logo = ImageIO.read(new File("images"+File.separator+"solr.jpg"));
+			image = ImageIO.read(new File("images"+File.separator+"solr.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		JLabel img = new JLabel(new ImageIcon(logo));
-		//img.setBorder(BorderFactory.createLineBorder(Color.gray));
+		JLabel img = new JLabel(new ImageIcon(image));
 		img.setPreferredSize(new Dimension(320, 200));
-		img.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
-		
-		west.add(img);
+		imgholder.add(img);
+		frame.setIconImage(logo);
 	}
 
 	public void addComponents() {
@@ -193,53 +189,60 @@ public class GUI {
 		// setup components
 		displayPan.setLayout(new MigLayout());
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scroll.setPreferredSize(new Dimension(1830, 1160));
-		scroll.setMinimumSize(new Dimension(1830, 1160));
+		scroll.setPreferredSize(new Dimension(1610, 1055));
+		scroll.setMinimumSize(new Dimension(1610, 1055));
 		scroll.getVerticalScrollBar().setPreferredSize(new Dimension(32, 0));
 		scroll.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 20));
 		searchbar.setFont(font1);
 		querycat.setFont(font2);
 		search.setFont(new Font("Serif", Font.BOLD, 20));
 		sort.setLayout(new MigLayout());
-		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
-		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
-		sort.setBorder(BorderFactory.createLineBorder(Color.black));
-		refine.setBorder(BorderFactory.createLineBorder(Color.black));
+		west.setLayout(new MigLayout());
+		east.setLayout(new MigLayout());
+		west.setPreferredSize(new Dimension(370, 1250));
+		//sort.setBorder(BorderFactory.createLineBorder(Color.black));
+		sort.setPreferredSize(new Dimension(355, 230));
+		//refine.setBorder(BorderFactory.createLineBorder(Color.black));
 		displayFound.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		JLabel header2 = new JLabel("--------Search Results---------------");
 		header2.setFont(headers);
-		progress.setPreferredSize(new Dimension(150, 15));
+		progress.setPreferredSize(new Dimension(250, 20));
 		progress.setForeground(Color.green);
 		progress.setBackground(Color.white);
+		refinescroll.setPreferredSize(new Dimension(355, 730));
+		refinescroll.setMinimumSize(new Dimension(355, 730));
+		refinescroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		refinescroll.setBorder(null);
 
 		// add components to the frame 
-		pages.add(progress);
-		pages.add(new JLabel("                                   "));
+		pages.add(new JLabel("                                                                                                                                                       "), "cell 0 0");
 		pages.add(displayFound); 
 		pages.add(prevPage);
 		pages.add(numRows);
 		pages.add(nextPage);
-		pages.add(new JLabel("                                                                                                                                          "));
+		pages.add(new JLabel("                                                            "));
+		pages.add(progress);
 		north.add(examples);
 		north.add(addDoc);
 		north.add(refresh);
-		north.add(new JLabel("                              "));
+		north.add(new JLabel("                                                                "));
 		north.add(querycat);
 		north.add(searchbar);
 		north.add(search); 
-		north.add(new JLabel("                    "));
-		JLabel header1 = new JLabel("               --------Sort--------");
+		north.add(new JLabel("                                               "));
+		JLabel header1 = new JLabel("----------------------Sort----------------------");
 		header1.setFont(headers);
-		west.add(header1);
-		west.add(sort);
-		JLabel lrefine = new JLabel("              ------Refine------");
+		west.add(imgholder, "span");
+		west.add(header1, "span");
+		west.add(sort, "span");
+		JLabel lrefine = new JLabel("---------------------Refine---------------------");
 		lrefine.setFont(headers);
 		west.add(lrefine, "span");
-		west.add(refine);
-		east.add(header2);
-		east.add(menu);
-		east.add(scroll);
-		east.add(pages);
+		west.add(refinescroll, "span");
+		east.add(header2, "span");
+		east.add(menu, "span");
+		east.add(scroll, "span");
+		east.add(pages, "span");
 		frame.add(west, BorderLayout.WEST);
 		frame.add(north, BorderLayout.NORTH);
 		frame.add(east, BorderLayout.EAST);
@@ -279,7 +282,7 @@ public class GUI {
 		addDoc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				progress.setValue(50);
+				startProgress();
 				
 				//displays file explorer for user
 				final JFileChooser fc = new JFileChooser();
@@ -298,7 +301,8 @@ public class GUI {
 						e1.printStackTrace();
 					}
 				}
-				progress.setValue(100);
+				finishProgress(1);
+				search.doClick();
 
 			}
 		});
@@ -321,7 +325,8 @@ public class GUI {
 		refresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				progress.setValue(50);
+				ft.setFacetchoice(null);
+				startProgress();
 				//creates refresh object to delete all docs and clear beans
 				try {
 					removeAll.deleteAll();
@@ -333,7 +338,8 @@ public class GUI {
 				} catch (SolrServerException | IOException e1) {
 					e1.printStackTrace();
 				}
-				progress.setValue(100);
+				finishProgress(1);
+				search.doClick();
 			}
 		});
 
@@ -341,7 +347,8 @@ public class GUI {
 		examples.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				progress.setValue(50);
+				ft.setFacetchoice(null);
+				startProgress();
 				
 				try {
 
@@ -351,7 +358,8 @@ public class GUI {
 				} catch (SolrServerException | IOException e1) {
 					e1.printStackTrace();
 				}
-				progress.setValue(100);
+				finishProgress(1);
+				search.doClick();
 			}
 		});
 	}
@@ -359,49 +367,51 @@ public class GUI {
 	//initializes schema maintenance menu bar
 	public void menubar() {	
 		menu.setBorder(BorderFactory.createLineBorder(Color.black));
+		menu.setPreferredSize(new Dimension(1610, 50));
 		
+		//menu-specific components
 		String[] options = {"string", "float", "date", "location", "boolean"};
 		JComboBox<String> dataType = new JComboBox<String>();
+		JComboBox<String> deleteoptions = new JComboBox<String>();
 		dataType.setFont(labels);
 		JCheckBox cb = new JCheckBox();
 		JTextField fill = new JTextField(10);
 		JButton removeField = new JButton("Delete Field");
 		JLabel ask2 = new JLabel("         Value:");
-		JLabel filler = new JLabel("                                 ");
-		JLabel filler2 = new JLabel("                                           ");
-		JLabel filler3 = new JLabel("                                           ");
-		JLabel fillerd = new JLabel("    Today's Date                           ");
+		JLabel filler = new JLabel("                                                                                                                                                     ");
+		JLabel ask = new JLabel("add field to search results");
 		
+		//component styling
+		ask.setFont(labels);
 		ask2.setFont(labels);
 		fill.setFont(labels);
 		nfield.setFont(labels);
 		addition.setFont(labels);
 		removeField.setFont(labels);
+		deleteoptions.setFont(labels);
+		deleteoptions.setPreferredSize(new Dimension(140, 30));
 		fill.setVisible(false);
 		ask2.setVisible(false);
 		filler.setVisible(false);
-		filler3.setVisible(false);
-		fillerd.setVisible(false);
 		
+		//adds options to combo boxes in menu
 		for(String s:options) dataType.addItem(s);
+		deleteoptions.addItem("Select Field");
+		for(int i=0; i<(ft.numFields()); i++) if(!ft.getField(i).equals("id") && !ft.getField(i).equals("_version_") && !ft.getField(i).equals("_text_")) deleteoptions.addItem(ft.getField(i));
 		
-		JLabel ask = new JLabel("add field to search results");
-		ask.setFont(labels);
-		menu.add(filler);
-		menu.add(dataType);
+		//adds components to schema menu
 		menu.add(nfield);
+		menu.add(dataType);
 		menu.add(addition);
 		menu.add(cb);
 		menu.add(ask);
 		menu.add(ask2);
 		menu.add(fill);
-		menu.add(fillerd);
-		menu.add(filler2);
-		menu.add(new JLabel("                                         "));
+		menu.add(filler);
+		menu.add(deleteoptions);
 		menu.add(removeField);
-		menu.add(filler3);
 		
-		
+		//adds the user inputed field to schema.xml
 		addition.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -411,7 +421,6 @@ public class GUI {
 						ft.update();
 						results = query.acceptQuery(searchbar.getText(), 0, (int)query.getFOUND());
 					} catch (SolrServerException | IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
@@ -431,9 +440,10 @@ public class GUI {
 						try {
 							index.reload(results, "");
 						} catch (SolrServerException | IOException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
+						ft.setFacetchoice(null);
+						deleteoptions.addItem(nfield.getText());
 						search.doClick();
 					}
 				}
@@ -445,52 +455,59 @@ public class GUI {
 			}
 		});
 		
+		//removes user selected field from schema.xml
 		removeField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				progress.setValue(15);
-				String delete = null;
-				try {
-					delete = schemaEditor.deleteField(ft);
-					ft.update();
-					searchbar.setText("");
-					ft.setCategory("null");
-					clearfacet.doClick();
-					
-					results = query.acceptQuery("", 0, (int)query.getFOUND());
-				} catch (SolrServerException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				if(results!=null && delete!=null) {
+				startProgress();
+				String delete = deleteoptions.getSelectedItem().toString();
+				if(!deleteoptions.getSelectedItem().equals("Select Field")) {
 					try {
-						index.reload(results, delete);
+						System.out.println("DELETE");
+						schemaEditor.deleteField(delete);
+						deleteoptions.removeItem(delete);
+						ft.update();
+						searchbar.setText("");
+						ft.setCategory("null");
+						clearfacet.doClick();
+						
+						results = query.acceptQuery("", 0, (int)query.getFOUND());
 					} catch (SolrServerException | IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
-					search.doClick();
+					if(results!=null) {
+						try {
+							index.reload(results, delete);
+						} catch (SolrServerException | IOException e1) {
+							e1.printStackTrace();
+						}
+						ft.setFacetchoice(null);
+						search.doClick();
+					}
 				}
 			}
 		});
 		
+		//allows user to input field value after check box is checked
 		cb.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if(dataType.getSelectedItem().equals("date")) {
-					fillerd.setVisible(!fillerd.isVisible());
-					filler.setVisible(!filler.isVisible());
-					filler2.setVisible(!filler2.isVisible());
-					filler3.setVisible(!filler3.isVisible());
+					fill.setVisible(!fill.isVisible());
+					ask2.setVisible(!ask2.isVisible());
+					fill.setEditable(!fill.isEditable());
+					
+					if(e.getStateChange()==ItemEvent.SELECTED) {
+						fill.setText("Today's Date");
+					}
+					else {
+						fill.setText("");
+					}
 				}
 				else {
 					fill.setVisible(!fill.isVisible());
 					ask2.setVisible(!ask2.isVisible());
-					filler.setVisible(!filler.isVisible());
-					filler2.setVisible(!filler2.isVisible());
-					filler3.setVisible(!filler3.isVisible());
 				}
 				dataType.setEnabled(!dataType.isEnabled());
 			}
@@ -615,6 +632,19 @@ public class GUI {
 	
 	public void sortLocation() {
 		locate.removeAll();
+		locatefields.removeAllItems();
+		
+		JLabel l1 = new JLabel("       Select Field to sort: ");
+		l1.setFont(labels);
+		locate.add(l1);
+		
+		System.out.println(ft.toString());
+		for(int i=0; i<ft.numFields(); i++) {
+			if(ft.getDatatypes().get(i).equals("location")) {
+				locatefields.addItem(ft.getField(i));
+			}
+		}
+		locate.add(locatefields, "wrap");
 		
 		JLabel l = new JLabel("        Latitude:");
 		l.setFont(labels);
@@ -661,34 +691,41 @@ public class GUI {
 		clearfacet.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ft.setPricechoice("");
-				//ft.setFacetchoice("");
-				minPrice.setText("");
-				maxPrice.setText("");
-				ft.setPriceQuery(false);
-				facetfields.clear();
-				selectedCats = "";
-				pricerange = "";
-				_0=false;
-				_10=false;
-				_25=false;
-				_50=false;
-				_100=false;
-				_200=false;
-				_500=false;
-				
-				query.updateFT(ft);
-				search.doClick();
+				if((System.currentTimeMillis()-lastOccurance) > 500) {
+					startProgress();
+					minPrice.setText("");
+					maxPrice.setText("");
+					ft.setPriceQuery(false);
+					ft.setFacetchoice(null);
+					ft.setPricechoice("");
+					facetfields.clear();
+					selectedCats = "";
+					pricerange = "";
+					_0=false;
+					_10=false;
+					_25=false;
+					_50=false;
+					_100=false;
+					_200=false;
+					_500=false;
+					
+					query.updateFT(ft);
+					search.doClick();
+				}
+				lastOccurance = e.getWhen();
 			}
 		});
 		
 		JComboBox<String> pickFacet = new JComboBox<String>();
+		pickFacet.addItem("Select Field(s)");
 		pickFacet.setFont(labels);
+		pickFacet.setPreferredSize(new Dimension(160, 36));
+		pickFacet.setBackground(Color.white);
 		facetfield.setLayout(new BoxLayout(facetfield, BoxLayout.Y_AXIS));
 		facetfield.setAlignmentY(Component.LEFT_ALIGNMENT);		
 		
 		holder.add(pickFacet);
-		holder.add(new JLabel("                                        "));
+		holder.add(new JLabel("                "));
 		holder.add(clearfacet);
 		refine.add(holder, "span");
 		
@@ -699,6 +736,7 @@ public class GUI {
 				
 				if(!facet.getName().equals("id") && !facet.getName().equals("_version_") && !facet.getValues().isEmpty()) {
 					count++;
+					
 					JPanel jp = new JPanel(new MigLayout());
 					jp.setVisible(false);
 					facetfields.add(jp);
@@ -710,14 +748,21 @@ public class GUI {
 					ft.setChoices(facet.getName());
 					for(int i=0; i<facet.getValues().size() && i<5; i++) {
 						if(facet.getValues().get(i).getCount()!=0) {
-							JButton button = new JButton(facet.getValues().get(i).getName()+" ("+facet.getValues().get(i).getCount()+")");
+							String name = facet.getValues().get(i).getName();
+							JButton button;
+							if(facet.getValues().get(i).getName().length()>25) {
+								button = new JButton(facet.getValues().get(i).getName().substring(0, 25)+"... ("+facet.getValues().get(i).getCount()+")");
+							}
+							else {
+								button = new JButton(facet.getValues().get(i).getName()+" ("+facet.getValues().get(i).getCount()+")");
+							}
 							button.setBorderPainted(false);
 							button.setFont(new Font("SansSerif", Font.ITALIC, 18));
 							button.setForeground(Color.blue);
 							button.setOpaque(false);
 							button.setContentAreaFilled(false);
-							
-							if(selectedCats.contains(button.getText().split(" ")[0])) {
+							if(ft.getFacetchoice()!=null && ft.getFacetchoice()[count]!=null) System.out.println(ft.getFacetchoice()[count]);
+							if(ft.getFacetchoice()!=null && ft.getFacetchoice()[count]!=null && ft.getFacetchoice()[count].contains(name)) {
 								button.setForeground(Color.BLACK);
 								button.setEnabled(false);
 							}
@@ -726,14 +771,20 @@ public class GUI {
 							button.addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
-									String choice = button.getText();
+									String choice = name;
 									choice = choice.split(" \\(")[0];
 									if(choice.contains(" ")) {
-										choice = "\""+choice+"\"~0";
+										choice = "\""+choice+"\"";
 									}
 									
-									selectedCats += choice+", ";
-									ft.setFacetchoice(index, choice);//selectedCats);
+									if(ft.getFacetchoice()[index]!=null) {
+										selectedCats = ft.getFacetchoice()[index];
+										selectedCats += choice+", ";
+									}
+									else {
+										selectedCats = choice+", ";
+									}
+									ft.setFacetchoice(index, selectedCats);//selectedCats);
 									query.updateFT(ft);
 									search.doClick();
 								}
@@ -748,16 +799,28 @@ public class GUI {
 			}
 			refine.add(facetfield, "span");
 		}
-		ft.setFacetchoice(new String[count]);
+		
+		if(ft.getFacetchoice()==null || newDoc) {
+			ft.setFacetchoice(new String[count+1]);
+		}
+		
+		for(int i=0; i<ft.getFacetchoice().length; i++) {
+			if(ft.getFacetchoice()[i]!=null) {
+				facetfields.get(i).setVisible(true);
+			}
+		}
 		
 		pickFacet.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				String selected = e.getItemSelectable().getSelectedObjects()[0].toString();
-				for(int i=0; i<facetfields.size(); i++) {
-					if(facetfields.get(i).getName().equals(selected)) {
-						facetfields.get(i).setVisible(true);//!facetfields.get(i).isVisible());
+				if(e.getStateChange()==ItemEvent.SELECTED) {
+					String selected = e.getItemSelectable().getSelectedObjects()[0].toString();
+					for(int i=0; i<facetfields.size(); i++) {
+						if(facetfields.get(i).getName().equals(selected)) {
+							facetfields.get(i).setVisible(!facetfields.get(i).isVisible());
+						}
 					}
+					pickFacet.setSelectedItem("Select Field(s)");
 				}
 			}
 		});
@@ -790,8 +853,8 @@ public class GUI {
 					format = format.replaceAll("TO \\*", "and up");
 					//if(!num.equals("0")) {
 						JCheckBox box = new JCheckBox();
-						JLabel button = new JLabel(format+"   ("+num+")");//+facet.next().getEnd());//facet.getValues().get(i).getName()+" ("+facet.getValues().get(i).getCount()+")");
-						button.setFont(new Font("SansSerif", Font.ITALIC, 18));
+						JLabel button = new JLabel(format+"   ("+num+")");
+						button.setFont(new Font("Serif", Font.ITALIC, 18));
 						button.setForeground(Color.black);
 						box.setSelected(isSelected(i));
 						
@@ -831,11 +894,19 @@ public class GUI {
 	
 	public void updateFields() {
 		//fields update
+		Object orig = querycat.getSelectedItem();
 		querycat.removeAllItems();
 		querycat.addItem("All:");
 		for(int i=0; i<ft.numFields(); i++) {
 			querycat.addItem(ft.getField(i));
 		}
+		
+		try {
+			if(orig!=null) {
+				querycat.setSelectedItem(orig);
+			}
+		}
+		catch (Exception e) {}
 	}
 	
 	// updates frame for new content
@@ -937,6 +1008,29 @@ public class GUI {
 		
 		return date;
 	}
+	
+	public void startProgress() {
+		SwingUtilities.invokeLater(new Runnable(){
+            public void run(){
+            	progress.setForeground(Color.yellow);
+                progress.setValue(15);
+            }
+       });
+	}
+	
+	public void finishProgress(int status) {
+		SwingUtilities.invokeLater(new Runnable(){
+            public void run(){
+                if(status==1) {
+                	progress.setForeground(Color.green);
+                }
+                else {
+                	progress.setForeground(Color.red);
+                }
+                progress.setValue(100);
+            }
+       });
+	}
 
 	// configures query parameters
 	public void configSettings() {
@@ -989,8 +1083,19 @@ public class GUI {
 			ft.setLat(0);
 			lat.setText("0");
 		}
+		
 		try {
 			ft.setLon(Double.parseDouble(lon.getText()));
+		}
+		catch(Exception e) {
+			ft.setLon(0);
+			lon.setText("0");
+		}
+		
+		try {
+			if(locatefields.getSelectedItem()!="") {
+				ft.setLocatefield(locatefields.getSelectedItem().toString());
+			}
 		}
 		catch(Exception e) {
 			ft.setLon(0);
@@ -1095,13 +1200,13 @@ public class GUI {
         });
 		
 		if(results.size()==0) {
-			displayPan.removeAll();
+			displayPan.setVisible(false);
 			displayPan.add(new JLabel("NO DOCUMENTS FOUND"));
+			displayPan.setVisible(true);
 		}
 		
-		progress.setValue(100);
+		finishProgress(1);
 		updateDisplay();
-		displayPan.setVisible(true);
 		
 	}
 }

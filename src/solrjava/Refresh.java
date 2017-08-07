@@ -12,8 +12,8 @@ public class Refresh {
     public Refresh() {}
     
     public void deleteAll() throws SolrServerException, IOException {
-    	String urlString = "http://localhost:8900/solr/solrservices";
-        HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
+    	
+        HttpSolrClient solr = new HttpSolrClient.Builder(GUI.urlString).build();
         solr.setParser(new XMLResponseParser());
         
         //delete all

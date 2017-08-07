@@ -27,9 +27,9 @@ public class Query {
     }
     
     public ArrayList<ProductBean> acceptQuery(String q, int START, int ROWS) throws SolrServerException, IOException{
-    	String urlString = "http://localhost:8900/solr/solrservices";
-        HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
+        HttpSolrClient solr = new HttpSolrClient.Builder(GUI.urlString).build();
         solr.setParser(new XMLResponseParser());
+        ft.update();
         
         // Starting up a query
         SolrQuery query = new SolrQuery();
@@ -52,7 +52,7 @@ public class Query {
         query.setFacet(true);
         ArrayList<String> facets = new ArrayList<String>();
         for(int i=0; i<ft.numFields(); i++) {
-        	if(ft.getDatatypes().contains("string") && !ft.getField(i).equals("_version_") && !ft.getField(i).equals("id")) {
+        	if(ft.getDatatypes().get(i).contains("string") && !ft.getField(i).equals("_version_") && !ft.getField(i).equals("id")) {
         		facets.add(ft.getField(i));
         	}
         }
@@ -64,7 +64,7 @@ public class Query {
         // spatial
         if(ft.getSortfield().equals("location")) {
             query.set("pt", ft.getLat()+", "+ft.getLon());
-            query.set("sfield", "store");
+            query.set("sfield", ft.getLocatefield());
             query.set("sort", "geodist() "+ft.isSort());
         }
         else {
@@ -74,13 +74,13 @@ public class Query {
         // set price sort
         if(ft!=null && ft.getPriceQuery()) {
         	if(ft.getMinPrice()==-1) {
-        		fq+="-price:["+ft.getMaxPrice()+" TO *] ";
+        		fq+="-price:["+ft.getMaxPrice()+" TO *], ";
         	}
         	else if(ft.getMaxPrice()==-1) {
-        		fq+= "-price:[* TO "+ft.getMinPrice()+"] ";
+        		fq+= "-price:[* TO "+ft.getMinPrice()+"], ";
         	}
         	else {
-        		fq+="-price:[* TO "+ft.getMinPrice()+"] -price:["+ft.getMaxPrice()+" TO *] ";
+        		fq+="-price:[* TO "+ft.getMinPrice()+"], -price:["+ft.getMaxPrice()+" TO *], ";
         	}
         }
         
@@ -104,25 +104,25 @@ public class Query {
         	
         	for(String s: subsets) {        		
 	        	if(s.equals("0")) {
-	        		tot+="price:[0 TO 9.99] ";
+	        		tot+="price:[0 TO 9.99], ";
 	        	}
 	        	else if(s.equals("10")) {
-	        		tot+= "price:[10 TO 24.99] ";
+	        		tot+= "price:[10 TO 24.99], ";
 	        	}
 	        	else if(s.equals("25")) {
-	        		tot+= "price:[25 TO 49.99] ";
+	        		tot+= "price:[25 TO 49.99], ";
 	        	}
 	        	else if(s.equals("50")) {
-	        		tot+= "price:[50 TO 99.99] ";
+	        		tot+= "price:[50 TO 99.99], ";
 	        	}
 	        	else if(s.equals("100")) {
-	        		tot+= "price:[100 TO 199.99] ";
+	        		tot+= "price:[100 TO 199.99], ";
 	        	}
 	        	else if(s.equals("200")) {
-	        		tot+= "price:[200 TO 499.99] ";
+	        		tot+= "price:[200 TO 499.99], ";
 	        	}
 	        	else if(s.equals("500")) {
-	        		tot+= "price:[500 TO *] ";
+	        		tot+= "price:[500 TO *], ";
 	        	}
         	}
         	fq+=tot;
@@ -139,28 +139,15 @@ public class Query {
 		        	}
         		}
         	}
-        	System.out.println(facets);
-        	query.set("fq", facets.toArray(new String[facets.size()]));
         	
-        	/*if(subsets.length==1) {
-        		query.set("fq", fq, "cat:"+subsets[0]);
-        	}
-        	else if(subsets.length==2) {
-        		query.set("fq", fq, "cat:"+subsets[0], "cat: "+subsets[1]);
-        	}
-        	else if(subsets.length==3) {
-        		query.set("fq", fq, "cat:"+subsets[0], "cat: "+subsets[1],
-        				"cat: "+subsets[2]);
-        	}
-        	else if(subsets.length==4) {
-        		query.set("fq", fq, "cat:"+subsets[0], "cat: "+subsets[1],
-        				"cat: "+subsets[2], "cat: "+subsets[3]);
-        	}*/
+        	facets.add(fq);
+        	
+        	query.set("fq", facets.toArray(new String[facets.size()]));
+        	ft.resetChoices();
         }
         else {
-            query.set("fq", fq);
+            query.setFilterQueries(fq);
         }
-        
         
         //Getting results
         ArrayList<ProductBean> beans = new ArrayList<ProductBean>();
@@ -171,8 +158,6 @@ public class Query {
         	SolrDocumentList list =resp.getResults();
         	FOUND = list.getNumFound();
         	searches+=1;
-        	//System.out.println(facet);
-        	//ft.setFacetchoice(new String[facet.size()]);
         	
         	for(int i=0; (i<list.size() && i<list.getNumFound()); i++) {
         		beans.add(createBean(list.get(i)));

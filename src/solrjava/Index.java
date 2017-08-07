@@ -8,7 +8,6 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -26,8 +25,7 @@ public class Index {
 	private int status = 1;
 	
     public Index(SchemaEditor se) throws SolrServerException, IOException {
-    	String urlString = "http://localhost:8900/solr/solrservices";
-    	solr = new HttpSolrClient.Builder(urlString).build();
+    	solr = new HttpSolrClient.Builder(GUI.urlString).build();
     	
     	schema=se;
     }
@@ -77,17 +75,18 @@ public class Index {
 	        status=1;
         }
         catch(RemoteSolrException rse) {
-        	rse.printStackTrace();
         	try {
-	        	String fieldname = rse.getMessage().split("\"")[1];
+        		String fieldname = "";
+	        	try {fieldname = rse.getMessage().split("\'")[1];} catch(Exception e) {fieldname = rse.getMessage().split("\"")[1];}
 	        	if(fieldname.equals("price")) {
 	        		schema.addField(fieldname, "double");
 	        	}
 	        	else if(fieldname.equals("store")) {
 	        		schema.addField(fieldname, "location");
+	        		
 	        	}
 	        	else {
-	        		System.out.println("CREATING RANDOM FIELD");
+	        		System.out.println("ADDING NEW FIELD");
 	        		String[] options = {"string", "float", "location", "date", "boolean"};
 	        		Object data = JOptionPane.showInputDialog(new JFrame(), "Select data type for new field \""+fieldname+"\":", "Creating Field", JOptionPane.OK_CANCEL_OPTION, null, options, options[0]);
 	        		
@@ -145,14 +144,12 @@ public class Index {
 	            if(i%500==0) {
 	            	solr.commit();// periodically flush
 	            }
-	            if(i%1000==0) {
-	            	System.out.println(System.currentTimeMillis());
-	            }
 	        }
 	        status=1;
         }
         catch(RemoteSolrException rse) {
-        	String fieldname = rse.getMessage().split("\"")[1];
+        	String fieldname = "";
+        	try {fieldname = rse.getMessage().split("\'")[1];} catch(Exception e) {fieldname = rse.getMessage().split("\"")[1];}
         	if(fieldname.equals("price")) {
         		schema.addField(fieldname, "double");
         	}

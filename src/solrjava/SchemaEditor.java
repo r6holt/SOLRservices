@@ -4,16 +4,11 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.client.solrj.request.schema.SchemaRequest;
-import org.apache.solr.client.solrj.response.CoreAdminResponse;
 import org.apache.solr.common.params.CoreAdminParams.CoreAdminAction;
-import org.apache.solr.common.util.NamedList;
 
 public class SchemaEditor {
 	
@@ -21,10 +16,9 @@ public class SchemaEditor {
 	private HttpSolrClient load;
 	
 	public SchemaEditor() {
-		String urlString = "http://localhost:8900/solr/solrservices";
-    	solr = new HttpSolrClient.Builder(urlString).build();
+    	solr = new HttpSolrClient.Builder(GUI.urlString).build();
     	
-    	String update = "http://localhost:8900/solr";
+    	String update = GUI.urlString.substring(0, 30);
     	load = new HttpSolrClient.Builder(update).build();
 	}
 	
@@ -52,15 +46,7 @@ public class SchemaEditor {
 	    adminRequest.process(load);
 	}
 	
-	public String deleteField(FieldTracker ft) throws SolrServerException, IOException {
-		String[] options = new String[(ft.numFields()-2)];
-		int count=0;
-		for(int i=0; i<(ft.numFields()); i++) {
-			if(!ft.getField(i).equals("id") && !ft.getField(i).equals("_version_")) options[i-count] = ft.getField(i);
-			else count++;
-		}
-		
-		Object fieldName = JOptionPane.showInputDialog(new JFrame(), "Select the field to be deleted:", "Delete Field", JOptionPane.OK_CANCEL_OPTION, null, options, "Select Field");
+	public String deleteField(String fieldName) throws SolrServerException, IOException {
 		
 		if(fieldName!=null && !fieldName.toString().equals("Select Field")) {
 			SchemaRequest.DeleteField deleteSchemaField = new SchemaRequest.DeleteField(fieldName.toString());

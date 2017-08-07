@@ -71,8 +71,7 @@ public class Server {
 	        
 			
 		try {	
-			String urlString = "http://localhost:8900/solr/solrservices";
-	        HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
+	        HttpSolrClient solr = new HttpSolrClient.Builder(GUI.urlString).build();
 	        
 	        solr.commit();
 		}

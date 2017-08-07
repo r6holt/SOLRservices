@@ -31,6 +31,7 @@ public class FieldTracker {
 	private String sortfield;
 	private String sort;
 	
+	private String locatefield = "";
 	private double lat;
 	private double lon;
 
@@ -39,8 +40,7 @@ public class FieldTracker {
 	//init FieldTracker to keep track of fields and sorting
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public FieldTracker() throws SolrServerException, IOException {
-		String urlString = "http://localhost:8900/solr/solrservices";
-        solr = new HttpSolrClient.Builder(urlString).build();
+        solr = new HttpSolrClient.Builder(GUI.urlString).build();
         
 	    SolrQuery query = new SolrQuery();
 	    query.add(CommonParams.QT, "/schema/fields");
@@ -228,6 +228,21 @@ public class FieldTracker {
 
 	public void setChoices(String s) {
 		this.choices.add(s);
+	}
+
+
+	public void resetChoices() {
+		choices = new ArrayList<String>();
+	}
+
+
+	public String getLocatefield() {
+		return locatefield;
+	}
+
+
+	public void setLocatefield(String locatefield) {
+		this.locatefield = locatefield;
 	}
 	
 	

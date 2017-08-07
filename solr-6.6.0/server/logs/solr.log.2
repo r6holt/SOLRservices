@@ -1,13 +1,13 @@
-2017-08-03 18:08:58.047 INFO  (main) [   ] o.e.j.s.Server jetty-9.3.14.v20161028
-2017-08-03 18:08:58.822 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter  ___      _       Welcome to Apache Solr™ version 6.6.0
-2017-08-03 18:08:58.822 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter / __| ___| |_ _   Starting in standalone mode on port 8900
-2017-08-03 18:08:58.822 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter \__ \/ _ \ | '_|  Install dir: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0
-2017-08-03 18:08:58.837 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter |___/\___/_|_|    Start time: 2017-08-03T18:08:58.823Z
-2017-08-03 18:08:58.838 INFO  (main) [   ] o.a.s.s.StartupLoggingUtils Property solr.log.muteconsole given. Muting ConsoleAppender named CONSOLE
-2017-08-03 18:08:58.857 INFO  (main) [   ] o.a.s.c.SolrResourceLoader Using system property solr.solr.home: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr
-2017-08-03 18:08:58.865 INFO  (main) [   ] o.a.s.c.SolrXmlConfig Loading container configuration from /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solr.xml
-2017-08-03 18:08:59.296 INFO  (main) [   ] o.a.s.u.UpdateShardHandler Creating UpdateShardHandler HTTP client with params: socketTimeout=600000&connTimeout=60000&retry=true
-2017-08-03 18:08:59.429 WARN  (main) [   ] o.a.s.h.a.SystemInfoHandler Unable to resolve canonical hostname for local host, possible DNS misconfiguration. Set the 'solr.dns.prevent.reverse.lookup' sysprop to true on startup to prevent future lookups if DNS can not be fixed.
+2017-08-07 17:06:46.833 INFO  (main) [   ] o.e.j.s.Server jetty-9.3.14.v20161028
+2017-08-07 17:06:47.646 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter  ___      _       Welcome to Apache Solr™ version 6.6.0
+2017-08-07 17:06:47.646 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter / __| ___| |_ _   Starting in standalone mode on port 8900
+2017-08-07 17:06:47.646 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter \__ \/ _ \ | '_|  Install dir: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0
+2017-08-07 17:06:47.662 INFO  (main) [   ] o.a.s.s.SolrDispatchFilter |___/\___/_|_|    Start time: 2017-08-07T17:06:47.646Z
+2017-08-07 17:06:47.662 INFO  (main) [   ] o.a.s.s.StartupLoggingUtils Property solr.log.muteconsole given. Muting ConsoleAppender named CONSOLE
+2017-08-07 17:06:47.682 INFO  (main) [   ] o.a.s.c.SolrResourceLoader Using system property solr.solr.home: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr
+2017-08-07 17:06:47.698 INFO  (main) [   ] o.a.s.c.SolrXmlConfig Loading container configuration from /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solr.xml
+2017-08-07 17:06:48.084 INFO  (main) [   ] o.a.s.u.UpdateShardHandler Creating UpdateShardHandler HTTP client with params: socketTimeout=600000&connTimeout=60000&retry=true
+2017-08-07 17:06:48.236 WARN  (main) [   ] o.a.s.h.a.SystemInfoHandler Unable to resolve canonical hostname for local host, possible DNS misconfiguration. Set the 'solr.dns.prevent.reverse.lookup' sysprop to true on startup to prevent future lookups if DNS can not be fixed.
 java.net.UnknownHostException: DESKTOP-P6N6CRC: DESKTOP-P6N6CRC: Name or service not known
 	at java.net.InetAddress.getLocalHost(InetAddress.java:1505)
 	at org.apache.solr.handler.admin.SystemInfoHandler.initHostname(SystemInfoHandler.java:110)
@@ -70,39 +70,26 @@ Caused by: java.net.UnknownHostException: DESKTOP-P6N6CRC: Name or service not k
 	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1323)
 	at java.net.InetAddress.getLocalHost(InetAddress.java:1500)
 	... 54 more
-2017-08-03 18:08:59.524 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Found 2 core definitions underneath /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr
-2017-08-03 18:08:59.526 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Cores are: [default, solrservices]
-2017-08-03 18:08:59.665 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.SolrResourceLoader [default] Added 51 libs to classloader, from paths: [/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/clustering/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/extraction/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/langid/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/velocity/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/dist]
-2017-08-03 18:08:59.666 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.c.SolrResourceLoader [solrservices] Added 51 libs to classloader, from paths: [/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/clustering/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/extraction/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/langid/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/velocity/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/dist]
-2017-08-03 18:08:59.676 INFO  (main) [   ] o.e.j.s.Server Started @2359ms
-2017-08-03 18:08:59.923 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.c.SolrConfig Using Lucene MatchVersion: 6.6.0
-2017-08-03 18:08:59.923 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.SolrConfig Using Lucene MatchVersion: 6.6.0
-2017-08-03 18:09:00.135 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.s.ManagedIndexSchemaFactory The schema is configured as managed, but managed schema resource managed-schema not found - loading non-managed schema schema.xml instead
-2017-08-03 18:09:00.136 ERROR (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.s.ManagedIndexSchemaFactory Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:748)
-2017-08-03 18:09:00.233 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.s.IndexSchema [default] Schema name=example-data-driven-schema
-2017-08-03 18:09:00.965 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.s.IndexSchema Loaded schema example-data-driven-schema/1.6 with uniqueid field id
-2017-08-03 18:09:01.044 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.CoreContainer Creating SolrCore 'default' using configuration from instancedir /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default, trusted=true
-2017-08-03 18:09:01.078 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.SolrCore solr.RecoveryStrategy.Builder
-2017-08-03 18:09:01.083 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.SolrCore [[default] ] Opening new SolrCore at [/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default], dataDir=[/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default/data/]
-2017-08-03 18:09:01.134 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
-2017-08-03 18:09:01.519 WARN  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.h.a.SystemInfoHandler Unable to resolve canonical hostname for local host, possible DNS misconfiguration. Set the 'solr.dns.prevent.reverse.lookup' sysprop to true on startup to prevent future lookups if DNS can not be fixed.
+2017-08-07 17:06:48.372 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Found 2 core definitions underneath /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr
+2017-08-07 17:06:48.372 INFO  (main) [   ] o.a.s.c.CorePropertiesLocator Cores are: [default, solrservices]
+2017-08-07 17:06:48.464 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.SolrResourceLoader [default] Added 51 libs to classloader, from paths: [/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/clustering/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/extraction/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/langid/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/velocity/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/dist]
+2017-08-07 17:06:48.464 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.c.SolrResourceLoader [solrservices] Added 51 libs to classloader, from paths: [/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/clustering/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/extraction/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/langid/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/contrib/velocity/lib, /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/dist]
+2017-08-07 17:06:48.506 INFO  (main) [   ] o.e.j.s.Server Started @2490ms
+2017-08-07 17:06:48.730 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.SolrConfig Using Lucene MatchVersion: 6.6.0
+2017-08-07 17:06:48.730 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.c.SolrConfig Using Lucene MatchVersion: 6.6.0
+2017-08-07 17:06:49.058 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.s.IndexSchema [solrservices] Schema name=example-basic
+2017-08-07 17:06:49.058 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.s.IndexSchema [default] Schema name=example-data-driven-schema
+2017-08-07 17:06:49.836 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.s.IndexSchema Loaded schema example-data-driven-schema/1.6 with uniqueid field id
+2017-08-07 17:06:49.836 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.s.IndexSchema Loaded schema example-basic/1.6 with uniqueid field id
+2017-08-07 17:06:49.984 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.CoreContainer Creating SolrCore 'default' using configuration from instancedir /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default, trusted=true
+2017-08-07 17:06:49.995 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.c.CoreContainer Creating SolrCore 'solrservices' using configuration from instancedir /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices, trusted=true
+2017-08-07 17:06:50.041 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.c.SolrCore solr.RecoveryStrategy.Builder
+2017-08-07 17:06:50.044 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.SolrCore solr.RecoveryStrategy.Builder
+2017-08-07 17:06:50.046 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.c.SolrCore [[solrservices] ] Opening new SolrCore at [/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices], dataDir=[/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices/data/]
+2017-08-07 17:06:50.046 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.c.SolrCore [[default] ] Opening new SolrCore at [/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default], dataDir=[/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default/data/]
+2017-08-07 17:06:50.129 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
+2017-08-07 17:06:50.129 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
+2017-08-07 17:06:50.585 WARN  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.h.a.SystemInfoHandler Unable to resolve canonical hostname for local host, possible DNS misconfiguration. Set the 'solr.dns.prevent.reverse.lookup' sysprop to true on startup to prevent future lookups if DNS can not be fixed.
 java.net.UnknownHostException: DESKTOP-P6N6CRC: DESKTOP-P6N6CRC: Name or service not known
 	at java.net.InetAddress.getLocalHost(InetAddress.java:1505)
 	at org.apache.solr.handler.admin.SystemInfoHandler.initHostname(SystemInfoHandler.java:110)
@@ -135,648 +122,154 @@ Caused by: java.net.UnknownHostException: DESKTOP-P6N6CRC: Name or service not k
 	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1323)
 	at java.net.InetAddress.getLocalHost(InetAddress.java:1500)
 	... 24 more
-2017-08-03 18:09:01.619 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
-2017-08-03 18:09:01.619 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
-2017-08-03 18:09:01.632 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
-2017-08-03 18:09:01.632 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.u.CommitTracker Soft AutoCommit: disabled
-2017-08-03 18:09:01.704 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.s.SolrIndexSearcher Opening [Searcher@47a14d14[default] main]
-2017-08-03 18:09:01.720 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default/conf
-2017-08-03 18:09:01.742 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
-2017-08-03 18:09:01.753 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=_text_,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
-2017-08-03 18:09:01.758 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.h.c.QueryElevationComponent Loading QueryElevation from: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default/conf/elevate.xml
-2017-08-03 18:09:01.779 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
-2017-08-03 18:09:01.831 INFO  (searcherExecutor-7-thread-1-processing-x:default) [   x:default] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@47a14d14[default] main{ExitableDirectoryReader(UninvertingDirectoryReader())}
-2017-08-03 18:09:01.832 INFO  (searcherExecutor-7-thread-1-processing-x:default) [   x:default] o.a.s.c.QuerySenderListener QuerySenderListener done.
-2017-08-03 18:09:01.832 INFO  (searcherExecutor-7-thread-1-processing-x:default) [   x:default] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
-2017-08-03 18:09:01.837 INFO  (searcherExecutor-7-thread-1-processing-x:default) [   x:default] o.a.s.c.SolrCore [default] Registered new searcher Searcher@47a14d14[default] main{ExitableDirectoryReader(UninvertingDirectoryReader())}
-2017-08-03 18:09:01.838 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.u.UpdateLog Could not find max version in index or recent updates, using new clock 1574734388881522688
-2017-08-03 18:09:01.845 ERROR (coreContainerWorkExecutor-2-thread-1) [   ] o.a.s.c.CoreContainer Error waiting for SolrCore to be created
-java.util.concurrent.ExecutionException: org.apache.solr.common.SolrException: Unable to create core [solrservices]
-	at java.util.concurrent.FutureTask.report(FutureTask.java:122)
-	at java.util.concurrent.FutureTask.get(FutureTask.java:192)
-	at org.apache.solr.core.CoreContainer.lambda$load$6(CoreContainer.java:586)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedRunnable.run(InstrumentedExecutorService.java:176)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Unable to create core [solrservices]
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:935)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	... 5 more
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	... 7 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-2017-08-03 18:09:03.889 INFO  (qtp1205044462-12) [   ] o.a.s.c.TransientSolrCoreCacheDefault Allocating transient cache for 2147483647 transient cores
-2017-08-03 18:09:03.892 ERROR (qtp1205044462-20) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
+2017-08-07 17:06:50.626 WARN  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.h.a.SystemInfoHandler Unable to resolve canonical hostname for local host, possible DNS misconfiguration. Set the 'solr.dns.prevent.reverse.lookup' sysprop to true on startup to prevent future lookups if DNS can not be fixed.
+java.net.UnknownHostException: DESKTOP-P6N6CRC: DESKTOP-P6N6CRC: Name or service not known
+	at java.net.InetAddress.getLocalHost(InetAddress.java:1505)
+	at org.apache.solr.handler.admin.SystemInfoHandler.initHostname(SystemInfoHandler.java:110)
+	at org.apache.solr.handler.admin.SystemInfoHandler.<init>(SystemInfoHandler.java:97)
+	at org.apache.solr.handler.admin.SystemInfoHandler.<init>(SystemInfoHandler.java:91)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.apache.solr.core.SolrResourceLoader.newInstance(SolrResourceLoader.java:637)
+	at org.apache.solr.core.SolrResourceLoader.newInstance(SolrResourceLoader.java:590)
+	at org.apache.solr.core.SolrResourceLoader.newInstance(SolrResourceLoader.java:583)
+	at org.apache.solr.core.SolrCore.createInstance(SolrCore.java:763)
+	at org.apache.solr.core.PluginBag.createPlugin(PluginBag.java:133)
+	at org.apache.solr.core.PluginBag.init(PluginBag.java:269)
+	at org.apache.solr.core.RequestHandlers.initHandlersFromConfig(RequestHandlers.java:130)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:935)
+	at org.apache.solr.core.SolrCore.<init>(SolrCore.java:830)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:920)
 	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
 	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
 	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:09:03.892 ERROR (qtp1205044462-12) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
 	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:09:03.900 INFO  (qtp1205044462-21) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1501783527187} status=0 QTime=12
-2017-08-03 18:09:04.162 INFO  (qtp1205044462-13) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1501783527188} status=0 QTime=273
-2017-08-03 18:09:06.144 INFO  (qtp1205044462-18) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1501783745982} status=0 QTime=1
-2017-08-03 18:09:06.146 ERROR (qtp1205044462-14) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:09:06.158 ERROR (qtp1205044462-20) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:09:06.424 INFO  (qtp1205044462-18) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1501783745983} status=0 QTime=276
-2017-08-03 18:09:09.279 INFO  (qtp1205044462-15) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1501783749134} status=0 QTime=0
-2017-08-03 18:09:09.289 ERROR (qtp1205044462-13) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:09:09.293 ERROR (qtp1205044462-20) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:09:09.550 INFO  (qtp1205044462-19) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1501783749134} status=0 QTime=263
-2017-08-03 18:09:11.605 INFO  (qtp1205044462-17) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1501783751460} status=0 QTime=1
-2017-08-03 18:09:11.606 ERROR (qtp1205044462-21) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:09:11.609 ERROR (qtp1205044462-18) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:09:11.873 INFO  (qtp1205044462-17) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1501783751460} status=0 QTime=264
-2017-08-03 18:15:22.950 INFO  (qtp1205044462-14) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1501784122792} status=0 QTime=1
-2017-08-03 18:15:22.952 ERROR (qtp1205044462-18) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:15:22.955 ERROR (qtp1205044462-14) [   ] o.a.s.s.HttpSolrCall null:org.apache.solr.core.SolrCoreInitializationException: SolrCore 'solrservices' is not available due to init failure: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.CoreContainer.getCore(CoreContainer.java:1313)
-	at org.apache.solr.servlet.HttpSolrCall.init(HttpSolrCall.java:268)
-	at org.apache.solr.servlet.HttpSolrCall.call(HttpSolrCall.java:483)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:361)
-	at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:305)
-	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1691)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:582)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:226)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1180)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:512)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1112)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:213)
-	at org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:119)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.rewrite.handler.RewriteHandler.handle(RewriteHandler.java:335)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:134)
-	at org.eclipse.jetty.server.Server.handle(Server.java:534)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:273)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:95)
-	at org.eclipse.jetty.io.SelectChannelEndPoint$2.run(SelectChannelEndPoint.java:93)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.executeProduceConsume(ExecuteProduceConsume.java:303)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.produceConsume(ExecuteProduceConsume.java:148)
-	at org.eclipse.jetty.util.thread.strategy.ExecuteProduceConsume.run(ExecuteProduceConsume.java:136)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:671)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:589)
-	at java.lang.Thread.run(Thread.java:748)
-Caused by: org.apache.solr.common.SolrException: Could not load conf for core solrservices: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:97)
-	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:916)
-	at org.apache.solr.core.CoreContainer.lambda$load$5(CoreContainer.java:558)
-	at com.codahale.metrics.InstrumentedExecutorService$InstrumentedCallable.call(InstrumentedExecutorService.java:197)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at org.apache.solr.common.util.ExecutorUtil$MDCAwareThreadPoolExecutor.lambda$execute$0(ExecutorUtil.java:229)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	... 1 more
-Caused by: org.apache.solr.common.SolrException: Error loading both non-managed schema 'schema.xml' and managed schema 'managed-schema'
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:213)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:118)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.create(ManagedIndexSchemaFactory.java:45)
-	at org.apache.solr.schema.IndexSchemaFactory.buildIndexSchema(IndexSchemaFactory.java:75)
-	at org.apache.solr.core.ConfigSetService.createIndexSchema(ConfigSetService.java:119)
-	at org.apache.solr.core.ConfigSetService.getConfig(ConfigSetService.java:92)
-	... 8 more
-Caused by: org.apache.solr.core.SolrResourceNotFoundException: Can't find resource 'schema.xml' in classpath or '/mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices'
-	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:406)
-	at org.apache.solr.core.SolrResourceLoader.openSchema(SolrResourceLoader.java:353)
-	at org.apache.solr.schema.ManagedIndexSchemaFactory.readSchemaLocally(ManagedIndexSchemaFactory.java:206)
-	... 13 more
-
-2017-08-03 18:15:23.230 INFO  (qtp1205044462-19) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1501784122793} status=0 QTime=280
-2017-08-03 18:15:29.109 INFO  (qtp1205044462-15) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1501784122792} status=0 QTime=1
-2017-08-03 18:15:29.271 INFO  (qtp1205044462-17) [   x:default] o.a.s.c.S.Request [default]  webapp=/solr path=/replication params={wt=json&command=details&_=1501784129092} status=0 QTime=155
-2017-08-03 18:15:29.271 INFO  (qtp1205044462-20) [   x:default] o.a.s.c.S.Request [default]  webapp=/solr path=/admin/ping params={action=status&wt=json&_=1501784122793&ts=1501784122793} status=503 QTime=147
-2017-08-03 18:15:29.294 INFO  (qtp1205044462-21) [   x:default] o.a.s.c.S.Request [default]  webapp=/solr path=/admin/luke params={numTerms=0&show=index&wt=json&_=1501784122922} status=0 QTime=174
-2017-08-03 18:15:29.545 INFO  (qtp1205044462-12) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1501784122793} status=0 QTime=437
-2017-08-03 18:15:29.940 INFO  (qtp1205044462-13) [   x:default] o.a.s.c.S.Request [default]  webapp=/solr path=/admin/system params={wt=json&_=1501784129091} status=0 QTime=816
-2017-08-03 18:15:30.783 INFO  (qtp1205044462-19) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1501784130683} status=0 QTime=1
-2017-08-03 18:15:30.791 INFO  (qtp1205044462-20) [   x:default] o.a.s.c.S.Request [default]  webapp=/solr path=/admin/luke params={numTerms=0&show=index&wt=json&_=1501784130773} status=0 QTime=1
-2017-08-03 18:15:30.799 INFO  (qtp1205044462-17) [   x:default] o.a.s.c.S.Request [default]  webapp=/solr path=/replication params={wt=json&command=details&_=1501784130773} status=0 QTime=5
-2017-08-03 18:15:30.811 INFO  (qtp1205044462-20) [   x:default] o.a.s.c.S.Request [default]  webapp=/solr path=/admin/ping params={action=status&wt=json&_=1501784130683&ts=1501784130683} status=503 QTime=15
-2017-08-03 18:15:31.277 INFO  (qtp1205044462-15) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1501784130683} status=0 QTime=488
-2017-08-03 18:15:31.288 INFO  (qtp1205044462-18) [   x:default] o.a.s.c.S.Request [default]  webapp=/solr path=/admin/system params={wt=json&_=1501784130773} status=0 QTime=488
-2017-08-03 18:15:34.766 INFO  (qtp1205044462-21) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1501784130683} status=0 QTime=1
-2017-08-03 18:15:35.000 INFO  (qtp1205044462-17) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1501784130683} status=0 QTime=237
-2017-08-03 18:15:36.069 INFO  (qtp1205044462-14) [   x:default] o.a.s.c.S.Request [default]  webapp=/solr path=/select params={q=*:*&indent=on&wt=json&_=1501784134734} hits=0 status=0 QTime=38
+Caused by: java.net.UnknownHostException: DESKTOP-P6N6CRC: Name or service not known
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:928)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1323)
+	at java.net.InetAddress.getLocalHost(InetAddress.java:1500)
+	... 24 more
+2017-08-07 17:06:50.722 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2017-08-07 17:06:50.722 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2017-08-07 17:06:50.723 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2017-08-07 17:06:50.723 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2017-08-07 17:06:50.764 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
+2017-08-07 17:06:50.764 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2017-08-07 17:06:50.764 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
+2017-08-07 17:06:50.764 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2017-08-07 17:06:50.900 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.s.SolrIndexSearcher Opening [Searcher@3318081[default] main]
+2017-08-07 17:06:50.900 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.s.SolrIndexSearcher Opening [Searcher@78d3a949[solrservices] main]
+2017-08-07 17:06:50.915 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default/conf
+2017-08-07 17:06:50.916 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices/conf
+2017-08-07 17:06:50.943 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
+2017-08-07 17:06:50.943 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
+2017-08-07 17:06:50.953 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=_text_,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+2017-08-07 17:06:50.953 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=_text_,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+2017-08-07 17:06:50.958 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.h.c.QueryElevationComponent Loading QueryElevation from: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices/conf/elevate.xml
+2017-08-07 17:06:50.958 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.h.c.QueryElevationComponent Loading QueryElevation from: /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/default/conf/elevate.xml
+2017-08-07 17:06:50.982 INFO  (coreLoadExecutor-6-thread-2) [   x:solrservices] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
+2017-08-07 17:06:50.982 INFO  (coreLoadExecutor-6-thread-1) [   x:default] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
+2017-08-07 17:06:51.033 INFO  (searcherExecutor-8-thread-1-processing-x:default) [   x:default] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@3318081[default] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_0(6.6.0):C3)))}
+2017-08-07 17:06:51.033 INFO  (searcherExecutor-8-thread-1-processing-x:default) [   x:default] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2017-08-07 17:06:51.033 INFO  (searcherExecutor-8-thread-1-processing-x:default) [   x:default] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2017-08-07 17:06:51.033 INFO  (searcherExecutor-8-thread-1-processing-x:default) [   x:default] o.a.s.c.SolrCore [default] Registered new searcher Searcher@3318081[default] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_0(6.6.0):C3)))}
+2017-08-07 17:06:51.033 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@78d3a949[solrservices] main{ExitableDirectoryReader(UninvertingDirectoryReader())}
+2017-08-07 17:06:51.033 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2017-08-07 17:06:51.033 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2017-08-07 17:06:51.033 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.c.SolrCore [solrservices] Registered new searcher Searcher@78d3a949[solrservices] main{ExitableDirectoryReader(UninvertingDirectoryReader())}
+2017-08-07 17:06:55.916 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 start commit{,optimize=false,openSearcher=true,waitSearcher=true,expungeDeletes=false,softCommit=false,prepareCommit=false}
+2017-08-07 17:06:55.932 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 No uncommitted changes. Skipping IW.commit.
+2017-08-07 17:06:55.934 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 end_commit_flush
+2017-08-07 17:06:55.935 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.u.p.LogUpdateProcessorFactory [solrservices]  webapp=/solr path=/update params={waitSearcher=true&commit=true&softCommit=false&wt=javabin&version=2}{commit=} 0 20
+2017-08-07 17:06:55.986 INFO  (qtp1205044462-19) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=6
+2017-08-07 17:06:56.103 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:06:56.872 INFO  (qtp1205044462-16) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:06:56.935 INFO  (qtp1205044462-12) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=cat&facet.field=features&facet.field=includes&facet.field=manu&facet.field=name&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=0 status=0 QTime=56
+2017-08-07 17:06:57.003 INFO  (qtp1205044462-18) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:07:01.574 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.s.ManagedIndexSchema Upgraded to managed schema at /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices/conf/managed-schema
+2017-08-07 17:07:01.659 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.u.p.LogUpdateProcessorFactory [solrservices]  webapp=/solr path=/update params={wt=xml&version=2.2}{add=[9885A004 (1575092875787501568)]} 0 267
+2017-08-07 17:07:01.674 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 start commit{,optimize=false,openSearcher=true,waitSearcher=true,expungeDeletes=false,softCommit=false,prepareCommit=false}
+2017-08-07 17:07:01.674 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.u.SolrIndexWriter Calling setCommitData with IW:org.apache.solr.update.SolrIndexWriter@10dc07fc
+2017-08-07 17:07:01.845 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.s.SolrIndexSearcher Opening [Searcher@4b6704a[solrservices] main]
+2017-08-07 17:07:01.845 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@4b6704a[solrservices] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_352(6.6.0):C1)))}
+2017-08-07 17:07:01.845 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2017-08-07 17:07:01.845 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.c.SolrCore [solrservices] Registered new searcher Searcher@4b6704a[solrservices] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_352(6.6.0):C1)))}
+2017-08-07 17:07:01.845 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 end_commit_flush
+2017-08-07 17:07:01.845 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.u.p.LogUpdateProcessorFactory [solrservices]  webapp=/solr path=/update params={waitSearcher=true&commit=true&softCommit=false&wt=xml&version=2.2}{commit=} 0 181
+2017-08-07 17:07:03.098 INFO  (qtp1205044462-21) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:07:03.126 INFO  (qtp1205044462-15) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=cat&facet.field=features&facet.field=includes&facet.field=manu&facet.field=name&facet.field=weight&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=1 status=0 QTime=20
+2017-08-07 17:07:03.322 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:07:10.725 INFO  (qtp1205044462-21) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:07:10.810 INFO  (qtp1205044462-18) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*canon*&facet.field=_root_&facet.field=cat&facet.field=features&facet.field=includes&facet.field=manu&facet.field=name&facet.field=weight&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=0 status=0 QTime=77
+2017-08-07 17:07:14.433 INFO  (qtp1205044462-19) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:07:14.435 INFO  (qtp1205044462-15) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=cat&facet.field=features&facet.field=includes&facet.field=manu&facet.field=name&facet.field=weight&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=1 status=0 QTime=2
+2017-08-07 17:07:19.286 INFO  (qtp1205044462-21) [   ] o.a.s.c.TransientSolrCoreCacheDefault Allocating transient cache for 2147483647 transient cores
+2017-08-07 17:07:19.727 INFO  (qtp1205044462-15) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={indexInfo=false&wt=json&_=1502125639576} status=0 QTime=1
+2017-08-07 17:07:19.803 INFO  (qtp1205044462-18) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/info/system params={wt=json&_=1502125639577} status=0 QTime=76
+2017-08-07 17:07:25.250 INFO  (qtp1205044462-15) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={q=text:*&indent=on&wt=json&_=1502125639685} hits=0 status=0 QTime=4
+2017-08-07 17:07:31.005 INFO  (qtp1205044462-21) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={q=_text_:*&indent=on&wt=json&_=1502125639685} hits=0 status=0 QTime=0
+2017-08-07 17:09:02.054 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 start commit{,optimize=false,openSearcher=true,waitSearcher=true,expungeDeletes=false,softCommit=false,prepareCommit=false}
+2017-08-07 17:09:02.054 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 No uncommitted changes. Skipping IW.commit.
+2017-08-07 17:09:02.054 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 end_commit_flush
+2017-08-07 17:09:02.054 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.u.p.LogUpdateProcessorFactory [solrservices]  webapp=/solr path=/update params={waitSearcher=true&commit=true&softCommit=false&wt=javabin&version=2}{commit=} 0 6
+2017-08-07 17:09:02.108 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:09:02.227 INFO  (qtp1205044462-12) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:09:02.918 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:09:02.935 INFO  (qtp1205044462-21) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=cat&facet.field=features&facet.field=includes&facet.field=manu&facet.field=name&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=1 status=0 QTime=8
+2017-08-07 17:09:03.289 INFO  (qtp1205044462-15) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:09:09.894 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=2
+2017-08-07 17:09:09.925 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*6.4*&facet.field=_root_&facet.field=cat&facet.field=features&facet.field=includes&facet.field=manu&facet.field=name&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=0 status=0 QTime=20
+2017-08-07 17:09:14.580 INFO  (qtp1205044462-18) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:09:14.611 INFO  (qtp1205044462-16) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*canon*&facet.field=_root_&facet.field=cat&facet.field=features&facet.field=includes&facet.field=manu&facet.field=name&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=0 status=0 QTime=23
+2017-08-07 17:09:16.445 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:09:16.460 INFO  (qtp1205044462-21) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=cat&facet.field=features&facet.field=includes&facet.field=manu&facet.field=name&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=1 status=0 QTime=5
+2017-08-07 17:09:22.370 INFO  (qtp1205044462-19) [   x:solrservices] o.a.s.s.ManagedIndexSchema Upgraded to managed schema at /mnt/c/Users/ryan.holt/Documents/workspace/SOLRservices/solr-6.6.0/server/solr/solrservices/conf/managed-schema
+2017-08-07 17:09:22.389 INFO  (qtp1205044462-19) [   x:solrservices] o.a.s.u.p.LogUpdateProcessorFactory [solrservices]  webapp=/solr path=/update params={wt=xml&version=2.2}{add=[thisismyid (1575093023422808064)]} 0 87
+2017-08-07 17:09:22.405 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 start commit{,optimize=false,openSearcher=true,waitSearcher=true,expungeDeletes=false,softCommit=false,prepareCommit=false}
+2017-08-07 17:09:22.405 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.u.SolrIndexWriter Calling setCommitData with IW:org.apache.solr.update.SolrIndexWriter@10dc07fc
+2017-08-07 17:09:22.507 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.s.SolrIndexSearcher Opening [Searcher@30c01959[solrservices] main]
+2017-08-07 17:09:22.507 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@30c01959[solrservices] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_352(6.6.0):C1) Uninverting(_353(6.6.0):C1)))}
+2017-08-07 17:09:22.507 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2017-08-07 17:09:22.507 INFO  (searcherExecutor-7-thread-1-processing-x:solrservices) [   x:solrservices] o.a.s.c.SolrCore [solrservices] Registered new searcher Searcher@30c01959[solrservices] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_352(6.6.0):C1) Uninverting(_353(6.6.0):C1)))}
+2017-08-07 17:09:22.507 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 end_commit_flush
+2017-08-07 17:09:22.507 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.u.p.LogUpdateProcessorFactory [solrservices]  webapp=/solr path=/update params={waitSearcher=true&commit=true&softCommit=false&wt=xml&version=2.2}{commit=} 0 113
+2017-08-07 17:09:23.697 INFO  (qtp1205044462-16) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:09:23.765 INFO  (qtp1205044462-15) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=authors&facet.field=cat&facet.field=features&facet.field=inStock&facet.field=includes&facet.field=isbn&facet.field=price&facet.field=subject&facet.field=text&facet.field=title&facet.field=yearpub&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=2 status=0 QTime=56
+2017-08-07 17:09:23.866 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:09:32.538 INFO  (qtp1205044462-21) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:09:32.574 INFO  (qtp1205044462-16) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*thisismyid*&facet.field=_root_&facet.field=authors&facet.field=cat&facet.field=features&facet.field=inStock&facet.field=includes&facet.field=isbn&facet.field=price&facet.field=subject&facet.field=text&facet.field=title&facet.field=yearpub&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=0 status=0 QTime=29
+2017-08-07 17:09:34.067 INFO  (qtp1205044462-15) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:09:34.076 INFO  (qtp1205044462-12) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=authors&facet.field=cat&facet.field=features&facet.field=inStock&facet.field=includes&facet.field=isbn&facet.field=price&facet.field=subject&facet.field=text&facet.field=title&facet.field=yearpub&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=2 status=0 QTime=3
+2017-08-07 17:09:40.641 INFO  (qtp1205044462-18) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:09:40.675 INFO  (qtp1205044462-21) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*and*&facet.field=_root_&facet.field=authors&facet.field=cat&facet.field=features&facet.field=inStock&facet.field=includes&facet.field=isbn&facet.field=price&facet.field=subject&facet.field=text&facet.field=title&facet.field=yearpub&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=0 status=0 QTime=10
+2017-08-07 17:09:42.501 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:09:42.521 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=authors&facet.field=cat&facet.field=features&facet.field=inStock&facet.field=includes&facet.field=isbn&facet.field=price&facet.field=subject&facet.field=text&facet.field=title&facet.field=yearpub&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=2 status=0 QTime=8
+2017-08-07 17:10:43.687 INFO  (qtp1205044462-16) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 start commit{,optimize=false,openSearcher=true,waitSearcher=true,expungeDeletes=false,softCommit=false,prepareCommit=false}
+2017-08-07 17:10:43.687 INFO  (qtp1205044462-16) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 No uncommitted changes. Skipping IW.commit.
+2017-08-07 17:10:43.687 INFO  (qtp1205044462-16) [   x:solrservices] o.a.s.u.DirectUpdateHandler2 end_commit_flush
+2017-08-07 17:10:43.687 INFO  (qtp1205044462-16) [   x:solrservices] o.a.s.u.p.LogUpdateProcessorFactory [solrservices]  webapp=/solr path=/update params={waitSearcher=true&commit=true&softCommit=false&wt=javabin&version=2}{commit=} 0 3
+2017-08-07 17:10:43.738 INFO  (qtp1205044462-12) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:10:43.857 INFO  (qtp1205044462-18) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:10:44.633 INFO  (qtp1205044462-21) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:10:44.668 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=authors&facet.field=cat&facet.field=features&facet.field=includes&facet.field=location&facet.field=manu&facet.field=name&facet.field=publisher&facet.field=subject&facet.field=title&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=2 status=0 QTime=5
+2017-08-07 17:10:45.078 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:10:51.260 INFO  (qtp1205044462-20) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=1
+2017-08-07 17:10:51.297 INFO  (qtp1205044462-12) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*bgvjh*&facet.field=_root_&facet.field=authors&facet.field=cat&facet.field=features&facet.field=includes&facet.field=location&facet.field=manu&facet.field=name&facet.field=publisher&facet.field=subject&facet.field=title&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=0 status=0 QTime=13
+2017-08-07 17:10:54.435 INFO  (qtp1205044462-16) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:10:54.470 INFO  (qtp1205044462-17) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*and*&facet.field=_root_&facet.field=authors&facet.field=cat&facet.field=features&facet.field=includes&facet.field=location&facet.field=manu&facet.field=name&facet.field=publisher&facet.field=subject&facet.field=title&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=0 status=0 QTime=16
+2017-08-07 17:10:56.426 INFO  (qtp1205044462-14) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/schema/fields params={qt=/schema/fields&wt=javabin&version=2} status=0 QTime=0
+2017-08-07 17:10:56.432 INFO  (qtp1205044462-18) [   x:solrservices] o.a.s.c.S.Request [solrservices]  webapp=/solr path=/select params={facet.query=price:[0+TO+9.99]&facet.query=price:[10+TO+24.99]&facet.query=price:[25+TO+49.99]&facet.query=price:[50+TO+99.99]&facet.query=price:[100+TO+199.99]&facet.query=price:[200+TO+499.99]&facet.query=price:[500+TO+*]&q=*&facet.field=_root_&facet.field=authors&facet.field=cat&facet.field=features&facet.field=includes&facet.field=location&facet.field=manu&facet.field=name&facet.field=publisher&facet.field=subject&facet.field=title&start=0&sort=id+asc&fq=&rows=10&facet=true&wt=xml&version=2.2} hits=2 status=0 QTime=2
+2017-08-07 17:11:03.471 INFO  (ShutdownMonitor) [   ] o.a.s.c.CoreContainer Shutting down CoreContainer instance=388357135
+2017-08-07 17:11:03.471 INFO  (ShutdownMonitor) [   ] o.a.s.m.SolrMetricManager Closing metric reporters for: solr.node
+2017-08-07 17:11:03.471 INFO  (ShutdownMonitor) [   ] o.a.s.m.SolrMetricManager Closing metric reporters for: solr.jvm
+2017-08-07 17:11:03.471 INFO  (ShutdownMonitor) [   ] o.a.s.m.SolrMetricManager Closing metric reporters for: solr.jetty
+2017-08-07 17:11:03.471 INFO  (coreCloseExecutor-18-thread-1) [   x:solrservices] o.a.s.c.SolrCore [solrservices]  CLOSING SolrCore org.apache.solr.core.SolrCore@34a54a9d
+2017-08-07 17:11:03.471 INFO  (coreCloseExecutor-18-thread-2) [   x:default] o.a.s.c.SolrCore [default]  CLOSING SolrCore org.apache.solr.core.SolrCore@593ac9f1
+2017-08-07 17:11:03.541 INFO  (coreCloseExecutor-18-thread-1) [   x:solrservices] o.a.s.m.SolrMetricManager Closing metric reporters for: solr.core.solrservices
+2017-08-07 17:11:03.541 INFO  (coreCloseExecutor-18-thread-2) [   x:default] o.a.s.m.SolrMetricManager Closing metric reporters for: solr.core.default
