@@ -60,4 +60,8 @@ public class ProductBean {
 		fields.add(n);
 		values.add(v);
 	}
+	
+	public void setValue(int i, Object o) {
+		values.set(i, o);
+	}
 }

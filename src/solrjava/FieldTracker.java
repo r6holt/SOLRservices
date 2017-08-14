@@ -67,6 +67,10 @@ public class FieldTracker {
 	public void update() throws SolrServerException, IOException {
 		SolrQuery query = new SolrQuery();
 		fields.clear();
+		datatypes.clear();
+		price=false;
+		cat=false;
+		//facetchoice = null;
 		
 	    query.add(CommonParams.QT, "/schema/fields");
 	    QueryResponse response = solr.query(query);
@@ -245,5 +249,8 @@ public class FieldTracker {
 		this.locatefield = locatefield;
 	}
 	
+	public ArrayList<String> getFields() {
+		return fields;
+	}
 	
 }

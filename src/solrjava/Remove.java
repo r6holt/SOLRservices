@@ -9,25 +9,15 @@ import org.apache.solr.client.solrj.impl.XMLResponseParser;
 public class Remove {
 	public Remove() {}
 	
-	public int acceptRemove() throws SolrServerException, IOException {
-		String urlString = "http://localhost:8900/solr/solrservices";
-        HttpSolrClient solr = new HttpSolrClient.Builder(urlString).build();
+	public void acceptRemove(String id) throws SolrServerException, IOException {
+        HttpSolrClient solr = new HttpSolrClient.Builder(GUI.urlString).build();
         solr.setParser(new XMLResponseParser());
         
-        String index = (String)JOptionPane.showInputDialog(
-                new JFrame("Remove"), "Select the ID you would like to remove:",
-                "Remove",
-                JOptionPane.PLAIN_MESSAGE);
-        
-        if(index==null || index.trim().equals("")) {
-        	return 0;
+        if(solr.getById(id)!=null) {
+        	solr.deleteById(id);
+        	
+        	solr.commit();
+            JOptionPane.showMessageDialog(new JFrame(), "Document with id:"+id+" has been deleted...");
         }
-        else if(solr.getById(index)==null) {
-        	return -1;
-        }
-        solr.deleteById(index);
-        
-        solr.commit();
-        return 1;
 	}
 }

@@ -3,7 +3,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="images"/>
-	<classpathentry kind="src" path="SOLRJ"/>
 	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/workspace/SOLRservices/jars/bcmail-jdk15-1.45.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/workspace/SOLRservices/jars/commons-io-2.5.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ryan.holt/Documents/workspace/SOLRservices/jars/commons-math3-3.4.1.jar"/>

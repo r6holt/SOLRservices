@@ -92,6 +92,12 @@ public class Query {
         	else if(ft.getCategory().equals("price")) {
         		query.setQuery("price:"+q);
         	}
+        	else if(ft.getDatatypes().get(ft.getFields().indexOf(ft.getCategory())).equals("location")) {
+        		query.setQuery("{!geofilt}");
+        		query.set("sfield", ft.getCategory());
+        		query.set("pt", q);
+        		query.set("d", 100);
+        	}
         	else {
         		query.setQuery(ft.getCategory()+":*"+q+"*");
         	}
@@ -146,8 +152,9 @@ public class Query {
         	ft.resetChoices();
         }
         else {
-            query.setFilterQueries(fq);
+            query.set("fq", fq);
         }
+        
         
         //Getting results
         ArrayList<ProductBean> beans = new ArrayList<ProductBean>();
@@ -165,13 +172,7 @@ public class Query {
         	
         	return beans;
         }
-        catch (RemoteSolrException e1) {
-        	e1.printStackTrace();
-        	return beans;
-        }
         catch (Exception e) {
-        	System.out.println("ERROR");
-        	e.printStackTrace();
         	return beans; 
         }
         
