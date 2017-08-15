@@ -65,10 +65,11 @@ public class GUI {
 	// search
 	private JPanel north = new JPanel(new FlowLayout());
 	private JTextField searchbar = new JTextField(45);
-	private JButton search = new JButton("      Search      ");
-	private JButton addDoc = new JButton("Upload File");
-	private JButton refresh = new JButton("Empty");
-	private JButton examples = new JButton("Examples");
+	private JButton search = new JButton("      SEARCH      ");
+	private JButton addDoc = new JButton();//"Upload File");
+	private JButton refresh = new JButton();//"Empty");
+	private JButton examples = new JButton();//"Examples");
+	private JButton newfile = new JButton();
 	private JComboBox<String> querycat = new JComboBox<String>();
 	
 	// schema management
@@ -122,6 +123,7 @@ public class GUI {
 	// fonts
 	private Font headers = new Font("Serif", Font.ITALIC, 22);
 	private Font labels = new Font("Serif", Font.ITALIC, 18);
+	private Font labels2 = new Font("Serif", Font.PLAIN, 18);
 
 	
 	
@@ -129,7 +131,6 @@ public class GUI {
 	// constructor for GUI
 	public GUI() throws SolrServerException, IOException {
 		System.setProperty("java.awt.headless", "true");
-		//JFrame.setDefaultLookAndFeelDecorated(true);
 		
 		int status;
 		setup();
@@ -148,7 +149,7 @@ public class GUI {
 		ft = new FieldTracker();
 		
 		//init GUI functions
-		setImage();
+		setIcons();
 		startup();
 		management();
 		menubar();
@@ -160,11 +161,9 @@ public class GUI {
 		initSearch();
 		
 		//Enter now works with search button
-		frame.getRootPane().setDefaultButton(search);
-		frame.setVisible(false);
-		frame.setVisible(true);
-		
 		search.doClick();
+		
+		frame.getRootPane().setDefaultButton(search);
 	}
 
 	// setup for the GUI frame
@@ -172,19 +171,23 @@ public class GUI {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(2000, 1300));
 		frame.setMinimumSize(new Dimension(2000, 1300));
-		//frame.setExtendedState(frame.MAXIMIZED_BOTH);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
 		frame.setVisible(true);
 	}
 	
-	public void setImage() {
+	//creates SOLR logo and sets icon
+	public void setIcons() {
 		BufferedImage logo = null;
 		BufferedImage image = null;
 		try {
 			logo = ImageIO.read(new File("images"+File.separator+"solr.jpg"));
 			image = ImageIO.read(new File("images"+File.separator+"solr.png"));
+			addDoc.setIcon(new ImageIcon(ImageIO.read(new File("images"+File.separator+"upload.png"))));
+			refresh.setIcon(new ImageIcon(ImageIO.read(new File("images"+File.separator+"empty.png"))));
+			examples.setIcon(new ImageIcon(ImageIO.read(new File("images"+File.separator+"examples.png"))));
+			newfile.setIcon(new ImageIcon(ImageIO.read(new File("images"+File.separator+"new.png"))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -214,6 +217,7 @@ public class GUI {
 		frame.setIconImage(logo);
 	}
 	
+	//startup image with progress bar
 	public void startup() {
 		middle.add(imgholder);
 		middle.add(progress);
@@ -221,6 +225,7 @@ public class GUI {
 		frame.setVisible(true);
 	}
 	
+	//runs progress bar while app boots up
 	public void startup2() {
 		try {
 			for(int i=0; i<15; i++) {
@@ -237,6 +242,7 @@ public class GUI {
 				e.printStackTrace();
 			}
 		
+		// add content to Jframe
 		frame.remove(middle);
 		frame.add(west, BorderLayout.WEST);
 		frame.add(north, BorderLayout.NORTH);
@@ -245,38 +251,44 @@ public class GUI {
 	}
 
 	public void addComponents() {
+		JLabel header1 = new JLabel("----------------------Sort----------------------");
+		JLabel header2 = new JLabel("---------------------Refine---------------------");
 		Font font1 = new Font("SansSerif", Font.PLAIN, 26);
 		Font font2 = new Font("SansSerif", Font.ITALIC, 22);
 		
-		// setup components
+		// setup component styling
+		displayFound.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		displayPan.setLayout(new MigLayout());
+		searchbar.setFont(font1);
+		search.setFont(new Font("Serif", Font.BOLD, 24));
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroll.setPreferredSize(new Dimension(1610, 1055));
 		scroll.setMinimumSize(new Dimension(1610, 1055));
 		scroll.getVerticalScrollBar().setPreferredSize(new Dimension(32, 0));
 		scroll.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 20));
-		searchbar.setFont(font1);
-		querycat.setFont(font2);
-		search.setFont(new Font("Serif", Font.BOLD, 20));
+		refinescroll.setPreferredSize(new Dimension(355, 710));
+		refinescroll.setMinimumSize(new Dimension(355, 710));
+		refinescroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		refinescroll.setBorder(null);
 		sort.setLayout(new MigLayout());
 		west.setLayout(new MigLayout());
 		east.setLayout(new MigLayout());
 		west.setPreferredSize(new Dimension(370, 1250));
 		sort.setPreferredSize(new Dimension(260, 250));
-		displayFound.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		JLabel header2 = new JLabel("   ");//"--------Search Results---------------");
-		header2.setFont(headers);
 		progress.setPreferredSize(new Dimension(250, 20));
 		progress.setForeground(Color.green);
 		progress.setBackground(Color.white);
-		refinescroll.setPreferredSize(new Dimension(355, 710));
-		refinescroll.setMinimumSize(new Dimension(355, 710));
-		refinescroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		refinescroll.setBorder(null);
 		menu.setBorder(BorderFactory.createLineBorder(Color.black));
 		menu.setPreferredSize(new Dimension(1610, 50));
+		querycat.setMaximumSize(new Dimension(160, 45));
+		querycat.setPreferredSize(new Dimension(160, 45));
+		querycat.setForeground(Color.black);
+		querycat.setBackground(Color.white);
+		querycat.setFont(font2);
+		header1.setFont(headers);
+		header2.setFont(headers);
 
-		// add components to the frame 
+		// add components to panels
 		pages.add(new JLabel("                                                                                                                                                       "), "cell 0 0");
 		pages.add(displayFound); 
 		pages.add(prevPage);
@@ -287,32 +299,28 @@ public class GUI {
 		north.add(examples);
 		north.add(addDoc);
 		north.add(refresh);
-		north.add(new JLabel("                                                          "));
+		north.add(newfile);
+		north.add(new JLabel("                                         "));
 		north.add(querycat);
 		north.add(searchbar);
 		north.add(search); 
-		north.add(new JLabel("       "
-				+ "                              "));
-		JLabel header1 = new JLabel("----------------------Sort----------------------");
-		header1.setFont(headers);
+		north.add(new JLabel("                                "));
 		west.add(imgholder, "span");
 		west.add(header1, "span");
 		west.add(sort, "span");
-		JLabel lrefine = new JLabel("---------------------Refine---------------------");
-		lrefine.setFont(headers);
-		west.add(lrefine, "span");
+		west.add(header2, "span");
 		west.add(refinescroll, "span");
-		east.add(header2, "span");
+		east.add(new JLabel("   "), "span");
 		east.add(menu, "span");
 		east.add(scroll, "span");
 		east.add(pages, "span");
 
-		// fit frame to component size and reveal
+		// reveal window
 		frame.setVisible(true);
 	}
 
+	// initializes search button
 	public void initSearch() {
-		// adds listener to the "Search" button
 		search.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -340,13 +348,16 @@ public class GUI {
 					updateDisplay();
 					reset=true;
 				}
+				// disables double clicking
 				lastSearch = System.currentTimeMillis();
 			}
 		});
 	}
 
 	public void management() {
-		// when add doc is clicked:
+		
+		// when add doc is clicked
+		addDoc.setFont(labels2);
 		addDoc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -360,9 +371,7 @@ public class GUI {
 				fc.showOpenDialog(fc);
 				File[] f = fc.getSelectedFiles();
 				
-				//index selected file if it is correct file type
-				if (f.length != 0) {}
-				else {
+				if (f.length != 0) {
 					try {
 						index.acceptDocument(f);
 						newDoc=true;
@@ -376,50 +385,180 @@ public class GUI {
 			}
 		});
 
-		// when refresh is clicked:
+		// when refresh is clicked
+		refresh.setFont(labels2);
 		refresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ft.setFacetchoice(null);
-				startProgress();
-				//creates refresh object to delete all docs and clear beans
-				try {
-					removeAll.deleteAll();
-					if(results!=null) {
-						results.clear();
+				int answer = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure you want to \ndelete all documents?");
+				
+				if(answer==0) {
+					ft.setFacetchoice(null);
+					startProgress();
+					//creates refresh object to delete all docs and clear beans
+					try {
+						removeAll.deleteAll();
+						if(results!=null) {
+							results.clear();
+						}
+						ft.update();
+						
+					} catch (SolrServerException | IOException e1) {
+						e1.printStackTrace();
 					}
-					ft.update();
-					
-				} catch (SolrServerException | IOException e1) {
-					e1.printStackTrace();
+					finishProgress(1);
+					search.doClick();
 				}
-				finishProgress(1);
-				search.doClick();
 			}
 		});
 
-		// when Index Examples is clicked:
+		// when Examples is clicked
+		examples.setFont(labels2);
 		examples.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ft.setFacetchoice(null);
-				startProgress();
+				int answer = JOptionPane.showConfirmDialog(new JFrame(), "Do you want to add the example documents?");
 				
-				try {
-
-					index.exampleDocs();
-					newDoc=true;
-				
-				} catch (SolrServerException | IOException e1) {
-					e1.printStackTrace();
+				if(answer == 0) {
+					ft.setFacetchoice(null);
+					startProgress();
+					
+					try {
+	
+						index.exampleDocs();
+						newDoc=true;
+					
+					} catch (SolrServerException | IOException e1) {
+						e1.printStackTrace();
+					}
+					finishProgress(1);
+					search.doClick();
 				}
-				finishProgress(1);
-				search.doClick();
+			}
+		});
+		
+		// when newFile is clicked
+		newfile.setFont(labels2);
+		newfile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<JTextField> fls = new ArrayList<JTextField>();
+				ArrayList<JTextField> vls = new ArrayList<JTextField>();
+				
+				JFrame creator = new JFrame("Create New File");
+				JPanel fields = new JPanel(new MigLayout());
+				JScrollPane fieldscroll = new JScrollPane(fields);
+				JButton more = new JButton("More Fields");
+				JButton create = new JButton("Create");
+				JLabel header = new JLabel("Add fields to create a new document!");
+				JLabel header1 = new JLabel("   Field");
+				JLabel header2 = new JLabel("               Value");
+				Font f = new Font("Serif", Font.PLAIN, 18);
+				
+				frame.setEnabled(false);
+				creator.setSize(500, 650);
+				creator.setResizable(false);
+				creator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				creator.setAlwaysOnTop(true);
+				creator.setLayout(new MigLayout());
+				creator.setLocation(frame.getX()+700, frame.getY()+350);
+				fieldscroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				fieldscroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+				fieldscroll.setPreferredSize(new Dimension(500, 550));
+				fieldscroll.setMaximumSize(new Dimension(500, 550));
+				
+				header1.setFont(f);
+				header2.setFont(f);
+				fields.add(header1);
+				fields.add(header2, "span");
+				
+				for(int i=0; i<3; i++) {
+					JTextField f1 = new JTextField(10);
+					JTextField v1 = new JTextField(20);
+					
+					if(i==0) {
+						f1.setText("id");
+						f1.setEditable(false);
+					}
+					
+					fls.add(f1);
+					vls.add(v1);
+					
+					fields.add(f1);
+					fields.add(v1,  "wrap");
+				}
+				
+				more.setFont(f);
+				fields.add(more, "span");
+				
+				more.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						fields.remove(more);
+						
+						JTextField f1 = new JTextField(10);
+						JTextField v1 = new JTextField(20);
+						
+						fls.add(f1);
+						vls.add(v1);
+						
+						fields.add(f1);
+						fields.add(v1,  "wrap");
+						fields.add(more);
+						creator.setVisible(true);
+					}
+				});
+				
+				create.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if(vls.get(0).getText().equals("")) {
+							creator.setAlwaysOnTop(false);
+							JOptionPane.showMessageDialog(new JFrame(), "Must include ID!");
+							creator.setAlwaysOnTop(true);
+						}
+						else {
+							frame.setEnabled(true);
+							creator.dispose();
+							
+							for(int i=0; i<fls.size(); i++) {
+								if(fls.get(i).getText().equals("")) {fls.remove(i); vls.remove(i);}
+								else if(vls.get(i).getText().equals("")) {fls.remove(i); vls.remove(i);}
+							}
+							
+							ProductBean b = new ProductBean(vls.get(0).getText());
+							for(int i=1; i<fls.size(); i++) {
+								b.addField(fls.get(i).getText(), vls.get(i).getText());
+							}
+							
+							index.newFile(b);
+						}
+					}
+				});
+				
+				header.setFont(f);
+				create.setFont(f);
+				creator.add(header, "span");
+				creator.add(fieldscroll, "span");
+				creator.add(new JLabel());
+				creator.add(create, "span");
+				
+				creator.setVisible(true);
+				
+				creator.addWindowListener(new WindowListener() {
+					@Override public void windowActivated(WindowEvent arg0) {}
+					@Override
+					public void windowClosed(WindowEvent arg0) {
+						frame.setEnabled(true);
+					}@Override public void windowClosing(WindowEvent arg0) {} @Override public void windowDeactivated(WindowEvent arg0) {} @Override public void windowDeiconified(WindowEvent arg0) {}
+					@Override public void windowIconified(WindowEvent arg0) {} @Override public void windowOpened(WindowEvent arg0) {}
+					
+				});
 			}
 		});
 	}
 	
-	//initializes schema maintenance menu bar
+	//initializes schema maintenance panel
 	public void menubar() {	
 		menu.removeAll();
 		menu.setVisible(false);
@@ -487,11 +626,13 @@ public class GUI {
 					try {
 						schemaEditor.addField(nfield.getText(), dataType.getSelectedItem().toString());
 						ft.update();
+						
+						//returns all results from last search
 						results = query.acceptQuery(searchbar.getText(), 0, (int)query.getFOUND());
-					} catch (SolrServerException | IOException e1) {
-						e1.printStackTrace();
-					}
+						
+					} catch (SolrServerException | IOException e1) { JOptionPane.showMessageDialog(new JFrame(), "Error adding new field.");}
 					
+					//adds field and value to docs in the current search
 					if(cb.isSelected() && results!=null) {
 						if(dataType.getSelectedItem().equals("date")) {
 							String[] parts = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime().toString().split(" ");
@@ -507,9 +648,8 @@ public class GUI {
 						
 						try {
 							index.reload(results);
-						} catch (SolrServerException | IOException e1) {
-							e1.printStackTrace();
-						}
+						} catch (SolrServerException | IOException e1) {}
+						
 						ft.setFacetchoice(null);
 					}
 					search.doClick();
@@ -518,7 +658,7 @@ public class GUI {
 					finishProgress(-1);
 				}
 				
-				
+				// reset menu
 				fill.setText("");
 				nfield.setText("");
 				cb.setSelected(false);
@@ -530,10 +670,15 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				startProgress();
+				
+				// finds the field to be deleted
 				String delete = "Select Field";
 				if(deleteoptions.getSelectedIndex()!=0) delete = delop.get(deleteoptions.getSelectedIndex()-1);
+				
+				//does nothing if a field is not selected
 				if(!deleteoptions.getSelectedItem().equals("Select Field")) {
 					try {
+						// prepares query to return only results with selected field
 						ft.update();
 						searchbar.setText("");
 						clearfacet.doClick();
@@ -541,10 +686,9 @@ public class GUI {
 						
 						results = query.acceptQuery("", 0, (int)query.getFOUND());
 						schemaEditor.deleteField(delete);
-					} catch (SolrServerException | IOException e1) {
-						e1.printStackTrace();
-					}
+					} catch (SolrServerException | IOException e1) {JOptionPane.showMessageDialog(new JFrame(), "Error deleting field.");}
 					
+					// deletes field from all docs containing the field
 					if(results!=null) {
 						try {
 							index.reload(results, delete);
@@ -641,11 +785,6 @@ public class GUI {
 		
 		prevPage.setEnabled(false);
 		nextPage.setEnabled(false);
-		
-		querycat.setMaximumSize(new Dimension(160, 37));
-		querycat.setPreferredSize(new Dimension(160, 37));
-		querycat.setForeground(Color.black);
-		querycat.setBackground(Color.white);
 	}
 	
 	//set up for sort panel on left hand side
@@ -738,7 +877,7 @@ public class GUI {
 				//map.setSize(600,  600);
 				map.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				map.setAlwaysOnTop(true);
-				map.setLocation(400,  300);
+				map.setLocation(frame.getX()+350,  frame.getY()+200);
 				map.setResizable(false);
 				frame.setEnabled(false);
 				map.setCursor(Frame.CROSSHAIR_CURSOR);
@@ -1285,10 +1424,11 @@ public class GUI {
 		//adds a button and text field for each result found
 		for (ProductBean bean: results) {
 			JPanel buttons = new JPanel(new MigLayout());
-			buttons.setFont(labels);
+			//buttons.setFont(labels);
 			
 			JButton dload = new JButton("Download");
 			dload.setBorderPainted(false);
+			dload.setFont(labels2);
 			dload.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1307,12 +1447,16 @@ public class GUI {
 			
 			JButton dlete = new JButton("Delete");
 			dlete.setBorderPainted(false);
+			dlete.setFont(labels2);
 			dlete.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						remove.acceptRemove(bean.getId());
-						search.doClick();
+						int answer = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure?");
+						if(answer == 0) {
+							remove.acceptRemove(bean.getId());
+							search.doClick();
+						}
 					} catch (SolrServerException | IOException e1) {
 						e1.printStackTrace();
 					}
@@ -1321,26 +1465,32 @@ public class GUI {
 			
 			ArrayList<String> choicefields = new ArrayList<String>();
 			JComboBox<String> choices = new JComboBox<String>();
-			choices.setPreferredSize(new Dimension(100, 30));
-			choices.setMaximumSize(new Dimension(100, 30));
+			choices.setPreferredSize(new Dimension(120, 40));
+			choices.setMaximumSize(new Dimension(120, 40));
 			
+			choices.setFont(labels2);
+			choices.setBackground(Color.white);
 			choices.addItem("Select Field");
 			for(String f:bean.getFields()) {
-				choicefields.add(f);
-				if(f.length()>11) {
-					choices.addItem(f.substring(0, 11));
-				}
-				else {
-					choices.addItem(f);
+				if(!f.equals("_version_")) {
+					choicefields.add(f);
+					if(f.length()>11) {
+						choices.addItem(f.substring(0, 11));
+					}
+					else {
+						choices.addItem(f);
+					}
 				}
 			}
 			choices.setVisible(false);
 			
 			JButton edit = new JButton("Edit");
 			edit.setBorderPainted(false);
+			edit.setFont(labels2);
 			
 			JButton saver = new JButton("Save");
 			saver.setBorderPainted(false);
+			saver.setFont(labels2);
 			saver.setVisible(false);
 			
 			edit.addActionListener(new ActionListener() {

@@ -15,7 +15,8 @@ public class runApp {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
 		            UIManager.setLookAndFeel(info.getClassName());
-		            UIManager.put("control", new Color(245, 245, 245)) ;
+		            UIManager.put("control", new Color(237, 237, 230));
+		            UIManager.put("nimbusOrange", new Color(50, 255, 50));
 		            break;
 		        }
 		    }

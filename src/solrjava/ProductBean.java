@@ -23,6 +23,12 @@ public class ProductBean {
 			values.add(v1);
 		}
 	}
+	
+	public ProductBean(String id) {
+		this.id=id;
+		fields.add("id");
+		values.add(id);
+	}
 
 	public ArrayList<String> getFields() {
 		return fields;

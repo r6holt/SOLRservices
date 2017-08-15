@@ -79,6 +79,7 @@ public class Index {
 		        status=1;
 	        }
 	        catch(RemoteSolrException rse) {
+	        	rse.printStackTrace();
 	        	try {
 	        		String fieldname = "";
 		        	try {fieldname = rse.getMessage().split("\'")[1];} catch(Exception e) {fieldname = rse.getMessage().split("\"")[1];}
@@ -118,13 +119,45 @@ public class Index {
     	return 1;
     }
     
+    public void newFile(ProductBean b) {
+    	SolrInputDocument sd = new SolrInputDocument();
+    	
+    	try {
+	    	for(int i=0; i<b.numFields(); i++) {
+	    		sd.addField(b.getField(i), b.getValue(i));
+	    	}
+	    	
+	    	solr.add(sd);
+	    	solr.commit();
+	    	
+    	} catch (Exception e) {
+    		if(e.toString().contains("undefined field")) {
+    			try {
+	    			String fieldname = "";
+		        	try {fieldname = e.getMessage().split("\'")[1];} catch(Exception e1) {fieldname = e.getMessage().split("\"")[1];}
+		        	
+	    			String[] options = {"string", "float", "location", "date", "boolean"};
+	        		Object data = JOptionPane.showInputDialog(new JFrame(), "Select data type for new field \""+fieldname+"\":", "Creating Field", JOptionPane.OK_CANCEL_OPTION, null, options, options[0]);
+	        		
+					schema.addField(fieldname, data.toString());
+					newFile(b);
+    			} catch(Exception e1) {
+    				JOptionPane.showMessageDialog(new JFrame(), "Failed to create new field...\n\n___Document not loaded___");
+    			}
+    		}
+    		else {
+    			JOptionPane.showMessageDialog(new JFrame(), "Error creating new document. A field\nwas given the wrong type of data.");
+    		}
+    	}
+    }
+    
     public void exampleDocs() throws SolrServerException, IOException {
     	Random r = new Random();
         solr.setParser(new XMLResponseParser());
         
         try {
         	ArrayList<SolrInputDocument> list = new ArrayList<SolrInputDocument>();
-	        for(int i=0;i<500000; i++) {
+	        for(int i=0;i<5000; i++) {
 	            SolrInputDocument doc = new SolrInputDocument();
 	            doc.addField("cat", "workers");
 	            doc.addField("id", "employee-" + i);
@@ -178,6 +211,7 @@ public class Index {
     		
     		for(int i=0; i<b.getFields().size(); i++) {
     			if(b.getField(i).equals(field)) {
+    				if(!value.equals(""))
     				sd.addField(b.getField(i), value);
     			}
     			else if(b.getField(i).equals("_version_"));
