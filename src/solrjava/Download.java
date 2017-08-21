@@ -96,6 +96,7 @@ public class Download {
 			
 			doc.appendChild(field);
 		}
+		doc.removeChild(doc.getLastChild());
 		
 		// write the content into xml file
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();

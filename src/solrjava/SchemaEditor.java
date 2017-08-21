@@ -48,7 +48,7 @@ public class SchemaEditor {
 	
 	public String deleteField(String fieldName) throws SolrServerException, IOException {
 		
-		if(fieldName!=null && !fieldName.toString().equals("Select Field")) {
+		if(fieldName!=null && !fieldName.toString().equals("Select Field")) {			
 			SchemaRequest.DeleteField deleteSchemaField = new SchemaRequest.DeleteField(fieldName.toString());
 			deleteSchemaField.process(solr);
 			

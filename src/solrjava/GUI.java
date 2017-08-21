@@ -278,7 +278,7 @@ public class GUI {
 		progress.setPreferredSize(new Dimension(250, 20));
 		progress.setForeground(Color.green);
 		progress.setBackground(Color.white);
-		menu.setBorder(BorderFactory.createLineBorder(Color.black));
+		//menu.setBorder(BorderFactory.createLineBorder(Color.black));
 		menu.setPreferredSize(new Dimension(1610, 50));
 		querycat.setMaximumSize(new Dimension(160, 45));
 		querycat.setPreferredSize(new Dimension(160, 45));
@@ -300,7 +300,7 @@ public class GUI {
 		north.add(addDoc);
 		north.add(refresh);
 		north.add(newfile);
-		north.add(new JLabel("                                         "));
+		north.add(new JLabel("                                              "));
 		north.add(querycat);
 		north.add(searchbar);
 		north.add(search); 
@@ -347,9 +347,9 @@ public class GUI {
 					displayResults();
 					updateDisplay();
 					reset=true;
+					lastSearch = System.currentTimeMillis();
 				}
 				// disables double clicking
-				lastSearch = System.currentTimeMillis();
 			}
 		});
 	}
@@ -375,18 +375,19 @@ public class GUI {
 					try {
 						index.acceptDocument(f);
 						newDoc=true;
+						search.doClick();
 					} catch (SolrServerException | IOException e1) {
 						e1.printStackTrace();
 					}
 				}
 				finishProgress(1);
-				search.doClick();
 
 			}
 		});
 
 		// when refresh is clicked
 		refresh.setFont(labels2);
+		refresh.setEnabled(false);
 		refresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -456,7 +457,7 @@ public class GUI {
 				Font f = new Font("Serif", Font.PLAIN, 18);
 				
 				frame.setEnabled(false);
-				creator.setSize(500, 650);
+				creator.setSize(450, 550);
 				creator.setResizable(false);
 				creator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				creator.setAlwaysOnTop(true);
@@ -464,8 +465,8 @@ public class GUI {
 				creator.setLocation(frame.getX()+700, frame.getY()+350);
 				fieldscroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 				fieldscroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-				fieldscroll.setPreferredSize(new Dimension(500, 550));
-				fieldscroll.setMaximumSize(new Dimension(500, 550));
+				fieldscroll.setPreferredSize(new Dimension(450, 450));
+				fieldscroll.setMaximumSize(new Dimension(450, 450));
 				
 				header1.setFont(f);
 				header2.setFont(f);
@@ -474,7 +475,7 @@ public class GUI {
 				
 				for(int i=0; i<3; i++) {
 					JTextField f1 = new JTextField(10);
-					JTextField v1 = new JTextField(20);
+					JTextField v1 = new JTextField(17);
 					
 					if(i==0) {
 						f1.setText("id");
@@ -483,6 +484,8 @@ public class GUI {
 					
 					fls.add(f1);
 					vls.add(v1);
+					f1.setFont(f);
+					v1.setFont(f);
 					
 					fields.add(f1);
 					fields.add(v1,  "wrap");
@@ -497,10 +500,12 @@ public class GUI {
 						fields.remove(more);
 						
 						JTextField f1 = new JTextField(10);
-						JTextField v1 = new JTextField(20);
+						JTextField v1 = new JTextField(17);
 						
 						fls.add(f1);
 						vls.add(v1);
+						f1.setFont(f);
+						v1.setFont(f);
 						
 						fields.add(f1);
 						fields.add(v1,  "wrap");
@@ -532,6 +537,7 @@ public class GUI {
 							}
 							
 							index.newFile(b);
+							search.doClick();
 						}
 					}
 				});
@@ -573,8 +579,8 @@ public class GUI {
 		JTextField fill = new JTextField(10);
 		JButton removeField = new JButton("Delete Field");
 		JLabel ask2 = new JLabel("         Value:");
-		JLabel filler = new JLabel("                                           ");
-		JLabel filler2 = new JLabel("                                           ");
+		JLabel filler = new JLabel("                           ");
+		JLabel filler2 = new JLabel("                          ");
 		JLabel ask = new JLabel("add field to search results");
 		
 		//component styling
@@ -611,10 +617,10 @@ public class GUI {
 		menu.add(ask);
 		menu.add(ask2);
 		menu.add(fill);
-		menu.add(filler2);
+		menu.add(filler);
 		menu.add(editer);
 		menu.add(ex);
-		menu.add(filler);
+		menu.add(filler2);
 		menu.add(deleteoptions);
 		menu.add(removeField);
 		
@@ -808,7 +814,7 @@ public class GUI {
 		fieldoptions.addItem("location");
 		fieldoptions.addItem("_version_");
 		for(int i=0; i<ft.getDatatypes().size(); i++) {
-			if(ft.getDatatypes().get(i).equals("float")) {
+			if(ft.getDatatypes().get(i).equals("float") || ft.getDatatypes().get(i).equals("double")) {
 				fieldoptions.addItem(ft.getField(i));
 			}
 		}
@@ -1559,19 +1565,31 @@ public class GUI {
 			JTextArea p1 = new JTextArea();
 			JTextArea p2 = new JTextArea();
 			p1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+			p1.setColumns(15);
+			p2.setColumns(80);
+			//p1.setMinimumSize(new Dimension(400, 600));
+			//p2.setPreferredSize(new Dimension(600, 400));
 			
 			int j=0;
-			int wid = 140;
+			int lines=0;
+			int wid = 135;
 			for(int i=0; i<bean.numFields(); i++) {
 				p1.append(" :"+bean.getField(i)+"\n");
+				lines++;
 				
 				String val = "";
 				for(j=wid; j<(bean.getValue(i).toString().replaceAll("\n", "").length()-1); j+=wid) {
-					val+=bean.getValue(i).toString().replaceAll("\n", "").substring(j-wid, j)+"\n";
+					String s = bean.getValue(i).toString().replaceAll("\n", "").substring(j-wid, j);
+					val+=s.substring(0, s.lastIndexOf(" "))+"\n"+s.substring(s.lastIndexOf(" "), s.length()-1);//+"\n";
 					p1.append("\n");
+					lines++;
 				}
 				val+=bean.getValue(i).toString().replaceAll("\n", "").substring(j-wid);
 				p2.append("  "+val+"\n");
+			}
+			for(int i=7; i>lines; i--) {
+				p1.append("\n");
+				p2.append("\n");
 			}
 			
 			p1.setFont(f1);

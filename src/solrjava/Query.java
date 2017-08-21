@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -92,14 +95,17 @@ public class Query {
         	else if(ft.getCategory().equals("price")) {
         		query.setQuery("price:"+q);
         	}
-        	else if(ft.getDatatypes().get(ft.getFields().indexOf(ft.getCategory())).equals("location")) {
-        		query.setQuery("{!geofilt}");
-        		query.set("sfield", ft.getCategory());
-        		query.set("pt", q);
-        		query.set("d", 100);
-        	}
         	else {
         		query.setQuery(ft.getCategory()+":*"+q+"*");
+        	}
+        	if(ft.getDatatypes().get(ft.getFields().indexOf(ft.getCategory())).equals("location")) {
+        		if(q.equals("")) query.setQuery(ft.getCategory()+":[-90,-180 TO 90,180]");//query.setQuery("{!geofilt sfield="+ft.getCategory()+" pt="+q.replace(" ", "")+" d="+100+"}");
+        		else /*query.setQuery(ft.getCategory()+":[-90,-180 TO 90,180]")*/ {
+        			query.set("sfield", ft.getCategory());
+        			query.set("pt", q);
+        			query.set("d", 100);
+        			query.setQuery("{!geofilt}");
+        		}
         	}
         }
         
@@ -173,6 +179,8 @@ public class Query {
         	return beans;
         }
         catch (Exception e) {
+        	e.printStackTrace();
+        	JOptionPane.showMessageDialog(new JFrame(), "An error occured while attempting\nto search.");
         	return beans; 
         }
         

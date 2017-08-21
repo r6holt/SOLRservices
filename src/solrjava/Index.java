@@ -79,7 +79,6 @@ public class Index {
 		        status=1;
 	        }
 	        catch(RemoteSolrException rse) {
-	        	rse.printStackTrace();
 	        	try {
 	        		String fieldname = "";
 		        	try {fieldname = rse.getMessage().split("\'")[1];} catch(Exception e) {fieldname = rse.getMessage().split("\"")[1];}
@@ -100,7 +99,7 @@ public class Index {
 		        	status=0;
 	        	}
 	        	catch(Exception e) {
-	        		JOptionPane.showMessageDialog(new JFrame(), "Failed to create new field...\n\n___Document not loaded___");
+	        		JOptionPane.showMessageDialog(new JFrame(), "An error occured while trying to \ncreate a new field.");
 	        		return -1;
 	        	}
 	        }
@@ -142,11 +141,11 @@ public class Index {
 					schema.addField(fieldname, data.toString());
 					newFile(b);
     			} catch(Exception e1) {
-    				JOptionPane.showMessageDialog(new JFrame(), "Failed to create new field...\n\n___Document not loaded___");
+    				JOptionPane.showMessageDialog(new JFrame(), "An error occured while trying to \ncreate a new field.");
     			}
     		}
     		else {
-    			JOptionPane.showMessageDialog(new JFrame(), "Error creating new document. A field\nwas given the wrong type of data.");
+    			JOptionPane.showMessageDialog(new JFrame(), "Error creating new document! A field\nwas given the wrong type of data.");
     		}
     	}
     }
@@ -183,7 +182,6 @@ public class Index {
         	
         }
         catch(RemoteSolrException rse) {
-        	System.out.println("ADD NEW FIELD");
         	String fieldname = "";
         	try {fieldname = rse.getMessage().split("\'")[1];} catch(Exception e) {fieldname = rse.getMessage().split("\"")[1];}
         	if(fieldname.equals("price")) {
@@ -199,10 +197,10 @@ public class Index {
         	status=0;
         }
         
-        /*if(status==1) {
+        if(status==1) {
         	JOptionPane.showMessageDialog(new JFrame(), "Examples Added!");
         	solr.commit();
-        }*/
+        }
     }
     
     public void reload(ProductBean b, String field, String value) throws SolrServerException, IOException {
