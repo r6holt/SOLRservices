@@ -1,7 +1,6 @@
 package solrjava;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 

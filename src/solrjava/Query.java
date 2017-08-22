@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -24,6 +23,7 @@ public class Query {
 	private int searches = 0;
 	private List<FacetField> facet;
 	private Map<String, Integer> range;
+	private List<String> spellcheck;
 	
     public Query(FieldTracker ft) {
     	this.ft=ft;
@@ -145,7 +145,8 @@ public class Query {
         if(ft.getFacetchoice()!=null) {//ft.getFacetchoice()[0].equals("facet")) {
         	for(int h=0; h<ft.getFacetchoice().length; h++) {
         		if(ft.getFacetchoice()[h]!=null) {
-		        	String[] subsets = ft.getFacetchoice()[h].split(", ");//[0].split(", ");
+		        	String[] subsets = ft.getFacetchoice()[h].split("~~~");//[0].split(", ");
+		        	
 		        	for(int i=0; i<subsets.length; i++) {
 		        		facets.add(ft.getChoices().get(h)+":"+subsets[i]);
 		        	}
@@ -161,13 +162,14 @@ public class Query {
             query.set("fq", fq);
         }
         
-        
         //Getting results
         ArrayList<ProductBean> beans = new ArrayList<ProductBean>();
         try {
         	QueryResponse resp = solr.query(query);
         	facet = resp.getFacetFields();
         	range = resp.getFacetQuery();
+        	if(resp.getSpellCheckResponse()!=null && !resp.getSpellCheckResponse().getSuggestions().isEmpty()) spellcheck = resp.getSpellCheckResponse().getSuggestions().get(0).getAlternatives();
+        	else spellcheck=null;
         	SolrDocumentList list =resp.getResults();
         	FOUND = list.getNumFound();
         	searches+=1;
@@ -197,6 +199,10 @@ public class Query {
 
 	public Map<String, Integer> getRange() {
 		return range;
+	}
+	
+	public List<String> getSpellcheck() {
+		return spellcheck;
 	}
 
 	public ProductBean createBean(SolrDocument sd) {

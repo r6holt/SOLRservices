@@ -2,8 +2,6 @@ package solrjava;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -25,9 +23,9 @@ import java.awt.event.ActionEvent;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableCellRenderer;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
@@ -63,7 +61,7 @@ public class GUI {
 	private JPanel east = new JPanel();
 
 	// search
-	private JPanel north = new JPanel(new FlowLayout());
+	private JPanel north = new JPanel(new MigLayout());
 	private JTextField searchbar = new JTextField(45);
 	private JButton search = new JButton("      SEARCH      ");
 	private JButton addDoc = new JButton();//"Upload File");
@@ -71,6 +69,7 @@ public class GUI {
 	private JButton examples = new JButton();//"Examples");
 	private JButton newfile = new JButton();
 	private JComboBox<String> querycat = new JComboBox<String>();
+	private JPanel suggestions = new JPanel(new MigLayout());
 	
 	// schema management
 	private JPanel menu = new JPanel(new MigLayout());
@@ -78,7 +77,6 @@ public class GUI {
 	private JButton addition = new JButton("Add Field");
 	private JTextField editer = new JTextField(15);
 	private JButton ex = new JButton("X");
-	
 
 	// display area
 	private JPanel displayPan = new JPanel();
@@ -270,6 +268,7 @@ public class GUI {
 		refinescroll.setMinimumSize(new Dimension(355, 710));
 		refinescroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		refinescroll.setBorder(null);
+		north.setPreferredSize(new Dimension(2000, 90));
 		sort.setLayout(new MigLayout());
 		west.setLayout(new MigLayout());
 		east.setLayout(new MigLayout());
@@ -296,21 +295,24 @@ public class GUI {
 		pages.add(nextPage);
 		pages.add(new JLabel("                                                            "));
 		pages.add(progress);
-		north.add(examples);
-		north.add(addDoc);
-		north.add(refresh);
-		north.add(newfile);
-		north.add(new JLabel("                                              "));
+		//suggestions.add(searchbar, "span");
+		north.add(new JLabel("        "), "cell 0 0 1 2");
+		north.add(examples, "cell 1 0 1 2");
+		north.add(addDoc, "cell 2 0 1 2");
+		north.add(refresh, "cell 3 0 1 2");
+		north.add(newfile, "cell 4 0 1 2");
+		north.add(new JLabel("                                              "), "cell 5 0 1 2");
 		north.add(querycat);
 		north.add(searchbar);
 		north.add(search); 
-		north.add(new JLabel("                                "));
+		north.add(new JLabel("                                "), "span");
+		north.add(suggestions, "cell 7 1");
 		west.add(imgholder, "span");
 		west.add(header1, "span");
 		west.add(sort, "span");
 		west.add(header2, "span");
 		west.add(refinescroll, "span");
-		east.add(new JLabel("   "), "span");
+		//east.add(suggestions, "span");
 		east.add(menu, "span");
 		east.add(scroll, "span");
 		east.add(pages, "span");
@@ -374,20 +376,20 @@ public class GUI {
 				if (f.length != 0) {
 					try {
 						index.acceptDocument(f);
-						newDoc=true;
-						search.doClick();
 					} catch (SolrServerException | IOException e1) {
 						e1.printStackTrace();
 					}
 				}
+				newDoc=true;
 				finishProgress(1);
+				search.doClick();
 
 			}
 		});
 
 		// when refresh is clicked
 		refresh.setFont(labels2);
-		refresh.setEnabled(false);
+		//refresh.setEnabled(false);
 		refresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -407,6 +409,7 @@ public class GUI {
 					} catch (SolrServerException | IOException e1) {
 						e1.printStackTrace();
 					}
+					newDoc=true;
 					finishProgress(1);
 					search.doClick();
 				}
@@ -427,11 +430,11 @@ public class GUI {
 					try {
 	
 						index.exampleDocs();
-						newDoc=true;
 					
 					} catch (SolrServerException | IOException e1) {
 						e1.printStackTrace();
 					}
+					newDoc=true;
 					finishProgress(1);
 					search.doClick();
 				}
@@ -537,6 +540,7 @@ public class GUI {
 							}
 							
 							index.newFile(b);
+							newDoc=true;
 							search.doClick();
 						}
 					}
@@ -562,6 +566,47 @@ public class GUI {
 				});
 			}
 		});
+	}
+	
+	
+	// adds search suggestions if any are returned
+	public void suggest() {
+		List<String> spellcheck = query.getSpellcheck();
+		suggestions.removeAll();
+		
+		if(spellcheck!=null) {
+			ArrayList<JButton> options = new ArrayList<JButton>();
+			JLabel dym = new JLabel("Did you mean? ");
+			dym.setFont(new Font("SansSerif", Font.ITALIC, 16));
+			
+			for(int i=0; i<spellcheck.size(); i++) {
+				JButton sug = new JButton(spellcheck.get(i));
+				sug.setForeground(Color.blue);
+				sug.setFont(new Font("SansSerif", Font.ITALIC, 16));
+				sug.setBorder(null);
+				sug.setContentAreaFilled(false);
+				
+				sug.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						searchbar.setText(sug.getText());
+						search.doClick();
+					}
+				});
+				options.add(sug);
+			}
+			
+			//suggestions.add(new JLabel(" "), "cell 0 1 6 1");
+			suggestions.add(dym);//, "split "+options.size()+1);
+			for(JButton sug:options) {
+				suggestions.add(sug);
+				suggestions.add(new JLabel("  "));
+			}
+			
+			if(options.isEmpty()) {
+				suggestions.setVisible(false);
+			}
+		}
 	}
 	
 	//initializes schema maintenance panel
@@ -658,6 +703,7 @@ public class GUI {
 						
 						ft.setFacetchoice(null);
 					}
+					newDoc=true;
 					search.doClick();
 				}
 				else {
@@ -703,6 +749,7 @@ public class GUI {
 						}
 						ft.setFacetchoice(null);
 						ft.setCategory(null);
+						newDoc=true;
 						search.doClick();
 					}
 				}
@@ -876,6 +923,7 @@ public class GUI {
 		}
 		
 		picker.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame map = new JFrame("Select Coordinates");
@@ -1041,7 +1089,7 @@ public class GUI {
 			for(int h=0; h<facets.size(); h++) {
 				FacetField facet = facets.get(h);
 				
-				if(!facet.getName().equals("id") && !facet.getName().equals("_version_") && !facet.getValues().isEmpty()) {
+				if(!facet.getValues().isEmpty() && facet.getValues().get(0).getCount()!=0) {
 					count++;
 					
 					JPanel jp = new JPanel(new MigLayout());
@@ -1089,10 +1137,10 @@ public class GUI {
 									
 									if(ft.getFacetchoice()[index]!=null) {
 										selectedCats = ft.getFacetchoice()[index];
-										selectedCats += choice+", ";
+										selectedCats += choice+"~~~";
 									}
 									else {
-										selectedCats = choice+", ";
+										selectedCats = choice+"~~~";
 									}
 									ft.setFacetchoice(index, selectedCats);//selectedCats);
 									query.updateFT(ft);
@@ -1222,6 +1270,8 @@ public class GUI {
 	// updates frame for new content
 	public void updateDisplay() {
 		frame.setVisible(true);
+		displayPan.setVisible(false);
+		displayPan.setVisible(true);
 	}
 	
 	public void checkBox(String s) {
@@ -1554,48 +1604,38 @@ public class GUI {
 					}
 				}
 			});
-
-			Font f1 = new Font("Serif", Font.ITALIC, 22);
-			Font f2 = new Font("Serif", Font.PLAIN, 20);
 			
 			//adds button and textfield to the results panel
 			JPanel holder = new JPanel();
 			holder.setBorder(BorderFactory.createLineBorder(Color.black));
 			
-			JTextArea p1 = new JTextArea();
-			JTextArea p2 = new JTextArea();
-			p1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-			p1.setColumns(15);
-			p2.setColumns(80);
-			//p1.setMinimumSize(new Dimension(400, 600));
-			//p2.setPreferredSize(new Dimension(600, 400));
 			
-			int j=0;
-			int lines=0;
-			int wid = 135;
+			Object[][] data = new Object[bean.numFields()][2];
+			String[] heads = {"Field", "Values"};
+			int[] extraLines = new int[bean.numFields()];
+			
 			for(int i=0; i<bean.numFields(); i++) {
-				p1.append(" :"+bean.getField(i)+"\n");
-				lines++;
-				
-				String val = "";
-				for(j=wid; j<(bean.getValue(i).toString().replaceAll("\n", "").length()-1); j+=wid) {
-					String s = bean.getValue(i).toString().replaceAll("\n", "").substring(j-wid, j);
-					val+=s.substring(0, s.lastIndexOf(" "))+"\n"+s.substring(s.lastIndexOf(" "), s.length()-1);//+"\n";
-					p1.append("\n");
-					lines++;
+				data[i][0]=bean.getField(i);
+				data[i][1]=bean.getValue(i);
+				if(bean.getValue(i).toString().length()>120) {
+					extraLines[i] = bean.getValue(i).toString().length()/120;
 				}
-				val+=bean.getValue(i).toString().replaceAll("\n", "").substring(j-wid);
-				p2.append("  "+val+"\n");
-			}
-			for(int i=7; i>lines; i--) {
-				p1.append("\n");
-				p2.append("\n");
 			}
 			
-			p1.setFont(f1);
-			p1.setEditable(false);
-			p2.setFont(f2);
-			p2.setEditable(false);
+			JTable tbl = new JTable(data, heads);
+			tbl.getColumn("Field").setMaxWidth(250);
+			tbl.getColumn("Field").setMinWidth(250);
+			tbl.getColumn("Values").setMinWidth(1100);
+			tbl.setFont(new Font("Serif", Font.PLAIN, 22));
+			tbl.getColumn("Values").setCellRenderer(new TextAreaRenderer());
+			tbl.setRowHeight(50);
+			tbl.setEnabled(false);
+			
+			for(int i=0; i<extraLines.length; i++) {
+				if(extraLines[i]!=0) {
+					tbl.setRowHeight(i, 50+(30*extraLines[i]));
+				}
+			}
 			
 			buttons.add(dload, "span");
 			buttons.add(dlete, "span");
@@ -1603,8 +1643,7 @@ public class GUI {
 			buttons.add(saver, "span");
 			buttons.add(choices, "span");
 			holder.add(buttons);
-			holder.add(p1);
-			holder.add(p2);
+			holder.add(tbl);
 			displayPan.add(holder, "span");
 		}
 		
@@ -1634,6 +1673,7 @@ public class GUI {
 		refine();
 		updateFields();
 		menubar();
+		suggest();
 		newDoc=false;
 
 		// start scroll at top of results after each search
@@ -1655,4 +1695,26 @@ public class GUI {
 		updateDisplay();
 		
 	}
+}
+
+@SuppressWarnings("serial")
+class TextAreaRenderer extends JScrollPane implements TableCellRenderer
+{
+   JTextArea textarea;
+  
+   public TextAreaRenderer() {
+      textarea = new JTextArea();
+      textarea.setLineWrap(true);
+      textarea.setWrapStyleWord(true);
+      textarea.setFont(new Font("Serif", Font.PLAIN, 22));
+      getViewport().add(textarea);
+   }
+  
+   public Component getTableCellRendererComponent(JTable table, Object value,
+                                  boolean isSelected, boolean hasFocus,
+                                  int row, int column) {
+  
+      textarea.setText(value.toString());
+      return this;
+   }
 }

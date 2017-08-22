@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.io.IOException;
 
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.solr.client.solrj.SolrServerException;

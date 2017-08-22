@@ -3,10 +3,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -19,7 +16,6 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.apache.solr.client.solrj.request.DirectXmlRequest;
-import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 
 
@@ -156,17 +152,30 @@ public class Index {
         
         try {
         	ArrayList<SolrInputDocument> list = new ArrayList<SolrInputDocument>();
-	        for(int i=0;i<5000; i++) {
+        	int l = 30;
+        	int size = r.nextInt(200)+6;
+        	String[] words = {"alpha", "beta", "gamma", "delta", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "pizza", "is", "a", "the", "cars", "yesterday", "field_name",
+        			"animals", "truck", "with", "who", "running", "crazy", "12", "18", "26", "because", "change"};
+        	
+	        for(int i=0;i<50000; i++) {
+	        	String txt = "";
+	        	for(int j=0; j<size; j++) {
+	        		txt+=words[r.nextInt(l)]+" ";
+	        	}
+	        	
 	            SolrInputDocument doc = new SolrInputDocument();
-	            doc.addField("cat", "workers");
-	            doc.addField("id", "employee-" + i);
-	            doc.addField("blah", "total leg-1."+i);
-	            doc.addField("text", "there are lots and lots and lots and lots of cars out there that can go on roads and even off road. Check them out cuz theyre cool. Im also"
-	            		+ "trying to eat up space on the SOLR instance to get to 1gb that would sweet if this indexed pretty quickly too but well have to see."
-	            		+ "I dont have a lot of text on here yet so not as much data");
-	            doc.addField("name", "card " + i);
-	            doc.addField("price", r.nextInt(1000));
+	            doc.addField("cat", words[r.nextInt(l)]);
+	            doc.addField("id", words[r.nextInt(l)] + i);
+	            doc.addField("blah", "random info"+r.nextInt(1000));
+	            doc.addField("text", txt);
+	            doc.addField("name", words[r.nextInt(l)] + i);
+	            doc.addField("price", r.nextInt(750));
 	            doc.addField("store", (r.nextInt(180)-90)+", "+(r.nextInt(360)-180));
+	            
+	            size = r.nextInt(15)+1;
+	            for(int q=0; q<size; q++) {
+	            	doc.addField(words[r.nextInt(l)], words[r.nextInt(l-12)+12]+" "+words[r.nextInt(l-12)+12]+" "+words[r.nextInt(l-12)+12]);
+	            }
 	            
 	            list.add(doc);
 	            
@@ -229,12 +238,9 @@ public class Index {
     }
     
     public void reload(ArrayList<ProductBean> beans) throws SolrServerException, IOException {
-    	int count=0;
-    	
     	try {
     		ArrayList<SolrInputDocument> list = new ArrayList<SolrInputDocument>();
 	    	for(ProductBean b:beans) {
-	    		count++;
 	    		SolrInputDocument sd = new SolrInputDocument();
 	    		
 	    		for(int i=0; i<b.getFields().size(); i++) {
@@ -262,13 +268,10 @@ public class Index {
     }
     
     public void reload(ArrayList<ProductBean> beans, String delete) throws SolrServerException, IOException {
-    	int count=0;
-    	
     	//update solr docs in index
     	try {
     		ArrayList<SolrInputDocument> list = new ArrayList<SolrInputDocument>();
 	    	for(ProductBean b:beans) {
-	    		count++;
 	    		SolrInputDocument sd = new SolrInputDocument();
 	    		
 	    		//adds beans to the next commit only if they contain the field that has been deleted
