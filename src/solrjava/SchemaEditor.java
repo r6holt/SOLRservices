@@ -1,6 +1,7 @@
 package solrjava;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -62,5 +63,19 @@ public class SchemaEditor {
 		}
 		
 		return null;
+	}
+	
+	public void clearFields(ArrayList<String> fields) throws SolrServerException, IOException {
+		for(String fieldName:fields) {
+			if(!fieldName.equals("id") && !fieldName.equals("_version_")) {
+				SchemaRequest.DeleteField deleteSchemaField = new SchemaRequest.DeleteField(fieldName.toString());
+				deleteSchemaField.process(solr);
+			}
+		}
+		CoreAdminRequest adminRequest = new CoreAdminRequest();
+	    adminRequest.setCoreName("solrservices");
+	    adminRequest.setOtherCoreName("solrservices");
+	    adminRequest.setAction(CoreAdminAction.RELOAD);
+	    adminRequest.process(load);
 	}
 }

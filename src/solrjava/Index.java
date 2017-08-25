@@ -107,9 +107,7 @@ public class Index {
         		JOptionPane.showMessageDialog(new JFrame(), "Document(s) Added!");
         	}
         }
-        catch (Exception e) {
-        	e.printStackTrace();
-        }
+        catch (Exception e) {}
     	
     	return 1;
     }
@@ -154,8 +152,9 @@ public class Index {
         	ArrayList<SolrInputDocument> list = new ArrayList<SolrInputDocument>();
         	int l = 30;
         	int size = r.nextInt(200)+6;
-        	String[] words = {"alpha", "beta", "gamma", "delta", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "pizza", "is", "a", "the", "cars", "yesterday", "field_name",
-        			"animals", "truck", "with", "who", "running", "crazy", "12", "18", "26", "because", "change"};
+        	String[] words = {"solr", "services", "apache", "search", "is", "the", "are", "will", "fast", "lucene", "replication", "scalable", "index", "cloud", "is", "was", "velosys", "java", "API", "webservice",
+        			"awesome", "second best", "mongodb", "querying", "results", "core", "instance", "open-source", "documentation", "because", "change"};
+        	String[] names = {"field1", "field2", "field3", "field4", "field5", "field6", "field7", "field8", "field9", "field10", "field11", "field12"};
         	
 	        for(int i=0;i<50000; i++) {
 	        	String txt = "";
@@ -172,9 +171,9 @@ public class Index {
 	            doc.addField("price", r.nextInt(750));
 	            doc.addField("store", (r.nextInt(180)-90)+", "+(r.nextInt(360)-180));
 	            
-	            size = r.nextInt(15)+1;
+	            size = r.nextInt(12)+1;
 	            for(int q=0; q<size; q++) {
-	            	doc.addField(words[r.nextInt(l)], words[r.nextInt(l-12)+12]+" "+words[r.nextInt(l-12)+12]+" "+words[r.nextInt(l-12)+12]);
+	            	doc.addField(names[r.nextInt(12)], words[r.nextInt(l-12)+12]+" "+words[r.nextInt(l-12)+12]+" "+words[r.nextInt(l-12)+12]);
 	            }
 	            
 	            list.add(doc);
@@ -231,7 +230,6 @@ public class Index {
 	    	solr.commit();
 	    	
     	} catch (RemoteSolrException e) {
-    		e.printStackTrace();
     		JOptionPane.showMessageDialog(new JFrame(), "Error editing field: "+field);
     	}
     	

@@ -7,9 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -108,10 +106,8 @@ public class Download {
 
 		JOptionPane.showMessageDialog(new JFrame(), "Download Complete!");
 
-	  } catch (ParserConfigurationException pce) {
-		pce.printStackTrace();
-	  } catch (TransformerException tfe) {
-		tfe.printStackTrace();
+	  } catch (Exception e) {
+		  JOptionPane.showMessageDialog(new JFrame(), "Failed to download document.");
 	  }
 	}
 }

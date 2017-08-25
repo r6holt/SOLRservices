@@ -44,11 +44,16 @@ public class Query {
         if(q.trim().equals("")) {
         	query.setQuery("*");
         }
+        else if(q.contains("-") || q.contains("~") || q.contains("+") || q.contains("AND") || q.contains("OR") || q.contains("{") || q.contains(":")) {
+        	query.setQuery(q);
+        }
+        else if(q.contains(" ")) {
+        	query.setQuery("\""+q+"\"");
+        }
         
         // Rows and starting row
         query.set("rows", ROWS);
         query.set("start", START);
-        query.set("sort", ft.getSortfield()+" "+ft.isSort());
         
         
         //set price and category facets
@@ -64,12 +69,13 @@ public class Query {
         	query.set("facet.query", "price:[0 TO 9.99]", "price:[10 TO 24.99]", "price:[25 TO 49.99]", "price:[50 TO 99.99]", "price:[100 TO 199.99]", "price:[200 TO 499.99]", "price:[500 TO *]");
         }
         
-        // spatial
+        // SORT: spatial or other
         if(ft.getSortfield().equals("location")) {
             query.set("pt", ft.getLat()+", "+ft.getLon());
             query.set("sfield", ft.getLocatefield());
             query.set("sort", "geodist() "+ft.isSort());
         }
+        else if(ft.getSortfield().equals("")) {}
         else {
         	query.set("sort", ft.getSortfield()+" "+ft.isSort());
         }
@@ -77,13 +83,13 @@ public class Query {
         // set price sort
         if(ft!=null && ft.getPriceQuery()) {
         	if(ft.getMinPrice()==-1) {
-        		fq+="-price:["+ft.getMaxPrice()+" TO *], ";
+        		fq+="price:{* TO "+ft.getMaxPrice()+"], ";
         	}
         	else if(ft.getMaxPrice()==-1) {
-        		fq+= "-price:[* TO "+ft.getMinPrice()+"], ";
+        		fq+= "price:{"+ft.getMinPrice()+" TO *], ";
         	}
         	else {
-        		fq+="-price:[* TO "+ft.getMinPrice()+"], -price:["+ft.getMaxPrice()+" TO *], ";
+        		fq+="price:{"+ft.getMinPrice()+" TO "+ft.getMaxPrice()+"], ";
         	}
         }
         
@@ -181,7 +187,6 @@ public class Query {
         	return beans;
         }
         catch (Exception e) {
-        	e.printStackTrace();
         	JOptionPane.showMessageDialog(new JFrame(), "An error occured while attempting\nto search.");
         	return beans; 
         }

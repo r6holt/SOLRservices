@@ -22,6 +22,8 @@ public class ProductBean {
 			fields.add(f1);
 			values.add(v1);
 		}
+		
+		sort();
 	}
 	
 	public ProductBean(String id) {
@@ -69,5 +71,29 @@ public class ProductBean {
 	
 	public void setValue(int i, Object o) {
 		values.set(i, o);
+	}
+	
+	public void sort() {
+		values.remove(fields.indexOf("id"));
+		fields.remove("id");
+		
+		for(int i=0; i<numFields(); i++) {
+			String low = getField(i);
+			int index = i;
+			for(int j=i; j<numFields(); j++) {
+				if(low.compareTo(getField(j))>0) {
+					low=getField(j);
+					index=j;
+				}
+			}
+			String temp = getValue(index).toString();
+			fields.set(index, getField(i));
+			fields.set(i, low);
+			values.set(index, getValue(i));
+			values.set(i, temp);
+		}
+		
+		fields.add(0, "id");
+		values.add(0, id);
 	}
 }
